@@ -1,37 +1,23 @@
 # PlanningSession
 
-https://medium.com/factory-mind/websocket-node-js-express-step-by-step-using-typescript-725114ad5fe4
+In directory node-backend is a server. It can be started using: npm start.
+The server should be restart when files are updated, but that doesn't seem to be working.
 
-https://medium.com/factory-mind/angular-websocket-node-31f421c753ff
+The frontend can be start using npm start in the root of the project
 
-https://github.com/JonnyFox/websocket-node-express
+##Usage
 
-https://javascript-conference.com/blog/real-time-in-angular-a-journey-into-websocket-and-rxjs/
+First user start browser on http://localhost:4200, select 'join session' enter a name and click 'Create new session'
 
+Second user copy the sessionId from the first user.
+
+Start browser on http://localhost:4200, select 'join session' enter a name, paste the sessionId into the field 'Session Id' and click 'Join existing session'
+
+Both users are in the same chat-like session
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-## Development server
+https://medium.com/factory-mind/websocket-node-js-express-step-by-step-using-typescript-725114ad5fe4
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+https://medium.com/factory-mind/angular-websocket-node-31f421c753ff
