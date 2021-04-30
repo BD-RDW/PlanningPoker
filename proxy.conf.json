@@ -1,0 +1,7 @@
+{
+    "/rest": {
+      "target": "http://localhost:8999/",
+      "secure": false,
+      "logLevel": "debug"
+    }
+}
