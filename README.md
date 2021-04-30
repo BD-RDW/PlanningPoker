@@ -5,7 +5,7 @@ The server should be restart when files are updated, but that doesn't seem to be
 
 The frontend can be start using npm start in the root of the project
 
-##Usage
+## Usage
 
 First user start browser on http://localhost:4200, select 'join session' enter a name and click 'Create new session'
 
