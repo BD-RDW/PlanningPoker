@@ -15,3 +15,17 @@
   height: 50x;
   border: 0px;
 }
+
+.user-panel {
+  border-right: 1px ridge black;
+  margin: 15px, 10px, 5px, 10px;
+}
+
+.user-panel li {
+  font: 16px Arial;
+  margin: 2px, 0px, 0px, 0px;
+  list-style-type: square;
+}
+.card-panel {
+  margin: 15px, 10px, 5px, 10px;
+}

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {TabViewModule} from 'primeng/tabview';
+
 
 @Component({
   selector: 'app-root',

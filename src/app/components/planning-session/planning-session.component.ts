@@ -17,6 +17,7 @@ export class PlanningSessionComponent implements OnInit {
   public messages  = 'Default message';
   public message = '';
   public status = '';
+  public users: string[] = [];
 
   public inSession = false;
 
@@ -78,13 +79,13 @@ export class PlanningSessionComponent implements OnInit {
   processSessionMessage(message: Message): void {
     switch (message.action.toUpperCase()) {
       case 'MESSAGE' : { this.messages = `${message.payload}\n${this.messages}`; break; }
-      case 'UPDATE' : { this.status = 'Session update: currently in session: ' + message.session.users.map(u => u.username); break; }
+      case 'UPDATE' : { this.users = message.session.users.map(u => u.username); break; }
       default: console.log(`Unknown Session action ${message.action}`);
     }
   }
   processConnectionMessage(message: Message): void {
     switch (message.action.toUpperCase()) {
-      case 'INIT' : { this.messages = `Websocket connection established`; break; }
+      case 'INIT' : { this.status = `Websocket connection established`; break; }
       default: console.log(`Unknown Connection action ${message.action}`);
     }
   }
@@ -93,5 +94,10 @@ export class PlanningSessionComponent implements OnInit {
       case 'ERROR' : { this.messages = `Websocket connection established`; break; }
       default: console.log(`Unknown Error action ${message.action}`);
     }
+  }
+
+  public cardSelected($event): void {
+    console.log('%O', $event);
+
   }
 }
