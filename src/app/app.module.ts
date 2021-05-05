@@ -5,19 +5,24 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TabViewModule } from 'primeng/tabview';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { ButtonModule } from 'primeng/button';
+import { ChartModule } from 'primeng/chart';
+import { PrimeIcons } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
 import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing-module';
 import { CardsViewComponent } from './components/cards-view/cards-view.component';
+import { ResultViewComponent } from './components/result-view/result-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlanningSessionComponent,
     HomeComponent,
-    CardsViewComponent
+    CardsViewComponent,
+    ResultViewComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +31,11 @@ import { CardsViewComponent } from './components/cards-view/cards-view.component
     HttpClientModule,
     TabViewModule,
     ScrollPanelModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ButtonModule,
+    ChartModule
   ],
-  providers: [],
+  providers: [PrimeIcons],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

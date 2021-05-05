@@ -24,7 +24,7 @@ export class SessionMgr {
         }
         const session: Session = { id: sessionId, users: [ ] };
         this.sessions.push(session);
-        user.role = Role.Admin;
+        user.role = Role.ScrumMaster;
         this.addUser(user, session);
         return session.id;
     }
@@ -38,6 +38,7 @@ export class SessionMgr {
 
 export interface Session {
     id: string;
+    phase?: string;
     users: User[];
 }
 
@@ -46,8 +47,11 @@ export interface User {
     username: string;
     role: Role;
     conn?: WebSocket;
+    vote?: string;
 }
 
 export enum Role {
-    Unknown, Admin, User
+    Unknown = ('Unknown' as any),
+    ScrumMaster = ('ScrumMaster' as any),
+    TeamMember = ('TeamMember' as any)
 }

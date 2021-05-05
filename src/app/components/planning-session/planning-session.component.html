@@ -12,13 +12,20 @@
     <div *ngIf="inSession">
 
         <div class="p-grid">
-            <div class="p-col-2 user-panel">Users:<br>
+            <div class="p-col-2 user-panel">Users: <br>
                 <ul>
-                    <li *ngFor="let user of users">{{user}}</li>
+                    <li *ngFor="let user of users" ><span>{{user.name}} <i [ngClass]="{'pi pi-check' : user.vote}"></i></span></li>
                 </ul>
             </div>
-            <div class="p-col-8 card-panel">
-                <app-cards-view (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+            <div class="p-col-8 mainPanel">
+                <div *ngIf="phase==='voting'">
+                    <div class="card-panel">
+                        <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+                    </div>
+                </div>
+                <div class="result-panel" *ngIf="phase==='showResults'">
+                    <app-result-view [users]="users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
+                </div>
             </div>
             <div class="p-col-2">
                 <div id='controlePanel' style="height:49%;">
@@ -26,10 +33,10 @@
                         <label>Session: {{sessionId}}</label><br/>
                         <label>User: {{username}} ({{userId}})</label><br/>
                     </div>
-                    <button>Finish voting</button>
+                    <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
                 </div>
                 <div id='messagePanel'  style="height:49%;border: 1px solid black; padding:4px;">
-                    <div style="height:92%;">Messages:<br>{{messages}}</div>
+                    <div style="height:85%;">Messages:<br>{{messages}}</div>
                     <div>
                         <input type="text" [(ngModel)]="message">
                         <button type="submit" (click)=addMessage() >Send</button>
