@@ -111,7 +111,9 @@ export class PlanningSessionComponent implements OnInit {
     this.websocketService.send({ type: 'SESSION', action: 'VOTE',
       sessionId: this.sessionId, userId: this.userId, payload: $event });
   }
-
+  public showThatTheUserHasVoted(user: UserInfo): boolean {
+    return user.vote && this.phase === 'voting';
+  }
 
 
   processMessage = (message: Message) => {
@@ -130,6 +132,9 @@ export class PlanningSessionComponent implements OnInit {
         this.users = this.getUsersFromMessage(message);
         if (! this.myRole) {
           this.myRole = message.session.users.find(u => u.id === this.userId).role;
+        }
+        if (message.session.phase && this.phase !== message.session.phase) {
+          this.switchToPhase(message.session.phase);
         }
         break;
       }

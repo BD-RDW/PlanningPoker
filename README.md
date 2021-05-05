@@ -1,19 +1,51 @@
-# PlanningSession
+# Scrum poker
 
 In directory node-backend is a server. It can be started using: npm start.
 The server should be restart when files are updated, but that doesn't seem to be working.
 
 The frontend can be start using npm start in the root of the project
 
+## Description
+
+The poker view consists of 3 screen areas. The left part will show all the users that are in the poker session. The right area will 
+show the user name and the session id of the current session. The center area will show the voting cards or the results of the 
+voting session depending on the phase that the session is in.
+
 ## Usage
 
-First user start browser on http://localhost:4200, select 'join session' enter a name and click 'Create new session'
+### First user
 
-Second user copy the sessionId from the first user.
+First user start browser on http://localhost:4200, select the tab 'Poker' enter a name and click 'Create new session'
 
-Start browser on http://localhost:4200, select 'join session' enter a name, paste the sessionId into the field 'Session Id' and click 'Join existing session'
+This user is now the scrummaster during the session and is the only one that can change the phase of the session.
 
-Both users are in the same chat-like session
+There are 2 phase: voting and showResults
+
+The first phase allows uses to enter their vote. When a user has entered a vote a chack will be shown after his name in the user list.
+
+The second phase shows the results of the voting in a graph
+
+### Second ..n users
+
+Other users neede the session id of the session they will join. The scrummaster will know that id.
+
+Start browser on http://localhost:4200, select the tab 'Poker' enter a name, enter the sessionId into the field 'Session Id' and click 'Join existing session'
+
+All users that use the same sessionId are in the same poker-voting session.
+
+### Voting
+
+All users can enter their vote by selecting a card. Votes can be changed during the 'voting' phase. After the users have entered their 
+vote the scrummaster can end the voting phase and switch to the showResults phase where a graph will show the votes.
+
+The scrummaster can switch to another voting phase and the cycle starts over. 
+
+When a user enters the session it will be moved to the same phase as the rest of the users in the session. So if the session phase is showResults 
+and a new users enters the session it will see the results of a voting that he did not participate in.
+
+## Disclaimer
+
+This is only a very rudimentary implementation and needs lot of security and other features.
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.

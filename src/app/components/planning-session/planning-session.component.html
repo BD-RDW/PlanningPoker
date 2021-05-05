@@ -14,7 +14,12 @@
         <div class="p-grid">
             <div class="p-col-2 user-panel">Users: <br>
                 <ul>
-                    <li *ngFor="let user of users" ><span>{{user.name}} <i [ngClass]="{'pi pi-check' : user.vote}"></i></span></li>
+                    <li *ngFor="let user of users" >
+                        <span>{{user.name}} 
+                            <i [ngClass]="{'pi pi-check' :  user.vote && phase === 'voting' }"></i>
+                            <i *ngIf="user.vote && phase === 'showResults'">( {{user.vote}} )</i>
+                        </span>
+                    </li>
                 </ul>
             </div>
             <div class="p-col-8 mainPanel">
