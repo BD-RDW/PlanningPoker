@@ -1,10 +1,12 @@
 import * as express from 'express';
+import * as path from 'path.js';
 import * as http from 'http';
 import { AddressInfo } from 'net';
 import * as WebSocket from 'ws';
 import { SessionMgr, Session, User, Role } from './session';
 import * as bodyParser from 'body-parser';
 import { Message } from './message';
+import { pathToFileURL } from 'node:url';
 
 const ENCODING_UTF8 = 'utf-8';
 const HEADER_CONTENT_TYPE = 'Content-Type';
@@ -48,6 +50,11 @@ app.get('/rest/session', (req, res) => {
     res.status(200).send({ someProperty: 'prop'});
    });
 
+
+// default path to serve up index.html (single page application)
+app.all('', (req, res) => {
+    res.status(200).sendFile(path.join(__dirname, '../public', 'index.html'));
+  });
 
 // initialize a simple http server
 const server = http.createServer(app);
