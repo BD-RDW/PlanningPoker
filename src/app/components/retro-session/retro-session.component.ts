@@ -59,6 +59,12 @@ export class RetroSessionComponent implements OnInit {
       err => console.log(err)
     );
   }
+
+  public addMessage(): void {
+    this.websocketService.send({ type: 'SESSION', action: 'MESSAGE',
+      sessionId: this.sessionId, userId: this.userId, payload: this.message });
+  }
+  
   processMessage = (message: Message) => {
     switch (message.type.toUpperCase()) {
       case 'CONNECTION' : this.processConnectionMessage(message); break;
