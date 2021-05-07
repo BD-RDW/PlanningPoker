@@ -1,0 +1,45 @@
+<div>
+    <div *ngIf="!inSession">
+        <label for="username">User Id:</label><input name="username" type="text" [(ngModel)]="username" style="width: 200px;margin-left: 20px;"> <br>
+        <div class="group">
+            <button (click)="createSession()">Create new session</button><br>
+        </div>
+        <div class="group">
+            <label for="sessionId">Session Id:</label><input name="sessionId" type="text" [(ngModel)]="sessionId" style="width: 200px;margin-left: 20px;"><br/>
+            <button (click)="joinSession()">Join existing session</button>
+        </div>
+   </div>
+   <div *ngIf="inSession">
+
+    <div class="p-grid">
+        <div class="p-col-2 user-panel">Users: <br>
+            <ul>
+                <li *ngFor="let user of users" >
+                    <span>{{user.name}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="p-col-8 mainPanel">
+        </div>
+        <div class="p-col-2">
+            <div id='controlePanel' style="height:49%;">
+                <div>
+                    <label>Session: {{sessionId}}</label><br/>
+                    <label>User: {{username}} ({{userId}})</label><br/>
+                </div>
+                <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
+            </div>
+            <div id='messagePanel'  style="height:49%;border: 1px solid black; padding:4px;">
+                <div style="height:85%;">Messages:<br>{{messages}}</div>
+                <div>
+                    <input type="text" [(ngModel)]="message">
+                    <button type="submit" (click)=addMessage() >Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-scrollPanel class="footer">
+    <p>{{status}}</p>
+</p-scrollPanel>
+</div>

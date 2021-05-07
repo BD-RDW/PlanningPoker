@@ -1,18 +1,8 @@
 
 <div>
-  <h1>Scrum planning session</h1>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  
-    <div id="navbarNav" class="collapse navbar-collapse">
-      <ul class="navbar-nav ml-auto ">
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/home">Session home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/session">Join session</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-    <router-outlet></router-outlet>
+  <h1>Scrum tooling</h1>
+  <p-tabView>
+    <p-tabPanel class="my-tabpanel" header="Home" [selected]="true"><app-home></app-home></p-tabPanel>
+    <p-tabPanel header="Retrospective" ><app-retro-session></app-retro-session></p-tabPanel>
+  </p-tabView>
 </div>

@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
-import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
+import { RetroSessionComponent } from './components/retro-session/retro-session.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
-  { path: 'session', component: PlanningSessionComponent },
+  { path: 'retro', component: RetroSessionComponent },
 ];
 
 // configures NgModule imports and exports

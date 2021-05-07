@@ -1,30 +1,28 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { Message } from 'src/app/model/message';
-
+import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { WebsocketService } from '../../service/websocket.service';
 
-@Component({
-  selector: 'app-planning-session',
-  templateUrl: './planning-session.component.html',
-  styleUrls: ['./planning-session.component.css']
-})
-export class PlanningSessionComponent implements OnInit {
+import { Message } from '../../model/message';
 
+@Component({
+  selector: 'app-retro-session',
+  templateUrl: './retro-session.component.html',
+  styleUrls: ['./retro-session.component.css']
+})
+export class RetroSessionComponent implements OnInit {
+
+  public inSession = false;
   public sessionId: string;
   public userId: number;
   public username = '';
+
+  public users: UserInfo[] = [];
+
   public messages  = 'Default message';
-  public message = '';
   public status = '';
 
-  public inSession = false;
-
-  constructor(
-    private sessionService: SessionService,
-    private websocketService: WebsocketService)
-  {
-  }
+  constructor(    private sessionService: SessionService,
+                  private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
     this.inSession = false;
@@ -34,7 +32,6 @@ export class PlanningSessionComponent implements OnInit {
   public joinSession(): void {
     this.sessionService.joinSession(this.sessionId, this.username).subscribe(session => {
       if (session) {
-        this.messages = 'In session';
         this.inSession = true;
         this.sessionId = session.sessionId;
         this.userId = session.userId;
@@ -57,15 +54,10 @@ export class PlanningSessionComponent implements OnInit {
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
         this.websocketService.init(handler);
-        this.websocketService.send({ type: 'Session', action: 'join', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
+        this.websocketService.send({ type: 'SESSION', action: 'JOIN', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       },
       err => console.log(err)
     );
-  }
-
-  public addMessage(): void {
-    this.websocketService.send({ type: 'Session', action: 'message',
-      sessionId: this.sessionId, userId: this.userId, payload: this.message });
   }
   processMessage = (message: Message) => {
     switch (message.type.toUpperCase()) {
@@ -78,20 +70,33 @@ export class PlanningSessionComponent implements OnInit {
   processSessionMessage(message: Message): void {
     switch (message.action.toUpperCase()) {
       case 'MESSAGE' : { this.messages = `${message.payload}\n${this.messages}`; break; }
-      case 'UPDATE' : { this.status = 'Session update: currently in session: ' + message.session.users.map(u => u.username); break; }
+      case 'UPDATE' : {
+        this.users = this.getUsersFromMessage(message);
+        break;
+      }
       default: console.log(`Unknown Session action ${message.action}`);
     }
   }
   processConnectionMessage(message: Message): void {
     switch (message.action.toUpperCase()) {
-      case 'INIT' : { this.messages = `Websocket connection established`; break; }
+      case 'INIT' : { this.status = `Websocket connection established`; break; }
       default: console.log(`Unknown Connection action ${message.action}`);
     }
   }
   processErrorMessage(message: Message): void {
     switch (message.action.toUpperCase()) {
-      case 'ERROR' : { this.messages = `Websocket connection established`; break; }
+      case 'ERROR' : { this.messages = `Error occured: me`; break; }
       default: console.log(`Unknown Error action ${message.action}`);
     }
   }
+  private getUsersFromMessage(message: Message): UserInfo[] {
+    return message.session.users.map(u => ({name: u.username, vote: u.vote })).sort((u1, u2) => {
+      if (u1.name > u2.name) { return 1; }
+      if (u1.name < u2.name) { return -1; }
+      return 0;
+    });
+  }
+}
+interface UserInfo {
+  name: string;
 }
