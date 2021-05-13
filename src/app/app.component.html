@@ -1,8 +1,15 @@
 
-<div>
-  <h1>Scrum tooling</h1>
-  <p-tabView>
-    <p-tabPanel class="my-tabpanel" header="Home" [selected]="true"><app-home></app-home></p-tabPanel>
-    <p-tabPanel header="Retrospective" ><app-retro-session></app-retro-session></p-tabPanel>
-  </p-tabView>
+<div class="container">
+  <div class="kop">
+    <h1>Scrum tooling</h1>
+  </div>
+  <div class="mainPanel">
+    <p-tabView>
+      <p-tabPanel class="my-tabpanel" header="Home" [selected]="true"><app-home></app-home></p-tabPanel>
+      <p-tabPanel header="Retrospective" class="retrospective-panel"><app-retro-session></app-retro-session></p-tabPanel>
+    </p-tabView>
+    </div>
+    <div class="footer">
+      <app-status></app-status>
+    </div>
 </div>

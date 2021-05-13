@@ -1,11 +1,42 @@
-.footer {
-  border-top: 1px  solid black;
-  width: 100%;
-  position: fixed;
-  bottom: 0%;
+.user-panel {
+  margin: 15px, 10px, 5px, 10px;
+  width: 200px;
+  align-items: stretch;
 }
-.footer textarea {
+
+.user-panel li {
+  font: 16px Arial;
+  margin: 2px, 0px, 0px, 0px;
+  list-style-type: square;
+}
+
+.collapsed-userpanel {
+  width: 20px
+}
+.exploded-userpanel {
+  width: 200px;
+}
+.refinement-panel {
   width: 100%;
-  height: 50x;
-  border: 0px;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.main-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.main-panel :last-child {
+  border-right: solid 1px blue;
+}
+
+.panel-column {
+  flex-grow: 1;
+  align-items: stretch;
+  border-left: solid 1px blue;
+  padding: 10px 10px  10px 10px;
 }

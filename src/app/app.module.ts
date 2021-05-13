@@ -13,12 +13,18 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing-module';
 import { RetroSessionComponent } from './components/retro-session/retro-session.component';
+import { StatusComponent } from './components/status/status.component';
+import { RefinementColumnComponent } from './components/refinement-column/refinement-column.component';
+import { RefinementMessageComponent } from './components/refinement-message/refinement-message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    RetroSessionComponent
+    RetroSessionComponent,
+    StatusComponent,
+    RefinementColumnComponent,
+    RefinementMessageComponent
   ],
   imports: [
     BrowserModule,

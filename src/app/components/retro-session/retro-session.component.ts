@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { WebsocketService } from '../../service/websocket.service';
 
@@ -11,22 +11,33 @@ import { Message } from '../../model/message';
 })
 export class RetroSessionComponent implements OnInit {
 
-  public inSession = false;
+  columnData: any[] = [
+    { title: 'What went well', messages: ['Column 1, text 1', 'Column 1, text 2', 'Column 1, text 3' ]},
+    { title: 'What could be improved', messages: ['Column 2, text 1', 'Column 2, text 2', 'Column 2, text 3' ]},
+    { title: 'Actions', messages: ['Column 3, text 1', 'Column 3, text 2', 'Column 3, text 3' ]}
+   ];
+
+  public inSession = true;
   public sessionId: string;
   public userId: number;
   public username = '';
 
-  public users: UserInfo[] = [];
+  public users: UserInfo[] = [{name: 'Karel'}, {name: 'Jan'}, {name: 'Piet'}, {name: 'Flip'}, {name: 'Olaf'}];
 
   public messages  = 'Default message';
+  public message  = '';
   public status = '';
 
-  constructor(    private sessionService: SessionService,
-                  private websocketService: WebsocketService) { }
+  constructor(private sessionService: SessionService,
+              private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    this.inSession = false;
+    console.log('AfterViewChecked');
+    // this.inSession = false;
     this.sessionId = null;
+    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
+    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
+    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
   }
 
   public joinSession(): void {
