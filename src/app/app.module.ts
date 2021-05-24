@@ -14,8 +14,8 @@ import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing-module';
 import { RetroSessionComponent } from './components/retro-session/retro-session.component';
 import { StatusComponent } from './components/status/status.component';
-import { RefinementColumnComponent } from './components/refinement-column/refinement-column.component';
-import { RefinementMessageComponent } from './components/refinement-message/refinement-message.component';
+import { RetrospectiveColumnComponent } from './components/retrospective-column/retrospective-column.component';
+import { RetrospectiveMessageComponent } from './components/retrospective-message/retrospective-message.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +23,8 @@ import { RefinementMessageComponent } from './components/refinement-message/refi
     HomeComponent,
     RetroSessionComponent,
     StatusComponent,
-    RefinementColumnComponent,
-    RefinementMessageComponent
+    RetrospectiveColumnComponent,
+    RetrospectiveMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -40,4 +40,5 @@ import { RefinementMessageComponent } from './components/refinement-message/refi
   providers: [PrimeIcons],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

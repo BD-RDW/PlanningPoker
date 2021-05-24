@@ -9,30 +9,33 @@ import { Session } from '../model/session';
 })
 export class SessionService {
   private sessionUrl = '/rest/session';
+  private session: Session;
 
   constructor(private http: HttpClient) { }
 
-  sessionCreate(username: string): Observable<Session> {
-    const body = { username };
-    return this.http.post<Session>(`${this.sessionUrl}`, body)
+  sessionCreate(username: string, sessionType: string): Observable<Session> {
+    const body = { username, type: sessionType };
+    return this.http.post<Session>(this.sessionUrl, body)
     .pipe(
       map( session => {
-        console.log('SessionId %s', session.sessionId);
+        this.session = session;
         return  session;
       }),
        catchError(this.handleError<boolean>('equipment', false)));
   }
   joinSession(sessionId: string, username: string): Observable<Session> {
-    console.log('User %s wants to join session %s', username, sessionId);
     return this.http.post<Session>(`${this.sessionUrl}/${sessionId}`, { username })
     .pipe(
       map( session => {
-        console.log('joined Session %O', session);
+        this.session = session;
         return  session;
       }),
        catchError(this.handleError<boolean>('joinSession', false)));
   }
 
+  getSession(): Session {
+    return this.session;
+  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.
@@ -51,4 +54,5 @@ export class SessionService {
         // Let the app keep running by returning an empty result.
         return of(result as T);
       };
-    }}
+    }
+  }

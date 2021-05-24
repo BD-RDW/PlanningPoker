@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { WebsocketService } from '../../service/websocket.service';
 
-import { Message } from '../../model/message';
+import { WsMessage } from '../../model/message';
+import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
+import { User } from '../../model/Session';
 
 @Component({
   selector: 'app-retro-session',
@@ -11,33 +13,25 @@ import { Message } from '../../model/message';
 })
 export class RetroSessionComponent implements OnInit {
 
-  columnData: any[] = [
-    { title: 'What went well', messages: ['Column 1, text 1', 'Column 1, text 2', 'Column 1, text 3' ]},
-    { title: 'What could be improved', messages: ['Column 2, text 1', 'Column 2, text 2', 'Column 2, text 3' ]},
-    { title: 'Actions', messages: ['Column 3, text 1', 'Column 3, text 2', 'Column 3, text 3' ]}
-   ];
+  columnData: RetrospectiveColumnData[] = [];
 
-  public inSession = true;
+  public inSession = false;
   public sessionId: string;
   public userId: number;
   public username = '';
 
-  public users: UserInfo[] = [{name: 'Karel'}, {name: 'Jan'}, {name: 'Piet'}, {name: 'Flip'}, {name: 'Olaf'}];
+  public users: UserInfo[] = [];
 
-  public messages  = 'Default message';
-  public message  = '';
+  public messages = 'Default message';
+  public message = '';
   public status = '';
 
   constructor(private sessionService: SessionService,
               private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    console.log('AfterViewChecked');
-    // this.inSession = false;
+    this.inSession = false;
     this.sessionId = null;
-    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
-    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
-    // this.columns.push(new RefinementColumnItem(RefinementColumnComponent, {title: }));
   }
 
   public joinSession(): void {
@@ -48,7 +42,8 @@ export class RetroSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         this.websocketService.init(this.processMessage);
-        this.websocketService.send({ type: 'Session', action: 'join', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
+        const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId };
+        this.websocketService.send(wsMessage);
       } else {
         this.inSession = false;
         console.log('Unable to join that session!!');
@@ -56,8 +51,7 @@ export class RetroSessionComponent implements OnInit {
     });
   }
   public createSession(): void {
-    console.log(`Create new session for ${this.username}`);
-    this.sessionService.sessionCreate(this.username).subscribe(
+    this.sessionService.sessionCreate(this.username, 'RETROSPECTIVE').subscribe(
       session => {
         this.inSession = true;
         this.sessionId = session.sessionId;
@@ -65,53 +59,68 @@ export class RetroSessionComponent implements OnInit {
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
         this.websocketService.init(handler);
-        this.websocketService.send({ type: 'SESSION', action: 'JOIN', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
+        const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
+        this.websocketService.send(wsMessage);
       },
       err => console.log(err)
     );
   }
 
   public addMessage(): void {
-    this.websocketService.send({ type: 'SESSION', action: 'MESSAGE',
-      sessionId: this.sessionId, userId: this.userId, payload: this.message });
+    const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: this.message };
+    this.websocketService.send(wsMessage);
   }
-  
-  processMessage = (message: Message) => {
-    switch (message.type.toUpperCase()) {
-      case 'CONNECTION' : this.processConnectionMessage(message); break;
-      case 'SESSION' : this.processSessionMessage(message); break;
-      case 'ERROR' : this.processErrorMessage(message); break;
-      default: console.log(`Unknown message type (${message.type} received.)`);
+
+  processMessage = (message: WsMessage) => {
+    switch (message.action) {
+      case 'UpdateSession': this.updateUserlist(message); break;
+      case 'NewMessage': this.addNewMessage(message); break;
+      case 'InitRetrospective': this.initRetrospective(message); break;
+      case 'UpdateNote': this.updateNote(message); break;
+      case 'ERROR': this.processErrorMessage(message); break;
+      default: console.log(`Unknown message action (${message.action} received.)`);
     }
   }
-  processSessionMessage(message: Message): void {
+  processErrorMessage(message: WsMessage): void {
     switch (message.action.toUpperCase()) {
-      case 'MESSAGE' : { this.messages = `${message.payload}\n${this.messages}`; break; }
-      case 'UPDATE' : {
-        this.users = this.getUsersFromMessage(message);
-        break;
-      }
-      default: console.log(`Unknown Session action ${message.action}`);
-    }
-  }
-  processConnectionMessage(message: Message): void {
-    switch (message.action.toUpperCase()) {
-      case 'INIT' : { this.status = `Websocket connection established`; break; }
-      default: console.log(`Unknown Connection action ${message.action}`);
-    }
-  }
-  processErrorMessage(message: Message): void {
-    switch (message.action.toUpperCase()) {
-      case 'ERROR' : { this.messages = `Error occured: me`; break; }
+      case 'ERROR': { this.messages = `Error occured: me`; break; }
       default: console.log(`Unknown Error action ${message.action}`);
     }
   }
-  private getUsersFromMessage(message: Message): UserInfo[] {
-    return message.session.users.map(u => ({name: u.username, vote: u.vote })).sort((u1, u2) => {
+  private updateUserlist(message: WsMessage): void {
+    this.users = this.getUsersFromMessage(message);
+  }
+  private getUsersFromMessage(message: WsMessage): UserInfo[] {
+    return (message.payload as User[]).map(u => ({ name: u.username })).sort((u1, u2) => {
       if (u1.name > u2.name) { return 1; }
       if (u1.name < u2.name) { return -1; }
       return 0;
     });
+  }
+  private addNewMessage(message: WsMessage): void {
+    this.messages = `${message.payload}\n${this.messages}`;
+  }
+  private initRetrospective(message: WsMessage): void {
+    this.columnData = (message.payload as RetrospectiveColumnData[]);
+  }
+  private updateNote(message: WsMessage): void {
+    const note = (message.payload as RetrospectiveNote);
+    const columnData = this.columnData.find(colData => colData.column === note.col).notes;
+    if (columnData.find(n => n.id === note.id)) {
+      const index = columnData.findIndex(n => n.id === note.id);
+      columnData.splice(index, 1, note);
+    } else {
+      columnData.push(note);
+    }
+  }
+
+  addNote(colId: number): void {
+    const wsMessage: WsMessage = { action: 'AddNote', sessionId: this.sessionId, userId: this.userId, payload:  colId};
+    this.websocketService.send(wsMessage);
+  }
+  sendUpdatedNote(note: RetrospectiveNote): void {
+    const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    this.websocketService.send(wsMessage);
   }
 }
 interface UserInfo {

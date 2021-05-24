@@ -8,7 +8,8 @@
     "startDev": "nodemon ./dist/server/server.js",
     "tsNode": "ts-node",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc"
+    "compile": "tsc",
+    "testing": "npx ts-node src/testing.ts"
   },
   "author": "",
   "license": "ISC",

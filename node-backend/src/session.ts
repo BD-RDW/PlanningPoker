@@ -17,12 +17,12 @@ export class SessionMgr {
     public findUser(id: number): User {
         return this.users.find(u => u.id === id);
     }
-    public newSession(user: User): string {
+    public newSession(sessionType: string, user: User): string {
         let sessionId = Math.random().toString(36).substring(2, 14);
         while (this.findSession(sessionId)) {
             sessionId = Math.random().toString(36).substring(2, 14);
         }
-        const session: Session = { id: sessionId, users: [ ] };
+        const session: Session = { id: sessionId, type: sessionType.toUpperCase(), users: [ ] };
         this.sessions.push(session);
         user.role = Role.ScrumMaster;
         this.addUser(user, session);
@@ -32,12 +32,15 @@ export class SessionMgr {
         return this.sessions.find(s => s.id === id);
     }
     public findSessionForUser(id: number): Session {
-        return this.sessions.find(s => s.users.find(u => u.id === id));
+        let session: Session;
+        this.sessions.find(s => {if (s.users.find(u => u.id === id)) {session = s; }});
+        return session;
     }
 }
 
 export interface Session {
     id: string;
+    type: string;
     phase?: string;
     users: User[];
 }
@@ -47,7 +50,6 @@ export interface User {
     username: string;
     role: Role;
     conn?: WebSocket;
-    vote?: string;
 }
 
 export enum Role {

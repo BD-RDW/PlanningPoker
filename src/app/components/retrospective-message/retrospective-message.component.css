@@ -9,7 +9,21 @@
   border-bottom-right-radius: 10px;
 }
 
-.message-panel p {
+.message-panel span {
+  margin: 15px 5px 15px 5px;
+  color: white;
+}
+
+.message-panel textarea {
   margin: 5px 5px 5px 5px;
   color: white;
+  border: none;
+  width: 98%;
+  background-color: transparent;
+}
+.message-panel textarea:focus {
+  outline: none;
+}
+.blur-text {
+  filter: blur(4px)
 }

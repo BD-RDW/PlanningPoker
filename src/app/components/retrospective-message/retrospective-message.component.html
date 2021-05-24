@@ -1,0 +1,4 @@
+<div class="message-panel">
+  <div *ngIf="messageIsBeingEdittedByMe()"><textarea [(ngModel)]="message.txt" (keydown)="processText($event)"></textarea></div>
+  <span *ngIf="! messageIsBeingEdittedByMe()" [class.blur-text]="message.beingEditted">{{message.txt}}</span>
+</div>

@@ -11,7 +11,7 @@
       <button (click)="joinSession()">Join existing session</button>
     </div>
   </div>
-  <div class="refinement-panel" *ngIf="inSession">
+  <div class="retrospective-panel" *ngIf="inSession">
     <!-- <i class="pi pi-angle-double-left exploded-userpanel"></i> -->
     <div class="user-panel">
       <span>Users:</span>
@@ -22,21 +22,19 @@
       </ul>
     </div>
     <div class="main-panel">
-      <app-refinement-column *ngFor="let col of columnData" [data]="col" class="panel-column"></app-refinement-column>
+      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" class="panel-column"></app-retrospective-column>
     </div>
     <div id='controlePanel' class="controlePanel">
       <div>
         <label>Session: {{sessionId}}</label><br />
         <label>User: {{username}} ({{userId}})</label><br />
       </div>
-      <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}"
-        (click)="switchPhaseHandler()"></button>
-    </div>
-    <div id='messagePanel' style="height:49%;border: 1px solid black; padding:4px;">
-      <div style="height:85%;">Messages:<br>{{messages}}</div>
-      <div>
-        <input type="text" [(ngModel)]="message">
-        <button type="submit" (click)=addMessage()>Send</button>
+      <div id='messagePanel' style="height:49%;border: 1px solid black; padding:4px;">
+        <div style="height:85%;">Messages:<br>{{messages}}</div>
+        <div>
+          <input type="text" [(ngModel)]="message">
+          <button type="submit" (click)=addMessage()>Send</button>
+        </div>
       </div>
     </div>
   </div>

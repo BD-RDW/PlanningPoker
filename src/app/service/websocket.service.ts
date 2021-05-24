@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { catchError, tap, switchAll } from 'rxjs/operators';
 import { EMPTY, Subject } from 'rxjs';
-import { Message } from '../model/message';
+import { WsMessage } from '../model/message';
 
 export const WS_ENDPOINT = environment.wsEndpoint;
 
@@ -12,13 +12,13 @@ export const WS_ENDPOINT = environment.wsEndpoint;
 })
 export class WebsocketService {
 
-  private socket$: WebSocketSubject<Message>;
+  private socket$: WebSocketSubject<WsMessage>;
   private messageHandler: any;
 
   constructor() {
   }
 
-  public send(message: Message): void {
+  public send(message: WsMessage): void {
     this.socket$.next(message);
   }
 
