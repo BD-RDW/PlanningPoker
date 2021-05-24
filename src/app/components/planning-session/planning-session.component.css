@@ -1,0 +1,42 @@
+.group {
+  border: 1px  solid black;
+  margin: 10px 0px 0px 0px;
+  padding: 5px;
+  width: 400px;
+}
+.footer {
+  border-top: 1px  solid black;
+  width: 100%;
+  position: fixed;
+  bottom: 0%;
+}
+.footer textarea {
+  width: 100%;
+  height: 50x;
+  border: 0px;
+}
+
+.user-panel {
+  border-right: 1px ridge black;
+  margin: 15px, 10px, 5px, 10px;
+}
+
+.user-panel li {
+  font: 16px Arial;
+  margin: 2px, 0px, 0px, 0px;
+  list-style-type: square;
+}
+.card-panel {
+  margin: 15px, 10px, 5px, 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.result-panel {
+  margin: 15px, 10px, 5px, 10px;
+  width: 100%;
+  height: 100%;
+}
+.mainPanel {
+  height: 350px;
+}

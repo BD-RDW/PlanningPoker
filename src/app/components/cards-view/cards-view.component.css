@@ -1,0 +1,17 @@
+.animated {
+  transition: all 1s;
+}
+.defaultCard {
+  fill: white;
+  cursor: pointer;
+  stroke: black;
+}
+.selectedCard {
+  fill: lightblue;
+}
+.number {
+  fill: black;
+}
+.card {
+  fill: white;
+}
