@@ -16,6 +16,7 @@ Start browser on http://localhost:4200, select 'join session' enter a name, past
 Both users are in the same chat-like session
 
 ## Websocket Client-Server actions
+```
 JoinSession         (Session)       -> User get added to the session                    ==> payload: <null>
 UpdateSession       (Session)       <- Server updates userlist                          ==> payload: userList
 AddMessage          (Session)       -> Usermessage received                             ==> payload: messageText
@@ -29,30 +30,7 @@ AddNote             (Retrospective) -> User adds new note                       
 UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
 UpdateNote          (Retrospective) -> User informs Server of the updates to the note   ==> payload: RetrospectiveNote
 ERROR               (any)           <- Server                                           ==> payload: errormessage
-
-
-import { WsMessage } from './model/message';
-import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
-import { RefinementInfoPerSession } from './model/refinement';
-import { RetrospectiveSessionMgr, RefinementSessionMgr } from './session-managers';
-import { SessionMgr, Session, User, Role } from './session';
-
-
-roel@roel_pc MINGW64 /d/Git/SCRUM/PlanningPoker/node-backend/src (feature/retrospective)
-d model
-d retrospective
-- server.ts
-- session.ts
-- session-managers.ts
-
-./model:
-- message.ts
-- refinement.ts
-- retrospective.ts
-
-./retrospective:
-- retrospective-session-manager.ts
-
+```
 
 # ToDo
 - Remove an interface called session (there are 2 of them)
@@ -67,7 +45,11 @@ https://medium.com/factory-mind/websocket-node-js-express-step-by-step-using-typ
 
 https://medium.com/factory-mind/angular-websocket-node-31f421c753ff
 
+## Styling for primeng components
 
+styling for primeng components from src/styles.css
+
+```
 .p-tabview .p-tabview-nav {
   background: #ffffff;
   border: 0 none;
@@ -121,3 +103,4 @@ https://medium.com/factory-mind/angular-websocket-node-31f421c753ff
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
 }
+```
