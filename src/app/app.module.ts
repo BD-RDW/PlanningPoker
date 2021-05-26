@@ -16,6 +16,9 @@ import { RetroSessionComponent } from './components/retro-session/retro-session.
 import { StatusComponent } from './components/status/status.component';
 import { RetrospectiveColumnComponent } from './components/retrospective-column/retrospective-column.component';
 import { RetrospectiveMessageComponent } from './components/retrospective-message/retrospective-message.component';
+import { CardsViewComponent } from './components/cards-view/cards-view.component';
+import { ResultViewComponent } from './components/result-view/result-view.component';
+import { PlanningSessionComponent } from './components/planning-session/planning-session.component'
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { RetrospectiveMessageComponent } from './components/retrospective-messag
     RetroSessionComponent,
     StatusComponent,
     RetrospectiveColumnComponent,
-    RetrospectiveMessageComponent
+    RetrospectiveMessageComponent,
+    PlanningSessionComponent,
+    CardsViewComponent,
+    ResultViewComponent
   ],
   imports: [
     BrowserModule,

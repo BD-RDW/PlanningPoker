@@ -31,7 +31,7 @@ UpdateNote          (Retrospective) <- Server updates note                      
 UpdateNote          (Retrospective) -> User informs Server of the updates to the note   ==> payload: RetrospectiveNote
 ERROR               (any)           <- Server                                           ==> payload: errormessage
 ```
-
+ 
 # ToDo
 - Remove an interface called session (there are 2 of them)
 - introduce the message interface in the server 

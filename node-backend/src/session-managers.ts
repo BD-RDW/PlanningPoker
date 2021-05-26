@@ -182,8 +182,11 @@ export class RefinementSessionMgr extends AbstractManager {
     }
     private updatePhaseForUser(message: WsMessage): void {
         const session = this.sessionMgr.findSessionForUser(message.userId);
-        const refinementInfo = this.refinementInfo.find(ri => ri.sessionId === message.sessionId);
-        if ( ! refinementInfo.phase ) { refinementInfo.phase = 'voting'; }
+        let refinementInfo = this.refinementInfo.find(ri => ri.sessionId === message.sessionId);
+        if ( ! refinementInfo ) {
+            refinementInfo = { sessionId: message.sessionId, phase: 'voting', userInfo: [] };
+            this.refinementInfo.push(refinementInfo);
+        }
         // tslint:disable-next-line:max-line-length
         const wsMessage: WsMessage = {action: 'UpdatePhase', sessionId: message.sessionId, userId: message.userId, payload: refinementInfo.phase};
         session.users.find(u => u.id === message.userId).conn.send(JSON.stringify(wsMessage, this.skipFields));
@@ -200,7 +203,12 @@ export class RefinementSessionMgr extends AbstractManager {
     private processEnterVote(message: WsMessage): void {
         const vote = message.payload;
         const refinementInfo = this.refinementInfo.find(ri => ri.sessionId === message.sessionId);
-        refinementInfo.userInfo.find(u => u.userid === message.userId).vote = vote;
+        let userInfo = refinementInfo.userInfo.find(u => u.userid === message.userId);
+        if (! userInfo) {
+            userInfo = { userid: message.userId, vote: message.payload };
+            refinementInfo.userInfo.push(userInfo);
+        }
+        else { userInfo.vote = vote; }
         const session = this.sessionMgr.findSessionForUser(message.userId);
         session.users.forEach(u => {
             const wsMessage: WsMessage = {action: 'UpdateVotes', sessionId: session.id, userId: u.id, payload: refinementInfo.userInfo };

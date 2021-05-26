@@ -10,5 +10,9 @@ export interface User {
     id: number;
     username: string;
     role: string;
+    vote?: string;
+}
+export interface UserVotes {
+    userid: number;
     vote: string;
 }
