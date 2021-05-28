@@ -21,8 +21,6 @@ const sessionMgr = new SessionMgr();
 const retroSessionMgr = new RetrospectiveSessionMgr(sessionMgr);
 const refinementSessionMgr = new RefinementSessionMgr(sessionMgr);
 
-
-
 /* user joins existing session. */
 app.post('/rest/session/:id', (req, res) => {
     if (sessionMgr.findSession(req.params.id)) {
@@ -50,11 +48,15 @@ app.post('/rest/session', (req, res) => {
     res.send({ sessionId, userId: user.id, username: user.username } );
    });
 
-// default path to serve up index.html (single page application)
-app.all('', (req, res) => {
-    res.status(200).sendFile(path.join(__dirname, '../public', 'index.html'));
+  // default path to serve up index.html (single page application)
+app.get('/:filename', (req, res) => {
+    console.log('Request: %s', req.params.filename);
+    res.sendFile(path.join(__dirname, '../public', req.params.filename));
   });
-
+  // default path to serve up index.html (single page application)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  });
 // initialize a simple http server
 const server = http.createServer(app);
 

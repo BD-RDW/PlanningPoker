@@ -32,6 +32,15 @@ UpdateNote          (Retrospective) -> User informs Server of the updates to the
 ERROR               (any)           <- Server                                           ==> payload: errormessage
 ```
  
+## Deployment
+
+Bouw frontend. Deze plaatst de bestanden in node-backend/dist/public
+
+Bouw backend.
+
+Run: vanuit node-backend/dist: node server/server.js
+
+
 # ToDo
 - Remove an interface called session (there are 2 of them)
 - introduce the message interface in the server 
