@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as fs from 'fs';
 import * as path from 'path.js';
 import * as http from 'http';
 import { AddressInfo } from 'net';
@@ -50,8 +51,13 @@ app.post('/rest/session', (req, res) => {
 
   // default path to serve up index.html (single page application)
 app.get('/:filename', (req, res) => {
-    console.log('Request: %s', req.params.filename);
-    res.sendFile(path.join(__dirname, '../public', req.params.filename));
+    fs.exists(path.join(__dirname, '../public', req.params.filename), (exists) => {
+        if (exists) {
+            res.sendFile(path.join(__dirname, '../public', req.params.filename));
+        } else {
+            res.status(404). send(`File ${req.params.filename} not found!!`);
+        }
+    });
   });
   // default path to serve up index.html (single page application)
 app.get('/', (req, res) => {
