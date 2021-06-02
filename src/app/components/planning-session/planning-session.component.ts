@@ -5,7 +5,7 @@ import { SessionService } from '../../service/session.service';
 import { WebsocketService } from '../../service/websocket.service';
 
 import { environment } from '../../../environments/environment';
-import { User, UserVotes } from '../../model/Session';
+import { User, UserVotes } from '../../model/session';
 
 @Component({
   selector: 'app-planning-session',

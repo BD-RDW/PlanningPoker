@@ -4,7 +4,7 @@ import { WebsocketService } from '../../service/websocket.service';
 
 import { WsMessage } from '../../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
-import { User } from '../../model/Session';
+import { User } from '../../model/session';
 
 @Component({
   selector: 'app-retro-session',
