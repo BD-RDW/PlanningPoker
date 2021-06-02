@@ -21,7 +21,7 @@ export class WebsocketService {
 
   public connect(): void {
     if (!this.socket$ || this.socket$.closed) {
-      console.log('Using wsEndpoint: ' + this.wsEndpoint)
+      console.log('Using wsEndpoint: ' + this.wsEndpoint);
       this.socket$ = webSocket(this.wsEndpoint);
       this.socket$.subscribe(
         (data) => this.messageHandler(data),
@@ -33,8 +33,9 @@ export class WebsocketService {
 
   public init(handler, docHRef: string): void {
     this.messageHandler = handler;
-    this.wsEndpoint = docHRef.replace('http', 'ws')
+    this.wsEndpoint = docHRef.replace('http', 'ws');
     this.wsEndpoint = this.wsEndpoint.substring(0, this.wsEndpoint.indexOf('/', 10));
+    this.wsEndpoint = this.wsEndpoint + '/stream';
     this.connect();
   }
 }

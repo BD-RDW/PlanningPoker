@@ -100,7 +100,7 @@ wss.on('connection', (ws: WebSocket) => {
 });
 
 // start our server
-server.listen(process.env.PORT || 8999, () => {
+server.listen(process.env.PORT || 8080, () => {
     if (server && server.address()) {
         console.log(`Server started on port ${(server.address() as AddressInfo).port} :)`);
     }
