@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  wsEndpoint: 'ws://localhost:8999',
   CHART_COLORS: ['#FF6384', '#36A2EB', '#FFCE56', '#33cccc', '#33cc33', '#ffff00', '#ff9999', '#0000ff', '#006600', '#996600', '#993399', '#666699'],
   CARD_SYMBOLS: ['½', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'coffee']
 };

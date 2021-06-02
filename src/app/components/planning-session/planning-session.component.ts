@@ -50,7 +50,8 @@ export class PlanningSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage);
+        document.location.href;
+        this.websocketService.init(this.processMessage, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       } else {
         this.inSession = false;
@@ -67,7 +68,7 @@ export class PlanningSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler);
+        this.websocketService.init(handler, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       },
       err => console.log(err)

@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { catchError, tap, switchAll } from 'rxjs/operators';
-import { EMPTY, Subject } from 'rxjs';
 import { WsMessage } from '../model/message';
-
-export const WS_ENDPOINT = environment.wsEndpoint;
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +10,7 @@ export class WebsocketService {
 
   private socket$: WebSocketSubject<WsMessage>;
   private messageHandler: any;
+  private wsEndpoint: string;
 
   constructor() {
   }
@@ -22,9 +19,10 @@ export class WebsocketService {
     this.socket$.next(message);
   }
 
-  public connect(url): void {
+  public connect(): void {
     if (!this.socket$ || this.socket$.closed) {
-      this.socket$ = webSocket(WS_ENDPOINT);
+      console.log('Using wsEndpoint: ' + this.wsEndpoint)
+      this.socket$ = webSocket(this.wsEndpoint);
       this.socket$.subscribe(
         (data) => this.messageHandler(data),
         (err) => console.error('Recieved error: %O', err),
@@ -33,8 +31,10 @@ export class WebsocketService {
     }
   }
 
-  public init(handler): void {
+  public init(handler, docHRef: string): void {
     this.messageHandler = handler;
-    this.connect(WS_ENDPOINT);
+    this.wsEndpoint = docHRef.replace('http', 'ws')
+    this.wsEndpoint = this.wsEndpoint.substring(0, this.wsEndpoint.indexOf('/', 10));
+    this.connect();
   }
 }

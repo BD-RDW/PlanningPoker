@@ -41,7 +41,7 @@ export class RetroSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage);
+        this.websocketService.init(this.processMessage, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId };
         this.websocketService.send(wsMessage);
       } else {
@@ -58,7 +58,7 @@ export class RetroSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler);
+        this.websocketService.init(handler, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
         this.websocketService.send(wsMessage);
       },
