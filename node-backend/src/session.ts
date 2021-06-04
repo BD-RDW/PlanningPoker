@@ -36,6 +36,15 @@ export class SessionMgr {
         this.sessions.find(s => {if (s.users.find(u => u.id === id)) {session = s; }});
         return session;
     }
+    getAllSessions(): string {
+        return JSON.stringify(this.sessions, this.skipFields);
+    }
+    delete(session: Session): void {
+        this.sessions = this.sessions.filter(s => s.id !== session.id);
+    }
+    skipFields(k: any, v: any): any {
+        if (k === 'conn') { return undefined; } return v;
+    }
 }
 
 export interface Session {

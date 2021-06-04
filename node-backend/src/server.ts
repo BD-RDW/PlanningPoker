@@ -22,10 +22,15 @@ const sessionMgr = new SessionMgr();
 const retroSessionMgr = new RetrospectiveSessionMgr(sessionMgr);
 const refinementSessionMgr = new RefinementSessionMgr(sessionMgr);
 
+const publicDir = '../public';
+
 /* user joins existing session. */
 app.post('/rest/session/:id', (req, res) => {
     if (sessionMgr.findSession(req.params.id)) {
         const session: Session = sessionMgr.findSession(req.params.id);
+        if (session.type !== req.body.sessionType) {
+            return res.status(400).send(`Session ${req.params.id} is not a ${req.body.sessionType} session.`);
+        }
         const user: User = req.body;
         user.role = Role.TeamMember;
         const userId = sessionMgr.addUser(user, session);
@@ -49,11 +54,31 @@ app.post('/rest/session', (req, res) => {
     res.send({ sessionId, userId: user.id, username: user.username } );
    });
 
+/* get all sessions */
+app.get('/rest/sessions', (req, res) => {
+
+    res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
+    res.send(sessionMgr.getAllSessions());
+   });
+/* get all sessions */
+app.delete('/rest/session/:sessionId', (req, res) => {
+    if (sessionMgr.findSession(req.params.sessionId)) {
+        switch (sessionMgr.findSession(req.params.sessionId).type) {
+            case 'RETROSPECTIVE' : retroSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
+            case 'REFINEMENT' : refinementSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
+        }
+        return res.status(404).send(`Unknown session type (${sessionMgr.findSession(req.params.sessionId).type}) in session ${sessionMgr.findSession(req.params.sessionId)}`);
+    }
+    res.status(404).send(`Unknown session ${sessionMgr.findSession(req.params.sessionId)}`);
+});
+
   // default path to serve up index.html (single page application)
 app.get('/:filename', (req, res) => {
-    fs.exists(path.join(__dirname, '../public', req.params.filename), (exists) => {
+    let filename = req.params.filename;
+    if (filename === 'home') { filename = 'index.html'; }
+    fs.exists(path.join(__dirname, publicDir, filename), (exists) => {
         if (exists) {
-            res.sendFile(path.join(__dirname, '../public', req.params.filename));
+            res.sendFile(path.join(__dirname, publicDir, filename));
         } else {
             res.status(404). send(`File ${req.params.filename} not found!!`);
         }
@@ -61,7 +86,7 @@ app.get('/:filename', (req, res) => {
   });
   // default path to serve up index.html (single page application)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+    res.sendFile(path.join(__dirname, publicDir, 'index.html'));
   });
 // initialize a simple http server
 const server = http.createServer(app);
@@ -78,7 +103,7 @@ wss.on('connection', (ws: WebSocket) => {
     ws.on('message', (messageTxt: string) => {
         const message: WsMessage = JSON.parse(messageTxt);
         const session: Session = sessionMgr.findSessionForUser(message.userId);
-        if (! session && ! session.type) {
+        if (! (session && session.type)) {
             wsMessage = {action: 'ERROR', payload: `Unable to join session request for user ${message.userId}`
                 , sessionId: message.sessionId, userId: message.userId};
             ws.send(JSON.stringify(wsMessage));
@@ -106,4 +131,9 @@ server.listen(process.env.PORT || 8080, () => {
     }
 });
 
-
+process.on('SIGTERM', () => {
+    console.log('SIGTERM signal received: closing HTTP server');
+    server.close(() => {
+        console.log('HTTP server closed');
+    });
+  });

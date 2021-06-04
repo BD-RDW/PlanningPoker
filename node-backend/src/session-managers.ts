@@ -38,7 +38,10 @@ abstract class AbstractManager {
     skipFields(k: any, v: any): any {
         if (k === 'conn') { return undefined; } return v;
     }
-
+    deleteSession(id: string): void {
+        const session = this.getSessionMgr().findSession(id);
+        if (session) {this.getSessionMgr().delete(session); }
+    }
 }
 
 export class RetrospectiveSessionMgr extends AbstractManager {

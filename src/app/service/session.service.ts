@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Session } from '../model/session';
+import { Session, SessionType } from '../model/session';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SessionService {
 
   constructor(private http: HttpClient) { }
 
-  sessionCreate(username: string, sessionType: string): Observable<Session> {
+  sessionCreate(username: string, sessionType: SessionType): Observable<Session> {
     const body = { username, type: sessionType };
     return this.http.post<Session>(this.sessionUrl, body)
     .pipe(
@@ -21,10 +21,10 @@ export class SessionService {
         this.session = session;
         return  session;
       }),
-       catchError(this.handleError<boolean>('equipment', false)));
+       catchError(this.handleError<boolean>('sessionCreate', false)));
   }
-  joinSession(sessionId: string, username: string): Observable<Session> {
-    return this.http.post<Session>(`${this.sessionUrl}/${sessionId}`, { username })
+  joinSession(sessionType: SessionType, sessionId: string, username: string): Observable<Session> {
+    return this.http.post<Session>(`${this.sessionUrl}/${sessionId}`, { username, sessionType })
     .pipe(
       map( session => {
         this.session = session;

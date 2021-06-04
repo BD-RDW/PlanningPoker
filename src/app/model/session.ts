@@ -16,3 +16,7 @@ export interface UserVotes {
     userid: number;
     vote: string;
 }
+export enum SessionType {
+    REFINEMENT = 'REFINEMENT',
+    RETROSPECTIVE = 'RETROSPECTIVE'
+}

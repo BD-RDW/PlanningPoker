@@ -4,7 +4,7 @@ import { WebsocketService } from '../../service/websocket.service';
 
 import { WsMessage } from '../../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
-import { User } from '../../model/session';
+import { User, SessionType } from '../../model/session';
 
 @Component({
   selector: 'app-retro-session',
@@ -35,7 +35,7 @@ export class RetroSessionComponent implements OnInit {
   }
 
   public joinSession(): void {
-    this.sessionService.joinSession(this.sessionId, this.username).subscribe(session => {
+    this.sessionService.joinSession(SessionType.RETROSPECTIVE, this.sessionId, this.username).subscribe(session => {
       if (session) {
         this.inSession = true;
         this.sessionId = session.sessionId;
@@ -47,11 +47,17 @@ export class RetroSessionComponent implements OnInit {
       } else {
         this.inSession = false;
         console.log('Unable to join that session!!');
+        this.status = 'Unable to join that session';
       }
-    });
+    },
+    err => {
+      this.inSession = false;
+      console.log('Unable to join that session!!');
+      this.status = 'Unable to join that session';
+  });
   }
   public createSession(): void {
-    this.sessionService.sessionCreate(this.username, 'RETROSPECTIVE').subscribe(
+    this.sessionService.sessionCreate(this.username, SessionType.RETROSPECTIVE).subscribe(
       session => {
         this.inSession = true;
         this.sessionId = session.sessionId;
@@ -62,7 +68,11 @@ export class RetroSessionComponent implements OnInit {
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
         this.websocketService.send(wsMessage);
       },
-      err => console.log(err)
+      err => {
+        this.inSession = false;
+        console.log('Unable to join that session!!');
+        this.status = 'Unable to join that session';
+      }
     );
   }
 

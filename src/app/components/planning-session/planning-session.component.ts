@@ -5,7 +5,7 @@ import { SessionService } from '../../service/session.service';
 import { WebsocketService } from '../../service/websocket.service';
 
 import { environment } from '../../../environments/environment';
-import { User, UserVotes } from '../../model/session';
+import { User, UserVotes, SessionType } from '../../model/session';
 
 @Component({
   selector: 'app-planning-session',
@@ -43,26 +43,32 @@ export class PlanningSessionComponent implements OnInit {
   }
 
   public joinSession(): void {
-    this.sessionService.joinSession(this.sessionId, this.username).subscribe(session => {
+    this.sessionService.joinSession(SessionType.REFINEMENT, this.sessionId, this.username).subscribe(session => {
       if (session) {
-        this.messages = 'In session';
+        this.status = '';
+        this.messages = 'In session\n';
         this.inSession = true;
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        document.location.href;
         this.websocketService.init(this.processMessage, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       } else {
         this.inSession = false;
         console.log('Unable to join that session!!');
+        this.status = 'Unable to join that session!';
       }
+    },
+    err => {
+      console.log(err);
+      this.status = 'Unable to join that session!';
     });
   }
   public createSession(): void {
     console.log(`Create new session for ${this.username}`);
-    this.sessionService.sessionCreate(this.username, 'REFINEMENT').subscribe(
+    this.sessionService.sessionCreate(this.username, SessionType.REFINEMENT).subscribe(
       session => {
+        this.status = '';
         this.inSession = true;
         this.sessionId = session.sessionId;
         this.userId = session.userId;
@@ -71,7 +77,10 @@ export class PlanningSessionComponent implements OnInit {
         this.websocketService.init(handler, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       },
-      err => console.log(err)
+      err => {
+        console.log(err);
+        this.status = 'Unable to create a session!';
+      }
     );
   }
 

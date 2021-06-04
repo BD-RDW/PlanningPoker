@@ -54,6 +54,20 @@ https://medium.com/factory-mind/websocket-node-js-express-step-by-step-using-typ
 
 https://medium.com/factory-mind/angular-websocket-node-31f421c753ff
 
+## Moving commit between repos
+
+Export from repo
+
+```
+git format-patch --output-directory "../patches" FIRST_COMMIT_SHA1~..LAST_COMMIT_SHA1
+```
+Import into repo
+
+```
+git am 0001-Example-Patch-File.patch
+git am *.patch
+```
+
 ## Styling for primeng components
 
 styling for primeng components from src/styles.css
