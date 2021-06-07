@@ -58,7 +58,11 @@ Run: vanuit node-backend/dist: node server/server.js
 - introduce the message interface in the server 
 - introduce a refinment interface to hold the specific about de refinement session. So session can be used for only the session related stuff
 - add regular connection checking to prune users and sessions that have disconnected.
-
+- setTimeout(function, msec)
+- new Date();
+- current.toLocaleTimeString();
+- current.toLocaleDateString();
+- current.toLocaleString();
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
