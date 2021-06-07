@@ -40,6 +40,18 @@ Bouw backend.
 
 Run: vanuit node-backend/dist: node server/server.js
 
+## Rollout to OpenShift
+
+- build application als described above
+- from directory node-backend
+- oc login
+- oc project wd-scrum-ont
+- oc start-build nodejs --from-dir .
+- Open Openshift UI en selecteer project wd-scrum-ont
+- Als deployment van nodejs klaar is open de deployment descriptor
+- Copy de image sha
+- plaats de nieuwe image sha in scrum-tooling-deploy\overlays\ont\kustomization.yaml
+- run scrum-tooling-deploy\deploy.sh
 
 # ToDo
 - Remove an interface called session (there are 2 of them)
