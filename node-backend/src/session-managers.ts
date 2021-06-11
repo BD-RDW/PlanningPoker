@@ -231,5 +231,13 @@ export class RefinementSessionMgr extends AbstractManager {
             if (u.conn) { u.conn.send(JSON.stringify(wsMessage, this.skipFields));
             }
         });
+        if (refinementInfo.phase === 'voting') {
+            refinementInfo.userInfo = [];
+            session.users.forEach(u => {
+                const wsMessage = {action: 'UpdateVotes', sessionId: session.id, userId: u.id, payload: refinementInfo.userInfo };
+                if (u.conn) { u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+                }
+            });
+        }
     }
 }

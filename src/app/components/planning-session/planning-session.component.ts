@@ -153,8 +153,13 @@ export class PlanningSessionComponent implements OnInit {
     this.messages = `${message.payload}\n${this.messages}`;
   }
   private updateVotes(message: WsMessage): void {
-    (message.payload as UserVotes[]).forEach(uv => {
-      this.users.find(u => u.id === uv.userid).vote = uv.vote;
+    this.users.forEach( u => {
+      const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);
+      if ( tempVote) {
+        u.vote = tempVote.vote;
+      } else {
+        u.vote = undefined;
+      }
     });
   }
   private updatePhase(message: WsMessage): void {
