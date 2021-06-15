@@ -33,9 +33,6 @@ export class SessionService {
        catchError(this.handleError<boolean>('joinSession', false)));
   }
 
-  getSession(): Session {
-    return this.session;
-  }
   /**
    * Handle Http operation that failed.
    * Let the app continue.

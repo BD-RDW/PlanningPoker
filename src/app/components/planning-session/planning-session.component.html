@@ -1,18 +1,18 @@
 <div style="width: 100%; height: 100%;">
     <div *ngIf="!inSession">
-        <label for="username">User Id:</label><input name="username" type="text" [(ngModel)]="username" 
+        <label for="username">User Id:</label><input id="planning_username" name="username" type="text" [(ngModel)]="username" 
             style="width: 200px;margin-left: 20px;"> <br>
         <div class="group">
-            <button (click)="createSession()">Create new session</button><br>
+            <button id="new_planning_session" (click)="createSession()">Create new session</button><br>
         </div>
         <div class="group">
-            <label for="sessionId">Session Id:</label><input name="sessionId" type="text" [(ngModel)]="sessionId" style="width: 200px;margin-left: 20px;"><br/>
-            <button (click)="joinSession()">Join existing session</button>
+            <label for="sessionId">Session Id:</label><input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="sessionId" style="width: 200px;margin-left: 20px;"><br/>
+            <button id="join_planning_session" (click)="joinSession()">Join existing session</button>
         </div>
     </div>
     <div *ngIf="inSession">
         <div class="p-grid">
-            <div class="p-col-2 user-panel">Users: <br>
+            <div id="userPanel" class="p-col-2 user-panel">Users: <br>
                 <ul>
                     <li *ngFor="let user of users" >
                         <span>{{user.username}} 
@@ -22,7 +22,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="p-col-8 mainPanel">
+            <div id="planningMainpanel" class="p-col-8 mainPanel">
                 <div *ngIf="phase==='voting'">
                     <div class="card-panel">
                         <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
@@ -33,14 +33,14 @@
                 </div>
             </div>
             <div class="p-col-2">
-                <div id='controlePanel' style="height:49%;">
+                <div id="controlePanel" style="height:49%;">
                     <div>
                         <label>Session: {{sessionId}}</label><br/>
                         <label>User: {{username}} ({{userId}})</label><br/>
                     </div>
                     <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
                 </div>
-                <div id='messagePanel'  style="height:49%;border: 1px solid black; padding:4px;">
+                <div id="messagePanel"  style="height:49%;border: 1px solid black; padding:4px;">
                     <div style="height:85%;">Messages:<br>{{messages}}</div>
                     <div>
                         <input type="text" [(ngModel)]="message">

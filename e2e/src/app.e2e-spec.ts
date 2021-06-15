@@ -1,16 +1,25 @@
 import { AppPage } from './app.po';
-import { browser, logging } from 'protractor';
+import { browser, logging, element, by } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('Scrum tooling App', () => {
   let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();
   });
 
-  it('should display welcome message', async () => {
+  it('Home page should have the correct elements en texts', async () => {
     await page.navigateTo();
-    expect(await page.getTitleText()).toEqual('PlanningSession app is running!');
+    expect(await page.getTitleText()).toEqual('Scrum tooling');
+    expect(await browser.getTitle()).toEqual('PlanningSession');
+    expect(await element(by.tagName('app-retro-session'))).toBeTruthy();
+    expect(await element(by.id('p-tabpanel-0-label')).all(by.xpath('span')).first().getText()).toBe('Home');
+    expect(await element(by.id('p-tabpanel-1-label'))).toBeTruthy();
+    expect(await element(by.id('p-tabpanel-1-label')).all(by.xpath('span')).first().getText()).toBe('Retrospective');
+    expect(await element(by.id('p-tabpanel-2-label'))).toBeTruthy();
+    expect(await element(by.id('p-tabpanel-2-label')).all(by.xpath('span')).first().getText()).toBe('Poker');
+    expect(await element(by.tagName('app-status'))).toBeTruthy();
+    expect(await element(by.tagName('app-status')).getText()).toBe('Status...');
   });
 
   afterEach(async () => {

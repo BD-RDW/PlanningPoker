@@ -9,6 +9,7 @@ import { SessionService } from '../../service/session.service';
 })
 export class RetrospectiveColumnComponent implements OnInit {
 
+  @Input() userId: number;
   @Input() columnData: RetrospectiveColumnData;
   @Output() newNoteEvent = new EventEmitter<number>();
   @Output() updateNoteEvent = new EventEmitter<RetrospectiveNote>();

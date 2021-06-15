@@ -13,12 +13,12 @@ abstract class AbstractManager {
 
     // JoinSession   (Session)       -> User get added to the szession
     // UpdateSession (Session)       <- Server updates userlist ==> Join
-    addUserToSession(message: WsMessage, ws: WebSocket): void {
+    addUserToSession(message: WsMessage, ws: WebSocket, action: string): void {
         const session = this.getSessionMgr().findSessionForUser(message.userId);
         this.getSessionMgr().findUser(message.userId).conn = ws;
         session.users.forEach(u => {
             if (u.conn) {
-                const sessionInfo: WsMessage = { action: 'UpdateSession', sessionId: session.id, userId: u.id, payload: session.users };
+                const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u.id, payload: session.users };
                 u.conn.send(JSON.stringify(sessionInfo, this.skipFields));
             }
         });
@@ -45,15 +45,15 @@ abstract class AbstractManager {
 }
 
 export class RetrospectiveSessionMgr extends AbstractManager {
-    // JoinSession   (Session)       -> User get added to the session
-    // UpdateSession (Session)       <- Server updates userlist ==> Join
-    // AddMessage    (Session)       -> Usermessage received
-    // NewMessage    (Session)       <- Server distributes message
-    // InitRetrospective   (Retrospective) <- Server columns etc. to joined user
-    // UpdateNotes   (Retrospective) <- Server sends newly joined user the current status
-    // AddNote       (Retrospective) -> User adds new note
-    // UpdateNote    (Retrospective) <- Server updates note
-    // UpdateNote    (Retrospective) -> User informs Server of the updates to the note
+    // JoinSession        (Session)       -> User get added to the session
+    // UpdateRetroSession (Session)       <- Server updates userlist ==> Join
+    // AddMessage         (Session)       -> Usermessage received
+    // NewMessage         (Session)       <- Server distributes message
+    // InitRetrospective  (Retrospective) <- Server columns etc. to joined user
+    // UpdateNotes        (Retrospective) <- Server sends newly joined user the current status
+    // AddNote            (Retrospective) -> User adds new note
+    // UpdateNote         (Retrospective) <- Server updates note
+    // UpdateNote         (Retrospective) -> User informs Server of the updates to the note
 
     retrospectiveInfo: RetrospectiveInfoPerSession[] = [];
 
@@ -79,7 +79,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
         }
     }
     private processJoinSession(message: WsMessage, ws: WebSocket): void {
-        this.addUserToSession(message, ws);
+        this.addUserToSession(message, ws, 'UpdateRetroSession');
         this.updateRefinementStatus(message, ws);
     }
     private processAddMessage(message: WsMessage, ws: WebSocket): void {
@@ -144,14 +144,14 @@ export class RetrospectiveSessionMgr extends AbstractManager {
 }
 
 export class RefinementSessionMgr extends AbstractManager {
-    // JoinSession   (Session)       -> User get added to the szession
-    // UpdateSession (Session)       <- Server updates userlist ==> Join
-    // AddMessage    (Session)       -> Usermessage received
-    // NewMessage    (Session)       <- Server distributes message
-    // EnterVote     (Refinement)    -> User enters vote
-    // UpdateVotes   (Refinement)    <- Server updates user votes ==> Vote
-    // SwitchPhase   (Refinemnet)    -> Scrummaster switches phase
-    // UpdatePhase   (Refinement)    <- Server updates phase
+    // JoinSession       (Session)       -> User get added to the szession
+    // UpdatePlanSession (Session)       <- Server updates userlist ==> Join
+    // AddMessage        (Session)       -> Usermessage received
+    // NewMessage        (Session)       <- Server distributes message
+    // EnterVote         (Refinement)    -> User enters vote
+    // UpdateVotes       (Refinement)    <- Server updates user votes ==> Vote
+    // SwitchPhase       (Refinemnet)    -> Scrummaster switches phase
+    // UpdatePhase       (Refinement)    <- Server updates phase
 
     refinementInfo: RefinementInfoPerSession[] = [];
 
@@ -176,7 +176,7 @@ export class RefinementSessionMgr extends AbstractManager {
         }
     }
     private processJoinSession(message: WsMessage, ws: WebSocket): void {
-        this.addUserToSession(message, ws);
+        this.addUserToSession(message, ws, 'UpdatePlanSession');
         this.updatePhaseForUser(message);
         this.updateVotesForUser(message);
     }

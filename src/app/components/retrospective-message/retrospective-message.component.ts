@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Session } from 'src/app/model/session';
 import { RetrospectiveNote } from '../../model/retrospective-data';
-import { SessionService } from '../../service/session.service';
 
 @Component({
   selector: 'app-retrospective-message',
@@ -12,9 +12,10 @@ export class RetrospectiveMessageComponent implements OnInit {
   public tempMessage: string;
 
   @Input() message: RetrospectiveNote;
+  @Input() userId: number;
   @Output() updateNote = new EventEmitter<RetrospectiveNote>();
 
-  constructor(private sessionService: SessionService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,7 @@ export class RetrospectiveMessageComponent implements OnInit {
   }
 
   public messageIsBeingEdittedByMe(): boolean {
-    if (this.message.userId && this.sessionService.getSession().userId === this.message.userId)
+    if (this.message.userId && this.userId === this.message.userId)
     {
       return true;
     }

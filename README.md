@@ -18,12 +18,13 @@ Both users are in the same chat-like session
 ## Websocket Client-Server actions
 ```
 JoinSession         (Session)       -> User get added to the session                    ==> payload: <null>
-UpdateSession       (Session)       <- Server updates userlist                          ==> payload: userList
+UpdateRetroSession  (Session)       <- Server updates userlist                          ==> payload: userList
+UpdatePlanSession   (Session)       <- Server updates userlist                          ==> payload: userList
 AddMessage          (Session)       -> Usermessage received                             ==> payload: messageText
 NewMessage          (Session)       <- Server distributes messageEntered                ==> payload: messageText
 EnterVote           (Refinement)    -> User enters vote                                 ==> payload: vote
 UpdateVotes         (Refinement)    <- Server updates user votes                        ==> payload: RefinementUserInfo[]
-SwitchPhase         (Refinemnet)    -> Scrummaster switches phase                       ==> payload: phase
+SwitchPhase         (Refinement)    -> Scrummaster switches phase                       ==> payload: phase  [voting - showResults]
 UpdatePhase         (Refinement)    <- Server updates phase                             ==> payload: phase
 InitRetrospective   (Retrospective) <- Server columns etc. to joined user               ==> payload: RetrospectiveColumn[]
 AddNote             (Retrospective) -> User adds new note                               ==> payload: RetrospectiveNote
@@ -34,11 +35,9 @@ ERROR               (any)           <- Server                                   
  
 ## Deployment
 
-Bouw frontend. Deze plaatst de bestanden in node-backend/dist/public
-
-Bouw backend.
-
-Run: vanuit node-backend/dist: node server/server.js
+1. Bouw frontend. Deze plaatst de bestanden in node-backend/dist/public
+1. Bouw backend.
+1. Run: vanuit node-backend/dist: node server/server.js
 
 ## Rollout to OpenShift
 
@@ -76,6 +75,7 @@ Export from repo
 
 ```
 git format-patch --output-directory "../patches" FIRST_COMMIT_SHA1~..LAST_COMMIT_SHA1
+// One commit only: git format-patch --output-directory .. -1 commit_sha
 ```
 Import into repo
 
@@ -83,6 +83,21 @@ Import into repo
 git am 0001-Example-Patch-File.patch
 git am *.patch
 ```
+
+## protractor
+```
+npm install -g protractor
+webdriver-manager update
+webdriver-manager start
+http://localhost:4444/wd/hub
+npm install -D jasmine-reporters
+```
+## Run e2e tests
+
+1. Start server (in node-backend)
+1. Start webdriver (webdriver-manager start)
+1. Run e2e tests (npm run e2e)
+
 
 ## Styling for primeng components
 

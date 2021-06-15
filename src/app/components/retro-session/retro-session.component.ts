@@ -26,6 +26,8 @@ export class RetroSessionComponent implements OnInit {
   public message = '';
   public status = '';
 
+  private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote'];
+
   constructor(private sessionService: SessionService,
               private websocketService: WebsocketService) { }
 
@@ -41,7 +43,7 @@ export class RetroSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage, document.location.href);
+        this.websocketService.init(this.processMessage, this.actions, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId };
         this.websocketService.send(wsMessage);
       } else {
@@ -64,7 +66,7 @@ export class RetroSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, document.location.href);
+        this.websocketService.init(handler, this.actions, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
         this.websocketService.send(wsMessage);
       },
@@ -83,18 +85,11 @@ export class RetroSessionComponent implements OnInit {
 
   processMessage = (message: WsMessage) => {
     switch (message.action) {
-      case 'UpdateSession': this.updateUserlist(message); break;
+      case 'UpdateRetroSession': this.updateUserlist(message); break;
       case 'NewMessage': this.addNewMessage(message); break;
       case 'InitRetrospective': this.initRetrospective(message); break;
       case 'UpdateNote': this.updateNote(message); break;
-      case 'ERROR': this.processErrorMessage(message); break;
-      default: console.log(`Unknown message action (${message.action} received.)`);
-    }
-  }
-  processErrorMessage(message: WsMessage): void {
-    switch (message.action.toUpperCase()) {
-      case 'ERROR': { this.messages = `Error occured: me`; break; }
-      default: console.log(`Unknown Error action ${message.action}`);
+      default: console.log(`RetroSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
     }
   }
   private updateUserlist(message: WsMessage): void {
@@ -118,8 +113,10 @@ export class RetroSessionComponent implements OnInit {
     const columnData = this.columnData.find(colData => colData.column === note.col).notes;
     if (columnData.find(n => n.id === note.id)) {
       const index = columnData.findIndex(n => n.id === note.id);
+      console.log('Updating note ' + JSON.stringify(note) + '; userId: ' + this.userId);
       columnData.splice(index, 1, note);
     } else {
+      console.log('Adding note ' + JSON.stringify(note) + '; userId: ' + this.userId);
       columnData.push(note);
     }
   }

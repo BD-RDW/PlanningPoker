@@ -1,19 +1,19 @@
 <div style="width: 100%; height: 100%;">
   <div *ngIf="!inSession">
-    <label for="username">User Id:</label><input name="username" type="text" [(ngModel)]="username"
+    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="username"
       style="width: 200px;margin-left: 20px;"> <br>
     <div class="group">
-      <button (click)="createSession()">Create new session</button><br>
+      <button id="new_retro_session" (click)="createSession()">Create new session</button><br>
     </div>
     <div class="group">
-      <label for="sessionId">Session Id:</label><input name="sessionId" type="text" [(ngModel)]="sessionId"
+      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="sessionId"
         style="width: 200px;margin-left: 20px;"><br />
-      <button (click)="joinSession()">Join existing session</button>
+      <button id="join_retro_session" (click)="joinSession()">Join existing session</button>
     </div>
   </div>
   <div class="retrospective-panel" *ngIf="inSession">
     <!-- <i class="pi pi-angle-double-left exploded-userpanel"></i> -->
-    <div class="user-panel">
+    <div id="userPanel" class="user-panel">
       <span>Users:</span>
       <ul>
         <li *ngFor="let user of users">
@@ -21,15 +21,15 @@
         </li>
       </ul>
     </div>
-    <div class="main-panel">
-      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" class="panel-column"></app-retrospective-column>
+    <div id="retroMainpanel" class="main-panel">
+      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" class="panel-column"></app-retrospective-column>
     </div>
-    <div id='controlePanel' class="controlePanel">
+    <div id="controlePanel" class="controlePanel">
       <div>
         <label>Session: {{sessionId}}</label><br />
         <label>User: {{username}} ({{userId}})</label><br />
       </div>
-      <div id='messagePanel' style="height:49%;border: 1px solid black; padding:4px;">
+      <div id="messagePanel" style="height:49%;border: 1px solid black; padding:4px;">
         <div style="height:85%;">Messages:<br>{{messages}}</div>
         <div>
           <input type="text" [(ngModel)]="message">

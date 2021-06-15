@@ -31,6 +31,8 @@ export class PlanningSessionComponent implements OnInit {
   public cardNumbers = environment.CARD_SYMBOLS;
   public chartColors = environment.CHART_COLORS;
 
+  private actions: string[] = ['UpdatePlanSession', 'NewMessage', 'UpdateVotes', 'UpdatePhase'];
+
   constructor(
     private sessionService: SessionService,
     private websocketService: WebsocketService)
@@ -51,7 +53,7 @@ export class PlanningSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage, document.location.href);
+        this.websocketService.init(this.processMessage, this.actions, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       } else {
         this.inSession = false;
@@ -74,7 +76,7 @@ export class PlanningSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, document.location.href);
+        this.websocketService.init(handler, this.actions, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       },
       err => {
@@ -121,20 +123,14 @@ export class PlanningSessionComponent implements OnInit {
     return user.vote && this.phase === 'voting';
   }
 
-
   processMessage = (message: WsMessage) => {
     switch (message.action) {
-      case 'UpdateSession' : this.processUpdateSession(message); break;
+      case 'UpdatePlanSession' : this.processUpdateSession(message); break;
       case 'NewMessage' : this.addNewMessage(message); break;
       case 'UpdateVotes' : this.updateVotes(message); break;
       case 'UpdatePhase' : this.updatePhase(message); break;
-      case 'ERROR' : this.processErrorMessage(message); break;
-      case 'INIT' : { this.status = `Websocket connection established`; break; }
-      default: console.log(`Unknown message action (${message.action} received.)`);
+      default: console.log(`PlanningSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
     }
-  }
-  processErrorMessage(message: WsMessage): void {
-    console.log(`Error ${message.payload}`);
   }
   private processUpdateSession(message: WsMessage): void {
     this.users = this.getUsersFromMessage(message);
