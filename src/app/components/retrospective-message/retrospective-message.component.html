@@ -1,4 +1,11 @@
 <div class="message-panel">
-  <div *ngIf="messageIsBeingEdittedByMe()"><textarea [(ngModel)]="message.txt" (keydown)="processText($event)"></textarea></div>
-  <span *ngIf="! messageIsBeingEdittedByMe()" [class.blur-text]="message.beingEditted">{{message.txt}}</span>
+  <div class="message-block">
+    <div class="messageHeader">
+      <button class="pi pi-pencil" [disabled]="message.userId" (click)="editMessage()"> </button>
+      <button class="pi pi-times-circle" [disabled]="message.userId"  (click)="deleteMessage()"> </button>
+    </div>
+    <div *ngIf="messageIsBeingEdittedByMe()"><textarea [(ngModel)]="message.txt" (keydown)="processText($event)"></textarea></div>
+    <span *ngIf="! messageIsBeingEdittedByMe()" [class.blur-text]="messageIsBeingEditted()">{{message.txt}}</span>
+    <!-- <span *ngIf="messageIsNotBeingEditted()" [class.blur-text]="message.beingEditted">{{message.txt}}</span> -->
+  </div>
 </div>

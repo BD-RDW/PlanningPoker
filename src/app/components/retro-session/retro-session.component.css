@@ -36,7 +36,7 @@
 
 .panel-column {
   flex-grow: 1;
-  align-items: stretch;
+  max-width:33%;
   border-left: solid 1px blue;
   padding: 10px 10px  10px 10px;
 }

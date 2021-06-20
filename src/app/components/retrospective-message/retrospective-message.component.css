@@ -1,7 +1,7 @@
 .message-panel {
   background-color: blue;
   margin: 5px 5px 5px 5px;
-  padding: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 10px;
   border-left: 1px solid black;
   border-top: 1px solid black;
   border-right: 1px solid black;
@@ -9,21 +9,42 @@
   border-bottom-right-radius: 10px;
 }
 
-.message-panel span {
-  margin: 15px 5px 15px 5px;
-  color: white;
+.blur-text {
+  filter: blur(4px)
 }
-
-.message-panel textarea {
-  margin: 5px 5px 5px 5px;
+.messageHeader {
+  margin-left: 5px;
+  margin-right: 5px;
+  float: right;
+  display: inline;
+  width: 100%;
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  position: relative;
+}
+.messageHeader button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  float: right;
+}
+.messageHeader button:disabled {
+  color: gray;
+  cursor: default;
+}
+.message-block textarea {
   color: white;
   border: none;
   width: 98%;
   background-color: transparent;
+  padding: 0 0 0 0;
 }
-.message-panel textarea:focus {
+.message-block span {
+  margin: 15px 5px 15px 5px;
+  color: white;
+}
+
+.message-block textarea:focus {
   outline: none;
-}
-.blur-text {
-  filter: blur(4px)
 }

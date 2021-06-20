@@ -13,6 +13,8 @@ export class RetrospectiveColumnComponent implements OnInit {
   @Input() columnData: RetrospectiveColumnData;
   @Output() newNoteEvent = new EventEmitter<number>();
   @Output() updateNoteEvent = new EventEmitter<RetrospectiveNote>();
+  @Output() editNoteEvent = new EventEmitter<RetrospectiveNote>();
+  @Output() deleteNoteEvent = new EventEmitter<RetrospectiveNote>();
 
   constructor(private sessionService: SessionService) { }
   ngOnInit(): void {
@@ -23,5 +25,11 @@ export class RetrospectiveColumnComponent implements OnInit {
   }
   updateRetroNote(note: RetrospectiveNote): void {
     this.updateNoteEvent.emit(note);
+  }
+  public editRetroNote(note: RetrospectiveNote): void {
+    this.editNoteEvent.emit(note);
+  }
+  public deleteRetroNote(note: RetrospectiveNote): void {
+    this.deleteNoteEvent.emit(note);
   }
 }

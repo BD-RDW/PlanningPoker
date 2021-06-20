@@ -1,2 +1,2 @@
 <div><span>{{columnData.title}}</span><span class="pi pi-plus-circle" style="float: right;" (click)="addMessage()"></span></div>
-<app-retrospective-message *ngFor="let message of columnData.notes" [message]="message" [userId]="userId" (updateNote)="updateRetroNote($event)"></app-retrospective-message>
+<app-retrospective-message *ngFor="let message of columnData.notes" [message]="message" [userId]="userId" (updateNote)="updateRetroNote($event)"  (editNote)="editRetroNote($event)"  (deleteNote)="deleteRetroNote($event)"></app-retrospective-message>

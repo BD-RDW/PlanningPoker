@@ -67,7 +67,6 @@ export class PlanningSessionComponent implements OnInit {
     });
   }
   public createSession(): void {
-    console.log(`Create new session for ${this.username}`);
     this.sessionService.sessionCreate(this.username, SessionType.REFINEMENT).subscribe(
       session => {
         this.status = '';

@@ -22,7 +22,7 @@
       </ul>
     </div>
     <div id="retroMainpanel" class="main-panel">
-      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" class="panel-column"></app-retrospective-column>
+      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" (deleteNoteEvent)="sendDeleteNote($event)" class="panel-column"></app-retrospective-column>
     </div>
     <div id="controlePanel" class="controlePanel">
       <div>

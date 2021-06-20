@@ -10,7 +10,7 @@ export class WebsocketService {
 
   private socket$: WebSocketSubject<WsMessage>;
   private wsEndpoint: string;
-  private handlers: HandlerSelection[] = [{actions: [' '], handler: this. defaultHandler}];
+  private handlers: HandlerSelection[] = [{ actions: [' '], handler: this.defaultHandler }];
 
   constructor(private statusService: StatusService) {
   }
@@ -20,7 +20,6 @@ export class WebsocketService {
   }
 
   public connect(): void {
-    console.log('Connecting..');
     if (!this.socket$ || this.socket$.closed) {
       console.log('Using wsEndpoint: ' + this.wsEndpoint);
       this.socket$ = webSocket(this.wsEndpoint);
@@ -28,9 +27,12 @@ export class WebsocketService {
         (data) => {
           console.log(`Action received; ${data.action}`);
           this.handlers.forEach(h => {
-            if ( h.actions.includes(data.action)) {
+            if (h.actions.includes(data.action)) {
               console.log(`Action ${data.action} handled: ${h.actions}`);
               h.handler(data);
+            }
+            else {
+              console.log(`Action ${data.action} could not be handled!!`);
             }
           });
         },
@@ -43,7 +45,7 @@ export class WebsocketService {
   }
 
   public init(handler, actions: string[], docHRef: string): void {
-    this.handlers.push({ actions, handler} as HandlerSelection);
+    this.handlers.push({ actions, handler } as HandlerSelection);
     this.wsEndpoint = docHRef.replace('http', 'ws');
     this.wsEndpoint = this.wsEndpoint.substring(0, this.wsEndpoint.indexOf('/', 10));
     this.wsEndpoint = this.wsEndpoint + '/stream';
@@ -52,14 +54,15 @@ export class WebsocketService {
 
   private defaultHandler(message: WsMessage): void {
     switch (message.action) {
-      case 'ERROR' : this.processErrorMessage(message); break;
-      case 'INIT' : { this.statusService.$status.next(`Websocket connection established`); break; }
+      case 'ERROR': this.processErrorMessage(message); break;
+      case 'INIT': { this.statusService.$status.next(`Websocket connection established`); break; }
       default: console.log(`Unknown message action (${message.action} received.)`);
     }
   }
-  processErrorMessage(message: WsMessage): void {
+  private processErrorMessage(message: WsMessage): void {
     console.log(`Error ${message.payload}`);
   }
+
 }
 
 export interface HandlerSelection {

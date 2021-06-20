@@ -9,7 +9,6 @@ import { Session, SessionType } from '../model/session';
 })
 export class SessionService {
   private sessionUrl = '/rest/session';
-  private session: Session;
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +17,6 @@ export class SessionService {
     return this.http.post<Session>(this.sessionUrl, body)
     .pipe(
       map( session => {
-        this.session = session;
         return  session;
       }),
        catchError(this.handleError<boolean>('sessionCreate', false)));
@@ -27,7 +25,6 @@ export class SessionService {
     return this.http.post<Session>(`${this.sessionUrl}/${sessionId}`, { username, sessionType })
     .pipe(
       map( session => {
-        this.session = session;
         return  session;
       }),
        catchError(this.handleError<boolean>('joinSession', false)));

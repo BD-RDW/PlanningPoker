@@ -36,7 +36,6 @@ export class ResultViewComponent implements OnInit {
     });
     const labels = cnt.map(c => c.label);
     const data = cnt.map(c => c.count);
-    console.log(labels);
     data.forEach((d, i) => console.log(`data[${i}] = ${d}`));
     this.data.labels = labels;
     this.data.datasets[0].data = data;

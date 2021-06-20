@@ -26,7 +26,7 @@ export class RetroSessionComponent implements OnInit {
   public message = '';
   public status = '';
 
-  private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote'];
+  private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote'];
 
   constructor(private sessionService: SessionService,
               private websocketService: WebsocketService) { }
@@ -89,6 +89,7 @@ export class RetroSessionComponent implements OnInit {
       case 'NewMessage': this.addNewMessage(message); break;
       case 'InitRetrospective': this.initRetrospective(message); break;
       case 'UpdateNote': this.updateNote(message); break;
+      case 'DeleteNote': this.deleteNote(message); break;
       default: console.log(`RetroSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
     }
   }
@@ -113,12 +114,16 @@ export class RetroSessionComponent implements OnInit {
     const columnData = this.columnData.find(colData => colData.column === note.col).notes;
     if (columnData.find(n => n.id === note.id)) {
       const index = columnData.findIndex(n => n.id === note.id);
-      console.log('Updating note ' + JSON.stringify(note) + '; userId: ' + this.userId);
       columnData.splice(index, 1, note);
     } else {
-      console.log('Adding note ' + JSON.stringify(note) + '; userId: ' + this.userId);
       columnData.push(note);
     }
+  }
+  private deleteNote(message: WsMessage): void {
+    const note = (message.payload as RetrospectiveNote);
+    const columnData = this.columnData.find(colData => colData.column === note.col).notes;
+    const index = columnData.findIndex(n => n.id === note.id);
+    columnData.splice(index, 1);
   }
 
   addNote(colId: number): void {
@@ -127,6 +132,14 @@ export class RetroSessionComponent implements OnInit {
   }
   sendUpdatedNote(note: RetrospectiveNote): void {
     const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    this.websocketService.send(wsMessage);
+  }
+  sendEditNote(note: RetrospectiveNote): void {
+    const wsMessage: WsMessage = { action: 'EditNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    this.websocketService.send(wsMessage);
+  }
+  sendDeleteNote(note: RetrospectiveNote): void {
+    const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
     this.websocketService.send(wsMessage);
   }
 }

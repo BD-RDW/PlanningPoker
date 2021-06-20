@@ -30,6 +30,9 @@ InitRetrospective   (Retrospective) <- Server columns etc. to joined user       
 AddNote             (Retrospective) -> User adds new note                               ==> payload: RetrospectiveNote
 UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
 UpdateNote          (Retrospective) -> User informs Server of the updates to the note   ==> payload: RetrospectiveNote
+EditNote            (Retrospective) -> User informs Server that the note gets changed   ==> payload: RetrospectiveNote
+DeleteNote          (Retrospective) -> User informs Server that the note is removed     ==> payload: RetrospectiveNote
+DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
 ERROR               (any)           <- Server                                           ==> payload: errormessage
 ```
  
@@ -98,6 +101,9 @@ npm install -D jasmine-reporters
 1. Start webdriver (webdriver-manager start)
 1. Run e2e tests (npm run e2e)
 
+## Test text
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ## Styling for primeng components
 

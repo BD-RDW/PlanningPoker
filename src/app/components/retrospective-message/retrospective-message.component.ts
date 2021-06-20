@@ -14,6 +14,8 @@ export class RetrospectiveMessageComponent implements OnInit {
   @Input() message: RetrospectiveNote;
   @Input() userId: number;
   @Output() updateNote = new EventEmitter<RetrospectiveNote>();
+  @Output() editNote = new EventEmitter<RetrospectiveNote>();
+  @Output() deleteNote = new EventEmitter<RetrospectiveNote>();
 
   constructor() { }
 
@@ -27,12 +29,23 @@ export class RetrospectiveMessageComponent implements OnInit {
       this.updateNote.emit(this.message);
     }
   }
-
+  public messageIsBeingEditted(): boolean {
+    if (this.message.userId && this.message.userId != null) {
+      return true;
+    }
+    return false;
+  }
   public messageIsBeingEdittedByMe(): boolean {
     if (this.message.userId && this.userId === this.message.userId)
     {
       return true;
     }
     return false;
+  }
+  public editMessage(): void {
+    this.editNote.emit(this.message);
+  }
+  public deleteMessage(): void {
+    this.deleteNote.emit(this.message);
   }
 }

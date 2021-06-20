@@ -54,6 +54,10 @@ export class RetrospectiveSessionMgr extends AbstractManager {
     // AddNote            (Retrospective) -> User adds new note
     // UpdateNote         (Retrospective) <- Server updates note
     // UpdateNote         (Retrospective) -> User informs Server of the updates to the note
+    // EditNote           (Retrospective) -> User informs Server that the note gets changed   ==> payload: RetrospectiveNote
+    // UpdateNote         (Retrospective) <- Server updates note
+    // DeleteNote         (Retrospective) -> User informs Server that the note is removed     ==> payload: RetrospectiveNote
+    // DeleteNote         (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
 
     retrospectiveInfo: RetrospectiveInfoPerSession[] = [];
 
@@ -70,6 +74,8 @@ export class RetrospectiveSessionMgr extends AbstractManager {
             case 'AddMessage': this.processAddMessage(message, ws); break;
             case 'AddNote': this.processAddNote(message, ws); break;
             case 'UpdateNote': this.processUpdateNote(message, ws); break;
+            case 'EditNote': this.processEditNote(message, ws); break;
+            case 'DeleteNote': this.processDeleteNote(message, ws); break;
             default: {
                 const wsMessage: WsMessage = {action: 'ERROR', payload: `Unable to process message action ${message.action}`
                     , sessionId: message.sessionId, userId: message.userId};
@@ -124,6 +130,22 @@ export class RetrospectiveSessionMgr extends AbstractManager {
             }
         });
     }
+    // EditNote           (Retrospective) -> User informs Server that the note gets changed   ==> payload: RetrospectiveNote
+    // UpdateNote         (Retrospective) <- Server updates note
+    private processEditNote(message: WsMessage, ws: WebSocket): void {
+        const session = this.sessionMgr.findSessionForUser(message.userId);
+        const note: RetrospectiveNote = message.payload;
+        const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+        const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === note.col);
+        const editNote = columnNotes.notes.find(n => n.id === note.id);
+        editNote.userId = message.userId;
+        session.users.forEach(u => {
+            if (u.conn) {
+                const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: session.id, userId: u.id, payload: editNote };
+                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+            }
+        });
+    }
     // UpdateNote    (Retrospective) -> User informs Server of the updates to the note
     // UpdateNote    (Retrospective) <- Server updates note
     private processUpdateNote(message: WsMessage, ws: WebSocket): void {
@@ -137,6 +159,25 @@ export class RetrospectiveSessionMgr extends AbstractManager {
         session.users.forEach(u => {
             if (u.conn) {
                 const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: session.id, userId: u.id, payload: note };
+                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+            }
+        });
+    }
+    // DeleteNote         (Retrospective) -> User informs Server that the note is removed     ==> payload: RetrospectiveNote
+    // DeleteNote         (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+    private processDeleteNote(message: WsMessage, ws: WebSocket): void {
+        const session = this.sessionMgr.findSessionForUser(message.userId);
+        const note: RetrospectiveNote = message.payload;
+        const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+        const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === note.col);
+        const deletedNote = columnNotes.notes.find(n => n.id === note.id);
+        const index = columnNotes.notes.indexOf(deletedNote, 0);
+        if (index > -1) {
+            columnNotes.notes.splice(index, 1);
+        }
+        session.users.forEach(u => {
+            if (u.conn) {
+                const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: session.id, userId: u.id, payload: note };
                 u.conn.send(JSON.stringify(wsMessage, this.skipFields));
             }
         });
