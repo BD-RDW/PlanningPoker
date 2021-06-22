@@ -102,22 +102,26 @@ wss.on('connection', (ws: WebSocket) => {
 
     ws.on('message', (messageTxt: string) => {
         const message: WsMessage = JSON.parse(messageTxt);
-        const session: Session = sessionMgr.findSessionForUser(message.userId);
-        if (! (session && session.type)) {
-            wsMessage = {action: 'ERROR', payload: `Unable to join session request for user ${message.userId}`
-                , sessionId: message.sessionId, userId: message.userId};
-            ws.send(JSON.stringify(wsMessage));
-            console.log('ERROR: Unable to proces session for user: %s', message.userId);
-            ws.close();
-        }
-        switch (session.type.toUpperCase()) {
-            case 'RETROSPECTIVE' : retroSessionMgr.processWsMessage(message, ws); break;
-            case 'REFINEMENT' : refinementSessionMgr.processWsMessage(message, ws); break;
-            default: {
-                wsMessage = {action: 'ERROR', payload: `Unable to process session type ${session.type}`
-                , sessionId: message.sessionId, userId: message.userId};
+        if (message.action === 'ping') {
+            ws.send(JSON.stringify({action: 'pong', sessionId: message.sessionId, userId: message.userId} as WsMessage));
+        } else {
+            const session: Session = sessionMgr.findSessionForUser(message.userId);
+            if (! (session && session.type)) {
+                wsMessage = {action: 'ERROR', payload: `Unable to join session request for user ${message.userId}`
+                    , sessionId: message.sessionId, userId: message.userId};
                 ws.send(JSON.stringify(wsMessage));
-                console.log('ERROR: Unable to proces sessionType: %s', session. type);
+                console.log('ERROR: Unable to proces session for user: %s', message.userId);
+                ws.close();
+            }
+            switch (session.type.toUpperCase()) {
+                case 'RETROSPECTIVE' : retroSessionMgr.processWsMessage(message, ws); break;
+                case 'REFINEMENT' : refinementSessionMgr.processWsMessage(message, ws); break;
+                default: {
+                    wsMessage = {action: 'ERROR', payload: `Unable to process session type ${session.type}`
+                    , sessionId: message.sessionId, userId: message.userId};
+                    ws.send(JSON.stringify(wsMessage));
+                    console.log('ERROR: Unable to proces sessionType: %s', session. type);
+                }
             }
         }
     });
