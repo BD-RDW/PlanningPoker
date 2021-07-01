@@ -10,8 +10,8 @@
             <button id="join_planning_session" (click)="joinSession()">Join existing session</button>
         </div>
     </div>
-    <div *ngIf="inSession">
-        <div class="p-grid">
+    <div *ngIf="inSession" style="height: 100%;">
+        <div class="p-grid" style="height: 100%;">
             <div id="userPanel" class="p-col-2 user-panel">Users: <br>
                 <ul>
                     <li *ngFor="let user of users" >
@@ -32,20 +32,16 @@
                     <app-result-view [users]="users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
                 </div>
             </div>
-            <div class="p-col-2">
-                <div id="controlePanel" style="height:49%;">
+            <div class="p-col-2" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 20px;">
+                <div id="controlePanel">
                     <div>
                         <label>Session: {{sessionId}}</label><br/>
                         <label>User: {{username}} ({{userId}})</label><br/>
                     </div>
                     <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
                 </div>
-                <div id="messagePanel"  style="height:49%;border: 1px solid black; padding:4px;">
-                    <div style="height:85%;">Messages:<br>{{messages}}</div>
-                    <div>
-                        <input type="text" [(ngModel)]="message">
-                        <button type="submit" (click)=addMessage() >Send</button>
-                    </div>
+                <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;">
+                    <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
                 </div>
             </div>
         </div>

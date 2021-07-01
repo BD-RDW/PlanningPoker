@@ -7,6 +7,9 @@ import { WebsocketService } from '../../service/websocket.service';
 import { environment } from '../../../environments/environment';
 import { User, UserVotes, SessionType } from '../../model/session';
 
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
+
 @Component({
   selector: 'app-planning-session',
   templateUrl: './planning-session.component.html',
@@ -14,11 +17,14 @@ import { User, UserVotes, SessionType } from '../../model/session';
 })
 export class PlanningSessionComponent implements OnInit {
 
+  public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
+
+
   public sessionId: string;
   public userId: number;
   public username = '';
   public messages  = 'Default message';
-  public message = '';
+  // public message = '';
   public status = '';
   public users: User[] = [];
 
@@ -53,7 +59,7 @@ export class PlanningSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage, this.actions, document.location.href);
+        this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       } else {
         this.inSession = false;
@@ -75,7 +81,7 @@ export class PlanningSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, this.actions, document.location.href);
+        this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
         this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
       },
       err => {
@@ -109,9 +115,10 @@ export class PlanningSessionComponent implements OnInit {
     }
   }
 
-  public addMessage(): void {
-    this.websocketService.send({ action: 'AddMessage',
-      sessionId: this.sessionId, userId: this.userId, payload: this.message });
+  public addMessage($event): void {
+    const wsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event } as WsMessage;
+    console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);
+    this.websocketService.send(wsMessage);
   }
 
   public cardSelected($event): void {
@@ -145,7 +152,8 @@ export class PlanningSessionComponent implements OnInit {
     });
   }
   private addNewMessage(message: WsMessage): void {
-    this.messages = `${message.payload}\n${this.messages}`;
+    console.log(`PlanningSessionManager.addNewMessage: ${JSON.stringify(message)}`);
+    this.newMessage.next(message.payload);
   }
   private updateVotes(message: WsMessage): void {
     this.users.forEach( u => {

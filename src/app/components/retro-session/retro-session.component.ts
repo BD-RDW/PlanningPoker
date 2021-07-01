@@ -6,12 +6,17 @@ import { WsMessage } from '../../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
 import { User, SessionType } from '../../model/session';
 
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { RetrospectiveSessionMgr } from 'node-backend/src/session-managers';
+
 @Component({
   selector: 'app-retro-session',
   templateUrl: './retro-session.component.html',
   styleUrls: ['./retro-session.component.css']
 })
 export class RetroSessionComponent implements OnInit {
+
+  public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
 
   columnData: RetrospectiveColumnData[] = [];
 
@@ -43,7 +48,7 @@ export class RetroSessionComponent implements OnInit {
         this.sessionId = session.sessionId;
         this.userId = session.userId;
         this.username = session.username;
-        this.websocketService.init(this.processMessage, this.actions, document.location.href);
+        this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId };
         this.websocketService.send(wsMessage);
       } else {
@@ -66,7 +71,7 @@ export class RetroSessionComponent implements OnInit {
         this.userId = session.userId;
         this.username = session.username;
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, this.actions, document.location.href);
+        this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
         const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
         this.websocketService.send(wsMessage);
       },
@@ -78,8 +83,10 @@ export class RetroSessionComponent implements OnInit {
     );
   }
 
-  public addMessage(): void {
-    const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: this.message };
+  public addMessage($event): void {
+    console.log(`New message sent: ${$event}`);
+    const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event };
+    console.log(`RetrospectiveSessionMgr.addMessage: ${JSON.stringify(wsMessage)}`);
     this.websocketService.send(wsMessage);
   }
 
@@ -104,7 +111,8 @@ export class RetroSessionComponent implements OnInit {
     });
   }
   private addNewMessage(message: WsMessage): void {
-    this.messages = `${message.payload}\n${this.messages}`;
+    console.log(`RetrospectiveSessionMgr.addNewMessage: ${JSON.stringify(message)}`);
+    this.newMessage.next(message.payload);
   }
   private initRetrospective(message: WsMessage): void {
     this.columnData = (message.payload as RetrospectiveColumnData[]);

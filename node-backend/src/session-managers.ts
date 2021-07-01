@@ -26,7 +26,7 @@ abstract class AbstractManager {
     // AddMessage    (Session)       -> Usermessage received
     // NewMessage    (Session)       <- Server distributes message
     processMessage(message: WsMessage): void {
-        const session = this.getSessionMgr().findSessionForUser(message.userId);
+        const session = this.getSessionMgr().findSession(message.sessionId);
         session.users.forEach(u => {
             if (u.conn) {
                 const username = this.getSessionMgr().findUser(message.userId).username;

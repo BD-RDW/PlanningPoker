@@ -1,0 +1,15 @@
+<div style="min-width: 200px; height: 100%; display:flex; flex-direction:column">
+  <div style="flex-grow: 1;">
+    <span>Messages:</span>
+    <hr>
+    <div>
+      <span *ngFor="let message of messages">
+        <span>{{message.message}}<br></span>
+      </span>
+    </div>
+  </div>
+  <div style="flex-grow: 0;">
+    <input type="text" [(ngModel)]="message">
+    <button type="submit" (click)=addMessage() >Send</button>
+  </div>
+</div>

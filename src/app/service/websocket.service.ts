@@ -13,8 +13,10 @@ export class WebsocketService {
   private handlers: HandlerSelection[] = [];
   private thereHasBeenContact = false;
 
+  private defaultMessageHandler = this.defaultHandler.bind(this);
+  private defaultActions = ['pong', 'ERROR', 'INIT'];
+
   constructor(private statusService: StatusService) {
-    this.handlers.push({ actions: ['pong', 'ERROR', 'INIT'], handler: this.defaultHandler.bind(this) });
   }
 
   public send(message: WsMessage): void {
@@ -27,21 +29,27 @@ export class WebsocketService {
   public connect(): void {
     if (!this.socket$ || this.socket$.closed) {
       let handled = false;
-      console.log('Using wsEndpoint: ' + this.wsEndpoint);
       this.socket$ = webSocket(this.wsEndpoint);
       this.socket$.subscribe(
         (data) => {
           console.log(`Action received; ${data.action}`);
           this.thereHasBeenContact = true;
           this.handlers.forEach(h => {
-            if (h.actions.includes(data.action)) {
-              handled = true;
-              console.log(`Action ${data.action} handled: ${h.actions}`);
-              h.handler(data);
+            console.log(`Checking: handler.sessionId: ${h.sessionId}, message.sessionId; ${data.sessionId}`);
+            if (h.sessionId && h.sessionId === data.sessionId) {
+              if (h.actions.includes(data.action)) {
+                handled = true;
+                console.log(`Action ${data.action} handled: ${h.actions}`);
+                h.handler(data);
+              }
             }
           });
           if (! handled) {
-            console.log(`Action ${data.action} could not be handled!!`);
+            if (this.defaultActions.includes(data.action)) {
+              this.defaultMessageHandler(data);
+            } else {
+              console.log(`Action ${data.action} could not be handled!!`);
+            }
           }
         },
         (err) => console.error('Recieved error: %O', err),
@@ -53,8 +61,8 @@ export class WebsocketService {
     }
   }
 
-  public init(handler, actions: string[], docHRef: string): void {
-    this.handlers.push({ actions, handler } as HandlerSelection);
+  public init(handler, sessionId: string, actions: string[], docHRef: string): void {
+    this.handlers.push({ actions, sessionId, handler} as HandlerSelection);
     this.wsEndpoint = docHRef.replace('http', 'ws');
     this.wsEndpoint = this.wsEndpoint.substring(0, this.wsEndpoint.indexOf('/', 10));
     this.wsEndpoint = this.wsEndpoint + '/stream';
@@ -83,5 +91,6 @@ export class WebsocketService {
 
 export interface HandlerSelection {
   actions: string[];
+  sessionId?: string;
   handler: any;
 }

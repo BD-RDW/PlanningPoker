@@ -18,7 +18,8 @@ import { RetrospectiveColumnComponent } from './components/retrospective-column/
 import { RetrospectiveMessageComponent } from './components/retrospective-message/retrospective-message.component';
 import { CardsViewComponent } from './components/cards-view/cards-view.component';
 import { ResultViewComponent } from './components/result-view/result-view.component';
-import { PlanningSessionComponent } from './components/planning-session/planning-session.component'
+import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
+import { MessagesViewComponent } from './components/messages-view/messages-view.component'
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PlanningSessionComponent } from './components/planning-session/planning
     RetrospectiveMessageComponent,
     PlanningSessionComponent,
     CardsViewComponent,
-    ResultViewComponent
+    ResultViewComponent,
+    MessagesViewComponent
   ],
   imports: [
     BrowserModule,

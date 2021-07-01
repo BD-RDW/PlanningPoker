@@ -55,7 +55,16 @@ ERROR               (any)           <- Server                                   
 - plaats de nieuwe image sha in scrum-tooling-deploy\overlays\ont\kustomization.yaml
 - run scrum-tooling-deploy\deploy.sh
 
+# Changes:
+20210621 : Added [reconnecting-websocket](https://npm.io/package/reconnecting-websocket)
+
 # ToDo
+
+- Retro stemmen op berichten (Liken)
+- Mergen van berichten
+- Export
+- Messages + \n
+
 - Remove an interface called session (there are 2 of them)
 - introduce the message interface in the server 
 - introduce a refinment interface to hold the specific about de refinement session. So session can be used for only the session related stuff
