@@ -13,11 +13,14 @@ export class RetrospectiveMessageComponent implements OnInit {
 
   @Input() message: RetrospectiveNote;
   @Input() userId: number;
+  @Input() availableVotes: number;
   @Output() updateNote = new EventEmitter<RetrospectiveNote>();
   @Output() editNote = new EventEmitter<RetrospectiveNote>();
   @Output() deleteNote = new EventEmitter<RetrospectiveNote>();
+  @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
 
   constructor() { }
+
 
   ngOnInit(): void {
   }
@@ -29,23 +32,32 @@ export class RetrospectiveMessageComponent implements OnInit {
       this.updateNote.emit(this.message);
     }
   }
-  public messageIsBeingEditted(): boolean {
-    if (this.message.userId && this.message.userId != null) {
-      return true;
-    }
-    return false;
+  public messageIsNotBeingEditted(): boolean {
+    return ( !this.message.userId );
+  }
+  public messageIsBeingEdittedButNotByMe(): boolean {
+    return (this.message.userId && this.message.userId !== this.userId);
   }
   public messageIsBeingEdittedByMe(): boolean {
-    if (this.message.userId && this.userId === this.message.userId)
-    {
-      return true;
-    }
-    return false;
+    return (this.message.userId && this.userId === this.message.userId);
   }
   public editMessage(): void {
     this.editNote.emit(this.message);
   }
   public deleteMessage(): void {
     this.deleteNote.emit(this.message);
+  }
+  public voteMessage(): void {
+    if (this.availableVotes < 1) { return; }
+    if (this.message.votes) {
+      this.message.votes++;
+    } else {
+      this.message.votes = 1;
+    }
+    this.votedEvent.emit(this.message);
+  }
+  public stillHaveVotes(): boolean {
+    console.log(`availableVotes: ${this.availableVotes}`);
+    return this.availableVotes < 1;
   }
 }

@@ -11,10 +11,12 @@ export class RetrospectiveColumnComponent implements OnInit {
 
   @Input() userId: number;
   @Input() columnData: RetrospectiveColumnData;
+  @Input() @Output() availableVotes: number;
   @Output() newNoteEvent = new EventEmitter<number>();
   @Output() updateNoteEvent = new EventEmitter<RetrospectiveNote>();
   @Output() editNoteEvent = new EventEmitter<RetrospectiveNote>();
   @Output() deleteNoteEvent = new EventEmitter<RetrospectiveNote>();
+  @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
 
   constructor(private sessionService: SessionService) { }
   ngOnInit(): void {
@@ -31,5 +33,8 @@ export class RetrospectiveColumnComponent implements OnInit {
   }
   public deleteRetroNote(note: RetrospectiveNote): void {
     this.deleteNoteEvent.emit(note);
+  }
+  public voted($event): void {
+    this.votedEvent.emit($event);
   }
 }

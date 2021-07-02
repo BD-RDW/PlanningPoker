@@ -30,6 +30,7 @@ export class RetroSessionComponent implements OnInit {
   public messages = 'Default message';
   public message = '';
   public status = '';
+  public availableVotes = 5;
 
   private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote'];
 
@@ -149,6 +150,10 @@ export class RetroSessionComponent implements OnInit {
   sendDeleteNote(note: RetrospectiveNote): void {
     const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
     this.websocketService.send(wsMessage);
+  }
+  public voted($event): void {
+    this.availableVotes--;
+    this.sendUpdatedNote($event);
   }
 }
 interface UserInfo {

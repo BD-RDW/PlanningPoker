@@ -28,6 +28,12 @@
   border: none;
   cursor: pointer;
   float: right;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+.votes {
+  margin: 0px  !important;
+  font-size: smaller;
 }
 .messageHeader button:disabled {
   color: gray;
@@ -47,4 +53,23 @@
 
 .message-block textarea:focus {
   outline: none;
+}
+.messageFooter {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 100%;
+  min-height: 20px;
+  padding-bottom: 5px;
+}
+.messageFooter button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  float: right;
+  margin-right: 10px;
+}
+.messageFooter button:disabled {
+  color: gray;
+  cursor: default;
 }

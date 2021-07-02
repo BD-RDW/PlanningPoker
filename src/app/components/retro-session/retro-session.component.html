@@ -22,12 +22,14 @@
       </ul>
     </div>
     <div id="retroMainpanel" class="main-panel">
-      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" (newNoteEvent)="addNote(col.column)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" (deleteNoteEvent)="sendDeleteNote($event)" class="panel-column"></app-retrospective-column>
+      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" [availableVotes]="availableVotes"
+        (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" (deleteNoteEvent)="sendDeleteNote($event)" class="panel-column"></app-retrospective-column>
     </div>
     <div id="controlePanel" class="controlePanel" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start;">
       <div>
         <label>Session: {{sessionId}}</label><br />
         <label>User: {{username}} ({{userId}})</label><br />
+        <label>votes: {{availableVotes}}</label><br />
       </div>
       <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
         <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
