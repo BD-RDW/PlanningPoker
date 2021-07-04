@@ -120,7 +120,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
           noteId = col.notes.reduce((mx, m) => mx = mx > m.id ? mx : m.id, noteId);
         });
         noteId++;
-        const newNote: RetrospectiveNote = { id: noteId, col: colId, txt: ' ', userId: message.userId };
+        const newNote: RetrospectiveNote = { id: noteId, col: colId, txt: '', userId: message.userId };
         columnNotes.notes.push(newNote);
 
         session.users.forEach(u => {

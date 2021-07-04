@@ -5,9 +5,10 @@ import { WebsocketService } from '../../service/websocket.service';
 import { WsMessage } from '../../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
 import { User, SessionType } from '../../model/session';
+import { saveAs } from '../../../../node_modules/file-saver';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { RetrospectiveSessionMgr } from 'node-backend/src/session-managers';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-retro-session',
@@ -31,6 +32,8 @@ export class RetroSessionComponent implements OnInit {
   public message = '';
   public status = '';
   public availableVotes = 5;
+
+  public display = false;
 
   private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote'];
 
@@ -154,6 +157,12 @@ export class RetroSessionComponent implements OnInit {
   public voted($event): void {
     this.availableVotes--;
     this.sendUpdatedNote($event);
+  }
+  public auxilaryMenu(): void {
+    const nodeTexts: string[] = this.columnData.map(cd => cd.title + '\n' + cd.notes.map(n => '\t' + n.txt + '\n') + '\n\n');
+    const blob = new Blob(nodeTexts, {type: 'text/plain;charset=utf-8'});
+    const filename = 'RetrospectiveNotes_' + moment(Date.now()).format('YYYYMMDD_HHmmss') + '.txt';
+    saveAs(blob, filename);
   }
 }
 interface UserInfo {

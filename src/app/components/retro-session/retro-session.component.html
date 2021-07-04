@@ -1,3 +1,7 @@
+
+<div class='auxilaryMenuButton' *ngIf="inSession">
+  <button id='auxilaryMenu' class="pi pi-bars" (click)="auxilaryMenu()"> </button>
+</div>
 <div style="width: 100%; height: 100%;">
   <div *ngIf="!inSession">
     <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="username"

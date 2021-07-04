@@ -56,24 +56,24 @@ ERROR               (any)           <- Server                                   
 - run scrum-tooling-deploy\deploy.sh
 
 # Changes:
-20210621 : Added [reconnecting-websocket](https://npm.io/package/reconnecting-websocket)
+20210615 : Fixed a handler mix-up
+20210621 : Added Edit and delete for retrospective notes
+20210622 : Added hearthbeat every minute
+20210701 : Updated the messaging functionalty
+20210702 : Added voting on retrospecting notes
+20210704 : Added retrospective note export
 
 # ToDo
-
-- Retro stemmen op berichten (Liken)
 - Mergen van berichten
-- Export
-- Messages + \n
+- Export - https://github.com/cornflourblue/angular-10-custom-modal/blob/master/src/app/_modal/modal.component.less
 
-- Remove an interface called session (there are 2 of them)
-- introduce the message interface in the server 
-- introduce a refinment interface to hold the specific about de refinement session. So session can be used for only the session related stuff
 - add regular connection checking to prune users and sessions that have disconnected.
 - setTimeout(function, msec)
 - new Date();
 - current.toLocaleTimeString();
 - current.toLocaleDateString();
 - current.toLocaleString();
+- [reconnecting-websocket](https://npm.io/package/reconnecting-websocket)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 

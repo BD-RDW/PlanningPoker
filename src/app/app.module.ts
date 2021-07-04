@@ -8,6 +8,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { PrimeIcons } from 'primeng/api';
+import {DialogModule} from 'primeng/dialog';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -43,7 +44,8 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     ScrollPanelModule,
     BrowserAnimationsModule,
     ButtonModule,
-    ChartModule
+    ChartModule,
+    DialogModule
   ],
   providers: [PrimeIcons],
   bootstrap: [AppComponent]

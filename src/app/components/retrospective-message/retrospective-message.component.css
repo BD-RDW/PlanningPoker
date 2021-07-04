@@ -12,6 +12,12 @@
 .blur-text {
   filter: blur(4px)
 }
+
+.noteText::placeholder {
+  color: white;
+  font-weight: bold;
+}
+
 .messageHeader {
   margin-left: 5px;
   margin-right: 5px;
