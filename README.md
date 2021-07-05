@@ -88,6 +88,7 @@ Export from repo
 ```
 git format-patch --output-directory "../patches" FIRST_COMMIT_SHA1~..LAST_COMMIT_SHA1
 // One commit only: git format-patch --output-directory .. -1 commit_sha
+// last three commits: git format-patch --output-directory ".." -3
 ```
 Import into repo
 
