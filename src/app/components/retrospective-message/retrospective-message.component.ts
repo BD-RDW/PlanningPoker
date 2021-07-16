@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Session } from 'src/app/model/session';
 import { RetrospectiveNote } from '../../model/retrospective-data';
 
@@ -7,7 +7,8 @@ import { RetrospectiveNote } from '../../model/retrospective-data';
   templateUrl: './retrospective-message.component.html',
   styleUrls: ['./retrospective-message.component.css']
 })
-export class RetrospectiveMessageComponent implements OnInit {
+export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
+  @ViewChild('noteTextarea') textElement: ElementRef;
 
   public tempMessage: string;
 
@@ -24,7 +25,12 @@ export class RetrospectiveMessageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  ngAfterViewInit(): void {
+    if (this.messageIsBeingEdittedByMe) {
+       this.textElement.nativeElement.focus();
+    }
+    console.log(JSON.stringify(this.message));
+  }
   processText(event): void {
     if (event.key === 'Enter') {
       this.message.userId = null;
@@ -39,7 +45,7 @@ export class RetrospectiveMessageComponent implements OnInit {
     return (this.message.userId && this.message.userId !== this.userId);
   }
   public messageIsBeingEdittedByMe(): boolean {
-    return (this.message.userId && this.userId === this.message.userId);
+    return this.message.userId && this.userId === this.message.userId;
   }
   public editMessage(): void {
     this.editNote.emit(this.message);
