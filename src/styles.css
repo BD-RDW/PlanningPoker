@@ -6,17 +6,17 @@ body {
 
 .p-tabview {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 20px);
 }
 .p-tabview .p-tabview-nav {
-  background: #ccffff;
+  background: transparent;
   border: 0 none;
   border-width: 0 0 2px 0;
 }
 
 .p-tabview .p-tabview-panels {
   width: 100%;
-  height: 100%;
+  height: 95%;
 }
 .p-tabview .p-tabview-panel {
   width: 100%;
