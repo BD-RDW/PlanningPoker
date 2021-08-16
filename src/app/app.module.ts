@@ -20,7 +20,7 @@ import { RetrospectiveMessageComponent } from './components/retrospective-messag
 import { CardsViewComponent } from './components/cards-view/cards-view.component';
 import { ResultViewComponent } from './components/result-view/result-view.component';
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
-import { MessagesViewComponent } from './components/messages-view/messages-view.component'
+import { MessagesViewComponent } from './components/messages-view/messages-view.component';
 
 @NgModule({
   declarations: [

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
 import { SessionService } from '../../service/session.service';
+import { NotesToMerge } from '../../model/notes-to-merge';
 
 @Component({
   selector: 'app-retrospective-column',
@@ -17,6 +18,7 @@ export class RetrospectiveColumnComponent implements OnInit {
   @Output() editNoteEvent = new EventEmitter<RetrospectiveNote>();
   @Output() deleteNoteEvent = new EventEmitter<RetrospectiveNote>();
   @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
+  @Output() mergeNotesEvent = new EventEmitter<NotesToMerge>();
 
   constructor(private sessionService: SessionService) { }
   ngOnInit(): void {
@@ -37,4 +39,8 @@ export class RetrospectiveColumnComponent implements OnInit {
   public voted($event): void {
     this.votedEvent.emit($event);
   }
+  public mergeNotes(notes2Merge: NotesToMerge): void {
+    this.mergeNotesEvent.emit(notes2Merge);
+  }
+
 }

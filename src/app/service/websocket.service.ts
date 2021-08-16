@@ -39,7 +39,6 @@ export class WebsocketService {
             if (h.sessionId && h.sessionId === data.sessionId) {
               if (h.actions.includes(data.action)) {
                 handled = true;
-                console.log(`Action ${data.action} handled: ${h.actions}`);
                 h.handler(data);
               }
             }

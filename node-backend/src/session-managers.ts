@@ -3,6 +3,7 @@ import { SessionMgr } from './session';
 import * as WebSocket from 'ws';
 import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
 import { RefinementInfoPerSession } from './model/refinement';
+import { NotesToMerge } from './model/notes-to-merge';
 
 abstract class AbstractManager {
     // JoinSession   (Session)       -> User get added to the session
@@ -58,6 +59,9 @@ export class RetrospectiveSessionMgr extends AbstractManager {
     // UpdateNote         (Retrospective) <- Server updates note
     // DeleteNote         (Retrospective) -> User informs Server that the note is removed     ==> payload: RetrospectiveNote
     // DeleteNote         (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+    // MergeNotes          (Retrospective) -> User informs server to merge 2 notes             ==> payload: NotesToMerge
+    // UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
+    // DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
 
     retrospectiveInfo: RetrospectiveInfoPerSession[] = [];
 
@@ -76,6 +80,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
             case 'UpdateNote': this.processUpdateNote(message, ws); break;
             case 'EditNote': this.processEditNote(message, ws); break;
             case 'DeleteNote': this.processDeleteNote(message, ws); break;
+            case 'MergeNotes': this.processMergeNotes(message, ws); break;
             default: {
                 const wsMessage: WsMessage = {action: 'ERROR', payload: `Unable to process message action ${message.action}`
                     , sessionId: message.sessionId, userId: message.userId};
@@ -178,6 +183,35 @@ export class RetrospectiveSessionMgr extends AbstractManager {
         session.users.forEach(u => {
             if (u.conn) {
                 const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: session.id, userId: u.id, payload: note };
+                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+            }
+        });
+    }
+
+    // MergeNotes          (Retrospective) -> User informs server to merge 2 notes             ==> payload: NotesToMerge
+    // UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
+    // DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+    private processMergeNotes(message: WsMessage, ws: WebSocket): void {
+        const session = this.sessionMgr.findSessionForUser(message.userId);
+        const notes2Merge: NotesToMerge = message.payload;
+        console.log(`Payload: ${JSON.stringify(notes2Merge)}`);
+        const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+
+        const column2DeleteNoteFrom = retrospectiveInfo.retrospectiveData.find(rd => rd.notes.find(n => n.id === notes2Merge.note2MergeId));
+        const baseNoteColumn        = retrospectiveInfo.retrospectiveData.find(rd => rd.notes.find(n => n.id === notes2Merge.baseNoteId));
+
+        const mergedNote = baseNoteColumn.notes.find(n => n.id === notes2Merge.baseNoteId);
+        const deletedNote = column2DeleteNoteFrom.notes.find(n => n.id === notes2Merge.note2MergeId);
+        mergedNote.txt += '\n' + deletedNote.txt;
+        const index = column2DeleteNoteFrom.notes.indexOf(deletedNote, 0);
+        if (index > -1) {
+            column2DeleteNoteFrom.notes.splice(index, 1);
+        }
+        session.users.forEach(u => {
+            if (u.conn) {
+                let wsMessage: WsMessage = { action: 'DeleteNote', sessionId: session.id, userId: u.id, payload: deletedNote };
+                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+                wsMessage = { action: 'UpdateNote', sessionId: session.id, userId: u.id, payload: mergedNote };
                 u.conn.send(JSON.stringify(wsMessage, this.skipFields));
             }
         });

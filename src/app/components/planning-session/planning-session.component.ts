@@ -152,7 +152,6 @@ export class PlanningSessionComponent implements OnInit {
     });
   }
   private addNewMessage(message: WsMessage): void {
-    console.log(`PlanningSessionManager.addNewMessage: ${JSON.stringify(message)}`);
     this.newMessage.next(message.payload);
   }
   private updateVotes(message: WsMessage): void {

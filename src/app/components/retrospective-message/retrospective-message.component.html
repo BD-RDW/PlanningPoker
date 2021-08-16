@@ -1,4 +1,4 @@
-<div class="message-panel">
+<div class="message-panel" draggable="true"  (dragover)="allowDrop($event)" (dragstart)="dragStart($event)" (drop)="onDrop($event)">
   <div class="message-block">
     <div class="messageHeader">
       <span class="votes" *ngIf="message.votes">{{message.votes}}</span>
@@ -7,7 +7,7 @@
     </div>
     <div *ngIf="messageIsBeingEdittedByMe()"><textarea #noteTextarea class="noteText" placeholder="Enter your remark" [(ngModel)]="message.txt" (keydown)="processText($event)"></textarea></div>
     <span *ngIf="messageIsBeingEdittedButNotByMe()" class="blur-text">{{message.txt}}</span>
-    <span *ngIf="messageIsNotBeingEditted()" >{{message.txt}}</span>
+    <span *ngIf="messageIsNotBeingEditted()" [innerHTML]="getMessageTxt()"></span>
     <div class="messageFooter" *ngIf="messageIsNotBeingEditted()">
       <button class="pi pi-thumbs-up" (click)="voteMessage()" [disabled]="stillHaveVotes()"> </button>
     </div>

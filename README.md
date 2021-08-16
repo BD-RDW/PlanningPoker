@@ -33,6 +33,10 @@ UpdateNote          (Retrospective) -> User informs Server of the updates to the
 EditNote            (Retrospective) -> User informs Server that the note gets changed   ==> payload: RetrospectiveNote
 DeleteNote          (Retrospective) -> User informs Server that the note is removed     ==> payload: RetrospectiveNote
 DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+MergeNotes          (Retrospective) -> User informs server to merge 2 notes             ==> payload: NotesToMerge
+UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
+DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+
 ERROR               (any)           <- Server                                           ==> payload: errormessage
 ```
  

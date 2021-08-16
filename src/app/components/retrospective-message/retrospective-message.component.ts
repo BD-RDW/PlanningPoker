@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Session } from 'src/app/model/session';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, ɵ_sanitizeHtml } from '@angular/core';
 import { RetrospectiveNote } from '../../model/retrospective-data';
+import { NotesToMerge } from '../../model/notes-to-merge';
+import * as sanitizeHtml from 'sanitize-html';
 
 @Component({
   selector: 'app-retrospective-message',
@@ -19,6 +20,7 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
   @Output() editNote = new EventEmitter<RetrospectiveNote>();
   @Output() deleteNote = new EventEmitter<RetrospectiveNote>();
   @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
+  @Output() mergeNotesEvent = new EventEmitter<NotesToMerge>();
 
   constructor() { }
 
@@ -26,10 +28,9 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
   ngAfterViewInit(): void {
-    if (this.messageIsBeingEdittedByMe) {
+    if (this.textElement && this.messageIsBeingEdittedByMe) {
        this.textElement.nativeElement.focus();
     }
-    console.log(JSON.stringify(this.message));
   }
   processText(event): void {
     if (event.key === 'Enter') {
@@ -63,7 +64,28 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
     this.votedEvent.emit(this.message);
   }
   public stillHaveVotes(): boolean {
-    console.log(`availableVotes: ${this.availableVotes}`);
     return this.availableVotes < 1;
+  }
+
+  public dragStart($event: any): boolean {
+    if (this.messageIsNotBeingEditted()) {
+      $event.dataTransfer.setData('number', this.message.id);
+    }
+    return this.messageIsNotBeingEditted();
+  }
+  public allowDrop($event: any): void {
+    if (this.messageIsNotBeingEditted() && this.message.id !== parseInt($event.dataTransfer.getData('number'), 10)) {
+      $event.preventDefault();
+    }
+  }
+  public onDrop($event: any): void {
+    $event.preventDefault();
+    this.mergeNotesEvent.emit({baseNoteId: this.message.id,
+      note2MergeId: parseInt($event.dataTransfer.getData('number'), 10)} as NotesToMerge);
+  }
+
+  public getMessageTxt(): string {
+    const txt = sanitizeHtml(this.message.txt);
+    return txt.replace('\n', '<BR>');
   }
 }

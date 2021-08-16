@@ -27,7 +27,8 @@
     </div>
     <div id="retroMainpanel" class="main-panel">
       <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" [availableVotes]="availableVotes"
-        (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" (deleteNoteEvent)="sendDeleteNote($event)" class="panel-column"></app-retrospective-column>
+        (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" 
+        (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retrospective-column>
     </div>
     <div id="controlePanel" class="controlePanel" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start;">
       <div>

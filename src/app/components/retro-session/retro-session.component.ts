@@ -9,6 +9,7 @@ import { saveAs } from '../../../../node_modules/file-saver';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
+import { NotesToMerge } from 'src/app/model/notes-to-merge';
 
 @Component({
   selector: 'app-retro-session',
@@ -88,9 +89,7 @@ export class RetroSessionComponent implements OnInit {
   }
 
   public addMessage($event): void {
-    console.log(`New message sent: ${$event}`);
     const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event };
-    console.log(`RetrospectiveSessionMgr.addMessage: ${JSON.stringify(wsMessage)}`);
     this.websocketService.send(wsMessage);
   }
 
@@ -115,7 +114,6 @@ export class RetroSessionComponent implements OnInit {
     });
   }
   private addNewMessage(message: WsMessage): void {
-    console.log(`RetrospectiveSessionMgr.addNewMessage: ${JSON.stringify(message)}`);
     this.newMessage.next(message.payload);
   }
   private initRetrospective(message: WsMessage): void {
@@ -163,6 +161,12 @@ export class RetroSessionComponent implements OnInit {
     const blob = new Blob(nodeTexts, {type: 'text/plain;charset=utf-8'});
     const filename = 'RetrospectiveNotes_' + moment(Date.now()).format('YYYYMMDD_HHmmss') + '.txt';
     saveAs(blob, filename);
+  }
+  public mergeNotes(notes2Merge: NotesToMerge): void {
+    console.log(`Merging note ${notes2Merge.note2MergeId} into note ${notes2Merge.baseNoteId}`);
+    console.log(JSON.stringify(notes2Merge));
+    const wsMessage: WsMessage = { action: 'MergeNotes', sessionId: this.sessionId, userId: this.userId, payload:  notes2Merge};
+    this.websocketService.send(wsMessage);
   }
 }
 interface UserInfo {
