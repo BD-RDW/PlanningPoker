@@ -66,6 +66,7 @@ ERROR               (any)           <- Server                                   
 20210701 : Updated the messaging functionalty
 20210702 : Added voting on retrospecting notes
 20210704 : Added retrospective note export
+20210816 : Added merging of retrospective notes using Drag'nDrop
 
 # ToDo
 - Mergen van berichten
