@@ -9,6 +9,7 @@ export interface RetrospectiveNote {
   col: number;
   txt: string;
   userId?: number;
+  votes?: number;
 }
 export interface RetrospectiveInfoPerSession {
   sessionId: string;

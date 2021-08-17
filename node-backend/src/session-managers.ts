@@ -194,7 +194,6 @@ export class RetrospectiveSessionMgr extends AbstractManager {
     private processMergeNotes(message: WsMessage, ws: WebSocket): void {
         const session = this.sessionMgr.findSessionForUser(message.userId);
         const notes2Merge: NotesToMerge = message.payload;
-        console.log(`Payload: ${JSON.stringify(notes2Merge)}`);
         const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
 
         const column2DeleteNoteFrom = retrospectiveInfo.retrospectiveData.find(rd => rd.notes.find(n => n.id === notes2Merge.note2MergeId));
@@ -203,6 +202,9 @@ export class RetrospectiveSessionMgr extends AbstractManager {
         const mergedNote = baseNoteColumn.notes.find(n => n.id === notes2Merge.baseNoteId);
         const deletedNote = column2DeleteNoteFrom.notes.find(n => n.id === notes2Merge.note2MergeId);
         mergedNote.txt += '\n' + deletedNote.txt;
+        if (deletedNote.votes) {
+            mergedNote.votes = mergedNote.votes ? mergedNote.votes + deletedNote.votes : deletedNote.votes;
+        }
         const index = column2DeleteNoteFrom.notes.indexOf(deletedNote, 0);
         if (index > -1) {
             column2DeleteNoteFrom.notes.splice(index, 1);

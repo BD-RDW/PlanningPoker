@@ -85,7 +85,10 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
   }
 
   public getMessageTxt(): string {
-    const txt = sanitizeHtml(this.message.txt);
-    return txt.replace('\n', '<BR>');
+    let txt = sanitizeHtml(this.message.txt);
+    while (txt.indexOf('\n') > 0) {
+      txt = txt.replace('\n', '<BR>');
+    }
+    return txt;
   }
 }
