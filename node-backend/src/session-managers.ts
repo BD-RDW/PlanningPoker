@@ -1,9 +1,10 @@
 import { WsMessage } from './model/message';
-import { SessionMgr } from './session';
+import { Session, SessionMgr } from './session';
 import * as WebSocket from 'ws';
 import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
 import { RefinementInfoPerSession } from './model/refinement';
 import { NotesToMerge } from './model/notes-to-merge';
+import * as cron from 'node-cron';
 
 abstract class AbstractManager {
     // JoinSession   (Session)       -> User get added to the session
@@ -12,17 +13,16 @@ abstract class AbstractManager {
     // NewMessage    (Session)       <- Server distributes message
     abstract getSessionMgr(): SessionMgr;
 
+    constructor() {
+        this.initConnectionCleanup();
+    }
+
     // JoinSession   (Session)       -> User get added to the szession
     // UpdateSession (Session)       <- Server updates userlist ==> Join
-    addUserToSession(message: WsMessage, ws: WebSocket, action: string): void {
+    addUserToSession(message: WsMessage, ws: WebSocket): void {
         const session = this.getSessionMgr().findSessionForUser(message.userId);
         this.getSessionMgr().findUser(message.userId).conn = ws;
-        session.users.forEach(u => {
-            if (u.conn) {
-                const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u.id, payload: session.users };
-                u.conn.send(JSON.stringify(sessionInfo, this.skipFields));
-            }
-        });
+        this.updateSessionInfo(session);
     }
     // AddMessage    (Session)       -> Usermessage received
     // NewMessage    (Session)       <- Server distributes message
@@ -39,9 +39,50 @@ abstract class AbstractManager {
     skipFields(k: any, v: any): any {
         if (k === 'conn') { return undefined; } return v;
     }
-    deleteSession(id: string): void {
-        const session = this.getSessionMgr().findSession(id);
-        if (session) {this.getSessionMgr().delete(session); }
+    deleteSession(sessionId: string): void {
+        const session = this.getSessionMgr().findSession(sessionId);
+        if (session) {
+            this.getSessionMgr().delete(session);
+        }
+    }
+    initConnectionCleanup(): void {
+        setInterval(() =>
+            this.getSessionMgr().getAllUsers().forEach(u => {
+                let session: Session = null;
+                if (u.conn) {
+                    if (u.conn.readyState === WebSocket.CLOSED) {
+                        session = this.getSessionMgr().findSessionForUser(u.id);
+                        this.getSessionMgr().deleteUser(u);
+                    }
+                } else {
+                    session = this.getSessionMgr().findSessionForUser(u.id);
+                    this.getSessionMgr().deleteUser(u);
+                }
+                if (session) {
+                    if (session.users.length === 0) {
+                        this.getSessionMgr().delete(session);
+                    } else {
+                        this.updateSessionInfo(session);
+                    }
+                }
+            }), 60000);
+
+    }
+    updateSessionInfo(session: Session): void {
+        let action = 'Unknown';
+        switch (session.type) {
+            case 'REFINEMENT': action = 'UpdatePlanSession'; break;
+            case 'RETROSPECTIVE': action = 'UpdateRetroSession'; break;
+            default: console.log(`updateSessionInfo: Unable to update session: Unknown session type ${session.type}`);
+                     console.log(`Session: ${JSON.stringify(session)}`);
+                     return;
+        }
+        session.users.forEach(u2 => {
+            if (u2.conn) {
+                const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u2.id, payload: session.users };
+                u2.conn.send(JSON.stringify(sessionInfo, this.skipFields));
+            }
+        });
     }
 }
 
@@ -90,7 +131,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
         }
     }
     private processJoinSession(message: WsMessage, ws: WebSocket): void {
-        this.addUserToSession(message, ws, 'UpdateRetroSession');
+        this.addUserToSession(message, ws);
         this.updateRefinementStatus(message, ws);
     }
     private processAddMessage(message: WsMessage, ws: WebSocket): void {
@@ -253,7 +294,7 @@ export class RefinementSessionMgr extends AbstractManager {
         }
     }
     private processJoinSession(message: WsMessage, ws: WebSocket): void {
-        this.addUserToSession(message, ws, 'UpdatePlanSession');
+        this.addUserToSession(message, ws);
         this.updatePhaseForUser(message);
         this.updateVotesForUser(message);
     }

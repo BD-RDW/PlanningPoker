@@ -89,6 +89,7 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
     while (txt.indexOf('\n') > 0) {
       txt = txt.replace('\n', '<BR>');
     }
-    return txt;
+    return txt
+    ;
   }
 }

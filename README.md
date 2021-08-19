@@ -68,12 +68,11 @@ ERROR               (any)           <- Server                                   
 20210704 : Added retrospective note export
 20210816 : Added merging of retrospective notes using Drag'nDrop
 20210817 : Fixed an error merging multiple times and added combining votes
+20210819 : Added user and session cleanup in server
 
 # ToDo
-- Mergen van berichten
-- Export - https://github.com/cornflourblue/angular-10-custom-modal/blob/master/src/app/_modal/modal.component.less
-
-- add regular connection checking to prune users and sessions that have disconnected.
+- add version to server and client
+- add server reporting (sessions and users)
 - setTimeout(function, msec)
 - new Date();
 - current.toLocaleTimeString();

@@ -39,12 +39,28 @@ export class SessionMgr {
     getAllSessions(): string {
         return JSON.stringify(this.sessions, this.skipFields);
     }
+    public getAllUsers(): User[] {
+        return this.users;
+    }
+    public deleteUser(user: User): void {
+        const session = this.findSessionForUser(user.id);
+        let index = session.users.indexOf(user, 0);
+        session.users.splice(index, 1);
+
+        index = this.users.indexOf(user, 0);
+        this.users.splice(index, 1);
+    }
+
     delete(session: Session): void {
-        this.sessions = this.sessions.filter(s => s.id !== session.id);
+        const index = this.sessions.indexOf(session);
+        if (index >= 0) {
+            this.sessions.splice(index, 1);
+        }
     }
     skipFields(k: any, v: any): any {
         if (k === 'conn') { return undefined; } return v;
     }
+
 }
 
 export interface Session {
