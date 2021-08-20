@@ -4,7 +4,6 @@ import * as WebSocket from 'ws';
 import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
 import { RefinementInfoPerSession } from './model/refinement';
 import { NotesToMerge } from './model/notes-to-merge';
-import * as cron from 'node-cron';
 
 abstract class AbstractManager {
     // JoinSession   (Session)       -> User get added to the session
@@ -66,7 +65,6 @@ abstract class AbstractManager {
                     }
                 }
             }), 60000);
-
     }
     updateSessionInfo(session: Session): void {
         let action = 'Unknown';

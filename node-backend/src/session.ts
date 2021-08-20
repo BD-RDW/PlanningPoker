@@ -1,8 +1,14 @@
 import * as WebSocket from 'ws';
+import { ReportingService } from './reporting-service';
 
 export class SessionMgr {
     private sessions: Session[] = [];
     private users: User[] = [];
+    private reportingService = new ReportingService(this);
+
+    constructor() {
+
+    }
 
     public addUser(user: User, session: Session): number {
         if (this.users.length === 0) {
@@ -12,6 +18,7 @@ export class SessionMgr {
         }
         this.users.push(user);
         session.users.push(user);
+        this.reportingService.signalChanges();
         return user.id;
     }
     public findUser(id: number): User {
@@ -26,6 +33,7 @@ export class SessionMgr {
         this.sessions.push(session);
         user.role = Role.ScrumMaster;
         this.addUser(user, session);
+        this.reportingService.signalChanges();
         return session.id;
     }
     public findSession(id: string): Session {
@@ -36,8 +44,11 @@ export class SessionMgr {
         this.sessions.find(s => {if (s.users.find(u => u.id === id)) {session = s; }});
         return session;
     }
-    getAllSessions(): string {
+    getAllSessionsAsString(): string {
         return JSON.stringify(this.sessions, this.skipFields);
+    }
+    getAllSessions(): Session[] {
+        return this.sessions;
     }
     public getAllUsers(): User[] {
         return this.users;
@@ -49,12 +60,14 @@ export class SessionMgr {
 
         index = this.users.indexOf(user, 0);
         this.users.splice(index, 1);
+        this.reportingService.signalChanges();
     }
 
     delete(session: Session): void {
         const index = this.sessions.indexOf(session);
         if (index >= 0) {
             this.sessions.splice(index, 1);
+            this.reportingService.signalChanges();
         }
     }
     skipFields(k: any, v: any): any {

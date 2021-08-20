@@ -70,9 +70,9 @@ ERROR               (any)           <- Server                                   
 20210817 : Fixed an error merging multiple times and added combining votes
 20210819 : Added user and session cleanup in server
 20210820 : Added version number to frontend
+20210820 : Added server monitoring
 
 # ToDo
-- add version to server and client
 - add server reporting (sessions and users)
 - setTimeout(function, msec)
 - new Date();

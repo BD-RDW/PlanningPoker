@@ -58,7 +58,7 @@ app.post('/rest/session', (req, res) => {
 app.get('/rest/sessions', (req, res) => {
 
     res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
-    res.send(sessionMgr.getAllSessions());
+    res.send(sessionMgr.getAllSessionsAsString());
    });
 /* get all sessions */
 app.delete('/rest/session/:sessionId', (req, res) => {
