@@ -1,8 +1,16 @@
 .status-bar {
   margin: 0;
   align-content: flex-start;
+  display: flex;
+  flex-direction: row;
 }
 
 .status-bar p {
   margin: 0;
+  flex-grow: 1;
+}
+.status-bar span {
+  margin: 0;
+  flex-grow: 0;
+  font-size: smaller;
 }

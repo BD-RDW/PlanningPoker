@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StatusService } from 'src/app/service/status.service';
-import {  } from '../../service/session.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-status',
@@ -11,6 +11,7 @@ import {  } from '../../service/session.service';
 export class StatusComponent implements OnInit {
 
   public status: Observable<string>;
+  versionNumber: string = environment.appVersion;
 
   constructor(statusService: StatusService) {
     this.status = statusService.$status;

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from '../environments/environment';
 
 
 @Component({
@@ -8,7 +9,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'PlanningSession';
-
-  public status: string;
 
 }

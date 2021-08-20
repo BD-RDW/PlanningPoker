@@ -69,6 +69,7 @@ ERROR               (any)           <- Server                                   
 20210816 : Added merging of retrospective notes using Drag'nDrop
 20210817 : Fixed an error merging multiple times and added combining votes
 20210819 : Added user and session cleanup in server
+20210820 : Added version number to frontend
 
 # ToDo
 - add version to server and client
