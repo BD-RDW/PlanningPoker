@@ -8,6 +8,6 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'PlanningSession';
+  title = 'Scrum tooling';
 
 }
