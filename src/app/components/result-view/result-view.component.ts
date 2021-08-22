@@ -27,16 +27,18 @@ export class ResultViewComponent implements OnInit {
   ngOnInit(): void {
     const cnt: Counts[] = [];
     this.users.forEach(u => {
-      let temp = cnt.find(c => c.label === u.vote);
+      let temp = cnt.find(c => c.value === u.vote);
       if (! temp) {
-        temp = { label: u.vote, count: 0 };
+        temp = { value: u.vote, label: u.vote + ' SP', count: 0 };
         cnt.push(temp);
       }
       temp.count++;
     });
+
     const labels = cnt.map(c => c.label);
     const data = cnt.map(c => c.count);
     this.data.labels = labels;
+    this.data.datasets[0].label = 'cnt';
     this.data.datasets[0].data = data;
     this.data.datasets[0].backgroundColor = this.colors;
     this.data.datasets[0].hoverBackgroundColor = this.colors;
@@ -45,6 +47,7 @@ export class ResultViewComponent implements OnInit {
 }
 
 interface Counts {
+  value: string;
   label: string;
   count: number;
 }

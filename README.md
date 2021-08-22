@@ -60,6 +60,7 @@ ERROR               (any)           <- Server                                   
 - run scrum-tooling-deploy\deploy.sh
 
 # Changes:
+```
 20210615 : Fixed a handler mix-up
 20210621 : Added Edit and delete for retrospective notes
 20210622 : Added hearthbeat every minute
@@ -71,7 +72,8 @@ ERROR               (any)           <- Server                                   
 20210819 : Added user and session cleanup in server
 20210820 : Added version number to frontend
 20210820 : Added server monitoring
-
+20210822 : Updated poker result view
+```
 # ToDo
 - add server reporting (sessions and users)
 - setTimeout(function, msec)
