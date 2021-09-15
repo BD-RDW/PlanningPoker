@@ -1,170 +1,231 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { WsMessage } from 'src/app/model/message';
+import {Component, ComponentFactoryResolver, OnInit} from '@angular/core';
+import {WsMessage} from 'src/app/model/message';
 
-import { SessionService } from '../../service/session.service';
-import { WebsocketService } from '../../service/websocket.service';
+import {SessionService} from '../../service/session.service';
+import {WebsocketService} from '../../service/websocket.service';
 
-import { environment } from '../../../environments/environment';
-import { User, UserVotes, SessionType } from '../../model/session';
+import {environment} from '../../../environments/environment';
+import {User, UserVotes, SessionType} from '../../model/session';
 
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {MessageService} from 'primeng/api';
 
 @Component({
-  selector: 'app-planning-session',
-  templateUrl: './planning-session.component.html',
-  styleUrls: ['./planning-session.component.css']
+    selector: 'app-planning-session',
+    templateUrl: './planning-session.component.html',
+    styleUrls: ['./planning-session.component.css'],
+    providers: [MessageService]
 })
 export class PlanningSessionComponent implements OnInit {
 
-  public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
+    public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
 
 
-  public sessionId: string;
-  public userId: number;
-  public username = '';
-  public messages  = 'Default message';
-  // public message = '';
-  public status = '';
-  public users: User[] = [];
+    public sessionId: string;
+    public userId: number;
+    public username = '';
+    public messages = 'Default message';
+    // public message = '';
+    public status = '';
+    public users: User[] = [];
 
-  public switchPhase: string;
-  public phase: string;
-  public myRole: string;
+    public switchPhase: string;
+    public phase: string;
+    public myRole: string;
 
-  public inSession = false;
+    public inSession = false;
 
-  public cardNumbers = environment.CARD_SYMBOLS;
-  public chartColors = environment.CHART_COLORS;
+    public cardNumbers = environment.CARD_SYMBOLS;
+    public chartColors = environment.CHART_COLORS;
 
-  private actions: string[] = ['UpdatePlanSession', 'NewMessage', 'UpdateVotes', 'UpdatePhase'];
+    private actions: string[] = ['UpdatePlanSession', 'NewMessage', 'UpdateVotes', 'UpdatePhase'];
 
-  constructor(
-    private sessionService: SessionService,
-    private websocketService: WebsocketService)
-  {
-  }
+    constructor(
+        private sessionService: SessionService,
+        private websocketService: WebsocketService,
+        private messageService: MessageService) {
+    }
 
-  ngOnInit(): void {
-    this.inSession = false;
-    this.sessionId = null;
-  }
-
-  public joinSession(): void {
-    this.sessionService.joinSession(SessionType.REFINEMENT, this.sessionId, this.username).subscribe(session => {
-      if (session) {
-        this.status = '';
-        this.messages = 'In session\n';
-        this.inSession = true;
-        this.sessionId = session.sessionId;
-        this.userId = session.userId;
-        this.username = session.username;
-        this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
-        this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
-      } else {
+    ngOnInit(): void {
         this.inSession = false;
-        console.log('Unable to join that session!!');
-        this.status = 'Unable to join that session!';
-      }
-    },
-    err => {
-      console.log(err);
-      this.status = 'Unable to join that session!';
-    });
-  }
-  public createSession(): void {
-    this.sessionService.sessionCreate(this.username, SessionType.REFINEMENT).subscribe(
-      session => {
-        this.status = '';
-        this.inSession = true;
-        this.sessionId = session.sessionId;
-        this.userId = session.userId;
-        this.username = session.username;
-        const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
-        this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
-      },
-      err => {
-        console.log(err);
-        this.status = 'Unable to create a session!';
-      }
-    );
-  }
-
-  public switchPhaseHandler(): void {
-    if (this.phase === 'voting') {
-      this.switchToPhase('showResults');
-      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.sessionId, userId: this.userId, payload: this.phase});
-    } else if (this.phase === 'showResults') {
-      this.switchToPhase('voting');
-      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.sessionId, userId: this.userId, payload: this.phase});
-    } else {
-      console.log(`Unknown phase ${this.phase}`);
+        this.sessionId = null;
     }
-  }
 
-  private switchToPhase(phase: string): void {
-    if (phase === 'voting') {
-      this.phase = 'voting';
-      this.switchPhase = 'Finish voting';
-    } else if (phase === 'showResults') {
-      this.phase = 'showResults';
-      this.switchPhase = 'Start voting';
-    } else {
-      console.log(`Unknown phase ${phase}`);
+    public joinSession(): void {
+        this.sessionService.joinSession(SessionType.REFINEMENT, this.sessionId, this.username).subscribe(session => {
+                if (session) {
+                    this.status = '';
+                    this.messages = 'In session\n';
+                    this.inSession = true;
+                    this.sessionId = session.sessionId;
+                    this.userId = session.userId;
+                    this.username = session.username;
+                    this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
+                    this.websocketService.send({
+                        action: 'JoinSession',
+                        sessionId: this.sessionId,
+                        userId: this.userId,
+                        payload: `Joining session ${this.sessionId}`
+                    });
+                } else {
+                    this.inSession = false;
+                    console.log('Unable to join that session!!');
+                    this.status = 'Unable to join that session!';
+                }
+            },
+            err => {
+                console.log(err);
+                this.status = 'Unable to join that session!';
+            });
     }
-  }
 
-  public addMessage($event): void {
-    const wsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event } as WsMessage;
-    console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);
-    this.websocketService.send(wsMessage);
-  }
-
-  public cardSelected($event): void {
-    this.websocketService.send({ action: 'EnterVote',
-      sessionId: this.sessionId, userId: this.userId, payload: $event });
-  }
-  public showThatTheUserHasVoted(user: User): boolean {
-    return user.vote && this.phase === 'voting';
-  }
-
-  processMessage = (message: WsMessage) => {
-    switch (message.action) {
-      case 'UpdatePlanSession' : this.processUpdateSession(message); break;
-      case 'NewMessage' : this.addNewMessage(message); break;
-      case 'UpdateVotes' : this.updateVotes(message); break;
-      case 'UpdatePhase' : this.updatePhase(message); break;
-      default: console.log(`PlanningSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
+    public createSession(): void {
+        this.sessionService.sessionCreate(this.username, SessionType.REFINEMENT).subscribe(
+            session => {
+                this.status = '';
+                this.inSession = true;
+                this.sessionId = session.sessionId;
+                this.userId = session.userId;
+                this.username = session.username;
+                const handler = (this.processMessage).bind(this);
+                this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
+                this.websocketService.send({
+                    action: 'JoinSession',
+                    sessionId: this.sessionId,
+                    userId: this.userId,
+                    payload: `Joining session ${this.sessionId}`
+                });
+            },
+            err => {
+                console.log(err);
+                this.status = 'Unable to create a session!';
+            }
+        );
     }
-  }
-  private processUpdateSession(message: WsMessage): void {
-    this.users = this.getUsersFromMessage(message);
-    if (! this.myRole) {
-      this.myRole = this.users.find(u => u.id === this.userId).role;
+
+    public switchPhaseHandler(): void {
+        if (this.phase === 'voting') {
+            this.switchToPhase('showResults');
+            this.websocketService.send({
+                action: 'SwitchPhase',
+                sessionId: this.sessionId,
+                userId: this.userId,
+                payload: this.phase
+            });
+        } else if (this.phase === 'showResults') {
+            this.switchToPhase('voting');
+            this.websocketService.send({
+                action: 'SwitchPhase',
+                sessionId: this.sessionId,
+                userId: this.userId,
+                payload: this.phase
+            });
+        } else {
+            console.log(`Unknown phase ${this.phase}`);
+        }
     }
-  }
-  private getUsersFromMessage(message: WsMessage): User[] {
-    return  (message.payload as User[]).sort((u1, u2) => {
-      if (u1.username > u2.username) { return 1; }
-      if (u1.username < u2.username) { return -1; }
-      return 0;
-    });
-  }
-  private addNewMessage(message: WsMessage): void {
-    this.newMessage.next(message.payload);
-  }
-  private updateVotes(message: WsMessage): void {
-    this.users.forEach( u => {
-      const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);
-      if ( tempVote) {
-        u.vote = tempVote.vote;
-      } else {
-        u.vote = undefined;
-      }
-    });
-  }
-  private updatePhase(message: WsMessage): void {
-    this.switchToPhase(message.payload);
-  }
+
+    private switchToPhase(phase: string): void {
+        if (phase === 'voting') {
+            this.phase = 'voting';
+            this.switchPhase = 'Finish voting';
+        } else if (phase === 'showResults') {
+            this.phase = 'showResults';
+            this.switchPhase = 'Start voting';
+        } else {
+            console.log(`Unknown phase ${phase}`);
+        }
+    }
+
+    public addMessage($event): void {
+        const wsMessage = {
+            action: 'AddMessage',
+            sessionId: this.sessionId,
+            userId: this.userId,
+            payload: $event
+        } as WsMessage;
+        console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);
+        this.websocketService.send(wsMessage);
+    }
+
+    public cardSelected($event): void {
+        this.websocketService.send({
+            action: 'EnterVote',
+            sessionId: this.sessionId, userId: this.userId, payload: $event
+        });
+    }
+
+    public showThatTheUserHasVoted(user: User): boolean {
+        return user.vote && this.phase === 'voting';
+    }
+
+    processMessage = (message: WsMessage) => {
+        switch (message.action) {
+            case 'UpdatePlanSession' :
+                this.processUpdateSession(message);
+                break;
+            case 'NewMessage' :
+                this.addNewMessage(message);
+                break;
+            case 'UpdateVotes' :
+                this.updateVotes(message);
+                break;
+            case 'UpdatePhase' :
+                this.updatePhase(message);
+                break;
+            default:
+                console.log(`PlanningSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
+        }
+    }
+
+    private processUpdateSession(message: WsMessage): void {
+        this.users = this.getUsersFromMessage(message);
+        if (!this.myRole) {
+            this.myRole = this.users.find(u => u.id === this.userId).role;
+        }
+    }
+
+    private getUsersFromMessage(message: WsMessage): User[] {
+        return (message.payload as User[]).sort((u1, u2) => {
+            if (u1.username > u2.username) {
+                return 1;
+            }
+            if (u1.username < u2.username) {
+                return -1;
+            }
+            return 0;
+        });
+    }
+
+    private addNewMessage(message: WsMessage): void {
+        this.newMessage.next(message.payload);
+    }
+
+    private updateVotes(message: WsMessage): void {
+        this.users.forEach(u => {
+            const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);
+            if (tempVote) {
+                u.vote = tempVote.vote;
+            } else {
+                u.vote = undefined;
+            }
+        });
+    }
+
+    private updatePhase(message: WsMessage): void {
+        this.switchToPhase(message.payload);
+    }
+
+    onClickCopy(event: MouseEvent): void {
+        event.preventDefault();
+        const listener = (e: ClipboardEvent) => {
+            e.clipboardData.setData('text/plain', (this.sessionId));
+            e.preventDefault();
+        };
+        document.addEventListener('copy', listener);
+        document.execCommand('copy');
+        document.removeEventListener('copy', listener);
+        this.messageService.add({key: 'myKey1', severity: 'success', summary: 'Copied!', detail: `${this.sessionId}`});
+    }
+
 }
