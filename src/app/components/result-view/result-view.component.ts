@@ -35,8 +35,8 @@ export class ResultViewComponent implements OnInit {
       temp.count++;
     });
 
-    const labels = cnt.map(c => c.label);
     const data = cnt.map(c => c.count);
+    const labels = cnt.map(c => c.label + ` (${c.count}x)`);
     this.data.labels = labels;
     this.data.datasets[0].label = 'cnt';
     this.data.datasets[0].data = data;
