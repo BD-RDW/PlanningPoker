@@ -75,13 +75,8 @@ ERROR               (any)           <- Server                                   
 20210822 : Updated poker result view
 ```
 # ToDo
-- add server reporting (sessions and users)
-- setTimeout(function, msec)
-- new Date();
-- current.toLocaleTimeString();
-- current.toLocaleDateString();
-- current.toLocaleString();
-- [reconnecting-websocket](https://npm.io/package/reconnecting-websocket)
+- join session using url
+- replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu) 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
