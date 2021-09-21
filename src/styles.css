@@ -22,3 +22,21 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.p-tabmenu {
+  width: 100%;
+  height: 60px;
+}
+.p-tabmenu .p-tabmenu-nav {
+  background: transparent;
+  border: 0 none;
+  border-width: 0 0 2px 0;
+}
+
+app-retro-session {
+  height: 100%;
+}
+
+app-planning-session {
+  height: 100%;
+}

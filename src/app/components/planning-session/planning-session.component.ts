@@ -1,4 +1,7 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit, Output, EventEmitter } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+
 import { WsMessage } from 'src/app/model/message';
 
 import { SessionService } from '../../service/session.service';
@@ -8,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { User, UserVotes, SessionType } from '../../model/session';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { TabSelected } from '../../shared/tab-selected';
 
 
 @Component({
@@ -16,6 +20,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   styleUrls: ['./planning-session.component.css']
 })
 export class PlanningSessionComponent implements OnInit {
+
+  @Output() tabSelectedEvent = new EventEmitter<TabSelected>();
 
   public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
 
@@ -32,6 +38,8 @@ export class PlanningSessionComponent implements OnInit {
   public phase: string;
   public myRole: string;
 
+  private baseUrl: string;
+
   public inSession = false;
 
   public cardNumbers = environment.CARD_SYMBOLS;
@@ -41,13 +49,29 @@ export class PlanningSessionComponent implements OnInit {
 
   constructor(
     private sessionService: SessionService,
-    private websocketService: WebsocketService)
+    private websocketService: WebsocketService,
+    private route: ActivatedRoute,
+    private clipboard: Clipboard)
   {
+    this.inSession = false;
+    this.sessionId = null;
+    this.baseUrl = document.location.href;
+    if (this.baseUrl.indexOf('?') >= 0) {
+      this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));
+    }
   }
 
   ngOnInit(): void {
-    this.inSession = false;
-    this.sessionId = null;
+    this.tabSelectedEvent.emit(TabSelected.PlanningPoker);
+    this.route.queryParams.subscribe(params => {
+      this.sessionId = params.sessionId;
+      this.username = params.userId;
+      if (this.sessionId) {
+        if (this.username) {
+          this.joinSession();
+        }
+      }
+    });
   }
 
   public joinSession(): void {
@@ -166,5 +190,9 @@ export class PlanningSessionComponent implements OnInit {
   }
   private updatePhase(message: WsMessage): void {
     this.switchToPhase(message.payload);
+  }
+  getLinkUrl(): void {
+    const result = `${this.baseUrl}?sessionId=${this.sessionId}&userId=`;
+    this.clipboard.copy(result);
   }
 }

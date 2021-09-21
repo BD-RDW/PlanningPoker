@@ -27,13 +27,15 @@ abstract class AbstractManager {
     // NewMessage    (Session)       <- Server distributes message
     processMessage(message: WsMessage): void {
         const session = this.getSessionMgr().findSession(message.sessionId);
-        session.users.forEach(u => {
-            if (u.conn) {
-                const username = this.getSessionMgr().findUser(message.userId).username;
-                const wsMessage: WsMessage = { action: 'NewMessage', sessionId: session.id, userId: u.id, payload: message.payload };
-                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
-            }
-        });
+        if (session && session.users) {
+            session.users.forEach(u => {
+                if (u.conn) {
+                    const username = this.getSessionMgr().findUser(message.userId).username;
+                    const wsMessage: WsMessage = { action: 'NewMessage', sessionId: session.id, userId: u.id, payload: message.payload };
+                    u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+                }
+            });
+        }
     }
     skipFields(k: any, v: any): any {
         if (k === 'conn') { return undefined; } return v;

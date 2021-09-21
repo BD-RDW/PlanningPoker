@@ -1,0 +1,20 @@
+.userSessionInfo label {
+  display: inline-block;
+  min-width: 70px;
+  margin: 0 0 10px 0;
+}
+
+.userSessionInfo input {
+  width: 200px;
+  margin-left: 20px;
+}
+
+
+  <div *ngIf="!retroService.inSession" class="userSessionInfo">
+    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="retroService.username"> <br>
+    <div class="group">
+      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="retroService.sessionId"><br />
+      <button *ngIf="retroService.sessionId" id="join_retro_session" (click)="joinSession()">Join existing session</button>
+      <button *ngIf="!retroService.sessionId" id="new_retro_session" (click)="createSession()">Create new session</button><br>
+      </div>
+  </div>

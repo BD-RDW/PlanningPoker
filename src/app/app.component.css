@@ -15,8 +15,11 @@
   flex-grow:1;
   align-items: stretch;
   background-color: transparent;
+  display:flex;
+  flex-direction:column;
 }
 .footer {
   background-color: transparent;
   flex-grow:0;
 }
+

@@ -1,0 +1,14 @@
+.controlePanel a {
+  color: darkblue;
+  font-weight: bold;
+}
+.controlePanel {
+
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  border: 10px white solid;
+  height: 100%;
+  min-width: 300px;
+  max-width: 300px;
+}

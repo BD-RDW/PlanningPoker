@@ -1,4 +1,4 @@
-<div style="width: 100%; height: 100%;">
+<div  style="max-width: 99%; max-height: 99%; overflow: hidden;">
     <div *ngIf="!inSession">
         <label for="username">User Id:</label><input id="planning_username" name="username" type="text" [(ngModel)]="username" 
             style="width: 200px;margin-left: 20px;"> <br>
@@ -32,10 +32,10 @@
                     <app-result-view [users]="users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
                 </div>
             </div>
-            <div class="p-col-2" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 20px;">
+            <!-- div class="p-col-2" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 20px;">
                 <div id="controlePanel">
                     <div>
-                        <label>Session: {{sessionId}}</label><br/>
+                        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{sessionId}}</a></label><br/>
                         <label>User: {{username}} ({{userId}})</label><br/>
                     </div>
                     <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
@@ -43,7 +43,20 @@
                 <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;">
                     <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
                 </div>
+            </div -->
+            <div id="controlePanel" class="p-col-2">
+                <div class="controlePanel">
+                    <div>
+                        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{sessionId}}</a></label><br />
+                        <label>User: {{username}} ({{userId}})</label><br />
+                    </div>
+                    <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
+                    <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
+                        <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
+                    </div>
+                </div>
             </div>
+          
         </div>
     </div>
     <p-scrollPanel class="footer">

@@ -1,47 +1,42 @@
-
-<div class='auxilaryMenuButton' *ngIf="inSession">
+<div class='auxilaryMenuButton' *ngIf="retroService.inSession">
   <button id='auxilaryMenu' class="pi pi-bars" (click)="auxilaryMenu()"> </button>
 </div>
-<div style="width: 100%; height: 100%;">
-  <div *ngIf="!inSession">
-    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="username"
+<div class="retrospective-mainpanel">
+  <div *ngIf="!retroService.inSession">
+    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="retroService.username"
       style="width: 200px;margin-left: 20px;"> <br>
     <div class="group">
       <button id="new_retro_session" (click)="createSession()">Create new session</button><br>
     </div>
     <div class="group">
-      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="sessionId"
+      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="retroService.sessionId"
         style="width: 200px;margin-left: 20px;"><br />
       <button id="join_retro_session" (click)="joinSession()">Join existing session</button>
     </div>
   </div>
-  <div class="retrospective-panel" *ngIf="inSession"  style="height: 100%;">
-    <!-- <i class="pi pi-angle-double-left exploded-userpanel"></i> -->
-    <div id="userPanel" class="user-panel"  style="height: 100%;">
+  <div class="retrospective-panel" *ngIf="retroService.inSession">
+    <div id="userPanel" class="user-panel" >
       <span>Users:</span>
       <ul>
-        <li *ngFor="let user of users">
+        <li *ngFor="let user of retroService.users">
           <span>{{user.name}}</span>
         </li>
       </ul>
     </div>
     <div id="retroMainpanel" class="main-panel">
-      <app-retrospective-column *ngFor="let col of columnData" [columnData]="col"  [userId]="userId" [availableVotes]="availableVotes"
+      <app-retrospective-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.userId" [availableVotes]="retroService.availableVotes"
         (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" 
         (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retrospective-column>
     </div>
-    <div id="controlePanel" class="controlePanel" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start;">
+    <div id="controlePanel" class="controlePanel">
       <div>
-        <label>Session: {{sessionId}}</label><br />
-        <label>User: {{username}} ({{userId}})</label><br />
-        <label>votes: {{availableVotes}}</label><br />
+        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{retroService.sessionId}}</a></label><br />
+        <label>User: {{retroService.username}} ({{retroService.userId}})</label><br />
+        <label>votes: {{retroService.availableVotes}}</label><br />
       </div>
       <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
-        <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
+        <app-messages-view [messageReceived]="retroService.newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
       </div>
     </div>
   </div>
-  <p-scrollPanel class="footer">
-    <p>{{status}}</p>
-  </p-scrollPanel>
 </div>

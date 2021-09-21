@@ -3,12 +3,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { TabViewModule } from 'primeng/tabview';
+import { TabMenuModule } from 'primeng/tabmenu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { PrimeIcons } from 'primeng/api';
-import {DialogModule} from 'primeng/dialog';
+import { DialogModule } from 'primeng/dialog';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -40,7 +40,7 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    TabViewModule,
+    TabMenuModule,
     ScrollPanelModule,
     BrowserAnimationsModule,
     ButtonModule,

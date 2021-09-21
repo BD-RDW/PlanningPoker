@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
 import { RetrospectiveNote } from '../../model/retrospective-data';
 import { NotesToMerge } from '../../model/notes-to-merge';
 import * as sanitizeHtml from 'sanitize-html';
+import { RetroSessionServiceService } from 'src/app/service/retro-session-service.service';
 
 @Component({
   selector: 'app-retrospective-message',
@@ -22,7 +23,7 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
   @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
   @Output() mergeNotesEvent = new EventEmitter<NotesToMerge>();
 
-  constructor() { }
+  constructor(public retroService: RetroSessionServiceService) { }
 
 
   ngOnInit(): void {
@@ -69,19 +70,21 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
 
   public dragStart($event: any): boolean {
     if (this.messageIsNotBeingEditted()) {
-      $event.dataTransfer.setData('number', this.message.id);
+      this.retroService.setDraggedMessage(this.message);
     }
     return this.messageIsNotBeingEditted();
   }
   public allowDrop($event: any): void {
-    if (this.messageIsNotBeingEditted() && this.message.id !== parseInt($event.dataTransfer.getData('number'), 10)) {
+    console.log('allowDrop: ' + JSON.stringify($event));
+    if (this.messageIsNotBeingEditted() && this.message.id !== this.retroService.getDraggedMessageId()) {
       $event.preventDefault();
     }
   }
   public onDrop($event: any): void {
     $event.preventDefault();
-    this.mergeNotesEvent.emit({baseNoteId: this.message.id,
-      note2MergeId: parseInt($event.dataTransfer.getData('number'), 10)} as NotesToMerge);
+    const note2MergeId = this.retroService.getDraggedMessageId();
+    this.retroService.resetDraggedMessage();
+    this.mergeNotesEvent.emit({baseNoteId: this.message.id, note2MergeId } as NotesToMerge);
   }
 
   public getMessageTxt(): string {

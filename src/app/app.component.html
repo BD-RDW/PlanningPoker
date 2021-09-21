@@ -4,13 +4,15 @@
     <h1 id='kop'>Scrum tooling</h1>
   </div>
   <div class="mainPanel">
-    <p-tabView>
+    <!-- <p-tabView>
       <p-tabPanel class="my-tabpanel" header="Home" [selected]="true"><app-home></app-home></p-tabPanel>
       <p-tabPanel header="Retrospective" class="retrospective-panel"><app-retro-session></app-retro-session></p-tabPanel>
       <p-tabPanel header="Poker" class="refinement-panel"><app-planning-session></app-planning-session></p-tabPanel>
-    </p-tabView>
-    </div>
-    <div class="footer">
-      <app-status></app-status>
-    </div>
+    </p-tabView> -->
+    <p-tabMenu [model]="items"  [activeItem]="activeItem"></p-tabMenu>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
+  </div>
+  <div class="footer">
+    <app-status></app-status>
+  </div>
 </div>

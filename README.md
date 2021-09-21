@@ -42,8 +42,8 @@ ERROR               (any)           <- Server                                   
  
 ## Deployment
 
-1. Bouw frontend. Deze plaatst de bestanden in node-backend/dist/public
-1. Bouw backend.
+1. Bouw frontend (met npm run build). Deze plaatst de bestanden in node-backend/dist/public
+1. Bouw backend (met npm run compile).
 1. Run: vanuit node-backend/dist: node server/server.js
 
 ## Rollout to OpenShift
@@ -73,6 +73,8 @@ ERROR               (any)           <- Server                                   
 20210820 : Added version number to frontend
 20210820 : Added server monitoring
 20210822 : Updated poker result view
+20210915 : Toegevoegd: one click to copy
+20210915 : Toegevoegd: hoe vaak iets gestemd is
 ```
 # ToDo
 - join session using url

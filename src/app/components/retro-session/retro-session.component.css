@@ -13,9 +13,10 @@
 }
 
 .user-panel {
+  flex-grow: 0;
   margin: 15px, 10px, 5px, 10px;
-  width: 200px;
-  align-items: stretch;
+  min-width: 200px;
+  max-width: 200px;
 }
 
 .user-panel li {
@@ -31,16 +32,16 @@
   width: 200px;
 }
 .retrospective-panel {
-
+  flex-grow: 1;
   display: flex;
   align-items: stretch;
 }
 
 .main-panel {
-  width: 100%;
-  height: 100%;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
+  align-content: stretch;
 }
 
 .main-panel :last-child {
@@ -55,7 +56,24 @@
 }
 
 .controlePanel {
+  flex-grow: 0;
   display: flex;
   flex-direction: column;
+  align-content: stretch;
   border: 10px white solid;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.controlePanel a {
+  color: darkblue;
+  font-weight: bold;
+}
+
+.retrospective-mainpanel {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: stretch;
 }
