@@ -4,8 +4,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { WsMessage } from 'src/app/model/message';
 
-import { SessionService } from '../../service/session.service';
-import { WebsocketService } from '../../service/websocket.service';
+import {SessionService} from '../../service/session.service';
+import {WebsocketService} from '../../service/websocket.service';
 
 import { environment } from '../../../environments/environment';
 import { User, UserVotes, SessionType } from '../../model/session';
@@ -13,11 +13,13 @@ import { User, UserVotes, SessionType } from '../../model/session';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
 
+import {MessageService} from 'primeng/api';
 
 @Component({
-  selector: 'app-planning-session',
-  templateUrl: './planning-session.component.html',
-  styleUrls: ['./planning-session.component.css']
+    selector: 'app-planning-session',
+    templateUrl: './planning-session.component.html',
+    styleUrls: ['./planning-session.component.css'],
+    providers: [MessageService]
 })
 export class PlanningSessionComponent implements OnInit {
 

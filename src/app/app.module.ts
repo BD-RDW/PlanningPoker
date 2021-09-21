@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { PrimeIcons } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import {ToastModule} from 'primeng/toast';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -45,7 +46,8 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     BrowserAnimationsModule,
     ButtonModule,
     ChartModule,
-    DialogModule
+    DialogModule,
+    ToastModule
   ],
   providers: [PrimeIcons],
   bootstrap: [AppComponent]

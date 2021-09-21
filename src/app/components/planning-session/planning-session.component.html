@@ -1,12 +1,16 @@
 <div  style="max-width: 99%; max-height: 99%; overflow: hidden;">
     <div *ngIf="!inSession">
-        <label for="username">User Id:</label><input id="planning_username" name="username" type="text" [(ngModel)]="username" 
-            style="width: 200px;margin-left: 20px;"> <br>
+        <label for="username">User Id:</label><input id="planning_username" name="username" type="text"
+                                                     [(ngModel)]="username"
+                                                     style="width: 200px;margin-left: 20px;"> <br>
         <div class="group">
-            <button id="new_planning_session" (click)="createSession()">Create new session</button><br>
+            <button id="new_planning_session" (click)="createSession()">Create new session</button>
+            <br>
         </div>
         <div class="group">
-            <label for="sessionId">Session Id:</label><input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="sessionId" style="width: 200px;margin-left: 20px;"><br/>
+            <label for="sessionId">Session Id:</label><input id="planning_session_id" name="sessionId" type="text"
+                                                             [(ngModel)]="sessionId"
+                                                             style="width: 200px;margin-left: 20px;"><br/>
             <button id="join_planning_session" (click)="joinSession()">Join existing session</button>
         </div>
     </div>
@@ -14,8 +18,8 @@
         <div class="p-grid" style="height: 100%;">
             <div id="userPanel" class="p-col-2 user-panel">Users: <br>
                 <ul>
-                    <li *ngFor="let user of users" >
-                        <span>{{user.username}} 
+                    <li *ngFor="let user of users">
+                        <span>{{user.username}}
                             <i [ngClass]="{'pi pi-check' :  user.vote && phase === 'voting' }"></i>
                             <i *ngIf="user.vote && phase === 'showResults'">( {{user.vote}} )</i>
                         </span>
@@ -25,25 +29,14 @@
             <div id="planningMainpanel" class="p-col-8 mainPanel">
                 <div *ngIf="phase==='voting'">
                     <div class="card-panel">
-                        <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+                        <app-cards-view [cardNumbers]="cardNumbers"
+                                        (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
                     </div>
                 </div>
                 <div class="result-panel" *ngIf="phase==='showResults'">
                     <app-result-view [users]="users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
                 </div>
             </div>
-            <!-- div class="p-col-2" style="height: 100%; display: flex; flex-direction: column; justify-content: flex-start; margin-bottom: 20px;">
-                <div id="controlePanel">
-                    <div>
-                        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{sessionId}}</a></label><br/>
-                        <label>User: {{username}} ({{userId}})</label><br/>
-                    </div>
-                    <button *ngIf="myRole==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
-                </div>
-                <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;">
-                    <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
-                </div>
-            </div -->
             <div id="controlePanel" class="p-col-2">
                 <div class="controlePanel">
                     <div>
