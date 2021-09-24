@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ButtonModule } from 'primeng/button';
@@ -49,7 +50,9 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     DialogModule,
     ToastModule
   ],
-  providers: [PrimeIcons],
+  providers: [PrimeIcons,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

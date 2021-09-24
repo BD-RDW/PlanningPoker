@@ -53,10 +53,10 @@ ERROR               (any)           <- Server                                   
 - oc login
 - oc project wd-scrum-ont
 - oc start-build nodejs --from-dir .
-- Open Openshift UI en selecteer project wd-scrum-ont
-- Als deployment van nodejs klaar is open de deployment descriptor
-- Copy de image sha
-- plaats de nieuwe image sha in scrum-tooling-deploy\overlays\ont\kustomization.yaml
+- open Openshift UI en select project wd-scrum-ont
+- when deployment of nodejs is ready open the deployment descriptor
+- copy the image sha
+- place the new image sha in scrum-tooling-deploy\overlays\ont\kustomization.yaml
 - run scrum-tooling-deploy\deploy.sh
 
 # Changes:
@@ -73,11 +73,14 @@ ERROR               (any)           <- Server                                   
 20210820 : Added version number to frontend
 20210820 : Added server monitoring
 20210822 : Updated poker result view
-20210915 : Toegevoegd: one click to copy
-20210915 : Toegevoegd: hoe vaak iets gestemd is
+20210915 : Added: one click to copy
+20210915 : Added: Retrospective note voting
+20210921 : Session joining using an URL
+20210923 : Added HashLocationStrategy
 ```
 # ToDo
-- join session using url
+https://stackoverflow.com/questions/43535048/angular-2-routing-does-not-work-when-deployed-to-http-server
+
 - replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu) 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
