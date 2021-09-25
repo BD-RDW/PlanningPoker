@@ -7,7 +7,7 @@ export class SessionMgr {
     private reportingService = new ReportingService(this);
 
     constructor() {
-
+        console.log('SessionMgr - constructor');
     }
 
     public addUser(user: User, session: Session): number {
@@ -69,6 +69,7 @@ export class SessionMgr {
             this.sessions.splice(index, 1);
             this.reportingService.signalChanges();
         }
+        this.reportingService.signalChanges();
     }
     skipFields(k: any, v: any): any {
         if (k === 'conn') { return undefined; } return v;
