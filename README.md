@@ -1,19 +1,17 @@
-# PlanningSession
+# Scrum tooling
 
-In directory node-backend is a server. It can be started using: npm start.
-The server should be restart when files are updated, but that doesn't seem to be working.
+Scrum tooling is a simple application to assist during the retrospective and refinement.
 
-The frontend can be start using npm start in the root of the project
+In directory node-backend is a server. It can be started using: npm run startDev.
+The server will be restart when files are updated.
+
+In de root directory is the frontend that can be start using npm start
 
 ## Usage
 
-First user start browser on http://localhost:4200, select 'join session' enter a name and click 'Create new session'
+First user start browser on http://localhost:4200, select the type of session (retrospective or planning) enter a name and click 'Create new session'
 
-Second user copy the sessionId from the first user.
-
-Start browser on http://localhost:4200, select 'join session' enter a name, paste the sessionId into the field 'Session Id' and click 'Join existing session'
-
-Both users are in the same chat-like session
+Click on the sessionId to copy an url to the clipboard, that url can be used by other users to join that session.
 
 ## Websocket Client-Server actions
 ```
