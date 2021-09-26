@@ -1,17 +1,16 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-
-import { WsMessage } from '../../model/message';
-import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
-import { User, SessionType } from '../../model/session';
+import {MessageService} from 'primeng/api';
 import { saveAs } from '../../../../node_modules/file-saver';
 
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 import { RetroSessionService } from 'src/app/service/retro-session.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TabSelected } from '../../shared/tab-selected';
+import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
+import { RetrospectiveNote } from '../../model/retrospective-data';
 
 @Component({
   selector: 'app-retro-session',
@@ -34,7 +33,9 @@ export class RetroSessionComponent implements OnInit {
 
   constructor(public retroService: RetroSessionService,
               private route: ActivatedRoute,
-              private clipboard: Clipboard) {
+              private clipboard: Clipboard,
+              private cookieService: ScrumCookieServiceService,
+              private messageService: MessageService) {
     this.baseUrl = document.location.href;
     if (this.baseUrl.indexOf('?') >= 0) {
       this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));
@@ -42,12 +43,16 @@ export class RetroSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.retroService.session.user.name = this.cookieService.getUsername();
     this.tabSelectedEvent.emit(TabSelected.Retrospective);
     this.route.queryParams.subscribe(params => {
       this.retroService.session.id = params.sessionId;
-      this.retroService.session.user.name = params.userId;
+      if (params.userId) {
+        this.retroService.session.user.name = params.userId;
+      }
       if (this.retroService.session.id) {
         if (this.retroService.session.user.name) {
+
           this.joinSession();
         }
       }
@@ -55,6 +60,7 @@ export class RetroSessionComponent implements OnInit {
   }
 
   public joinSession(): void {
+    this.cookieService.usingUsername(this.retroService.session.user.name);
     this.retroService.joinSession().subscribe(r => {
       if (!this.retroService.inSession) {
         console.log('Unable to join that session!!');
@@ -63,6 +69,7 @@ export class RetroSessionComponent implements OnInit {
     });
   }
   public createSession(): void {
+    this.cookieService.usingUsername(this.retroService.session.user.name);
     this.retroService.createSession().subscribe(r => {
       if (! r) {
         console.log('Unable to create session!!');
@@ -95,8 +102,9 @@ export class RetroSessionComponent implements OnInit {
     this.retroService.mergeNotes(notes2Merge);
   }
   getLinkUrl(): void {
-    const result = `${this.baseUrl}?sessionId=${this.retroService.session.id}&userId=`;
+    const result = `${this.baseUrl}?sessionId=${this.retroService.session.id}`;
     this.clipboard.copy(result);
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});
   }
   public auxilaryMenu(): void {
     const nodeTexts: string[] = this.retroService.columnData.map(cd => cd.title + '\n' + cd.notes.map(n => '\t' + n.txt + '\n') + '\n\n');

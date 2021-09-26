@@ -1,7 +1,7 @@
-import { Component, ComponentFactoryResolver, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-
+import {MessageService} from 'primeng/api';
 import { WsMessage } from 'src/app/model/message';
 
 import {SessionService} from '../../service/session.service';
@@ -10,16 +10,16 @@ import {WebsocketService} from '../../service/websocket.service';
 import { environment } from '../../../environments/environment';
 import { User, UserVotes, SessionType, Session } from '../../model/session';
 
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
 
-import {MessageService} from 'primeng/api';
+import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
 
 @Component({
     selector: 'app-planning-session',
     templateUrl: './planning-session.component.html',
     styleUrls: ['./planning-session.component.css'],
-    providers: [MessageService]
+    providers: []
 })
 export class PlanningSessionComponent implements OnInit {
 
@@ -29,7 +29,6 @@ export class PlanningSessionComponent implements OnInit {
 
   public session: Session =
     {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
-  // public users: User[] = [];
   public inSession = false;
 
   public messages  = 'Default message';
@@ -37,7 +36,6 @@ export class PlanningSessionComponent implements OnInit {
 
   public switchPhase: string;
   public phase: string;
-  // public myRole: string;
 
   private baseUrl: string;
 
@@ -50,7 +48,9 @@ export class PlanningSessionComponent implements OnInit {
     private sessionService: SessionService,
     private websocketService: WebsocketService,
     private route: ActivatedRoute,
-    private clipboard: Clipboard)
+    private clipboard: Clipboard,
+    private cookieService: ScrumCookieServiceService,
+    private messageService: MessageService)
   {
     this.baseUrl = document.location.href;
     if (this.baseUrl.indexOf('?') >= 0) {
@@ -59,10 +59,13 @@ export class PlanningSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.session.user.name = this.cookieService.getUsername();
     this.tabSelectedEvent.emit(TabSelected.PlanningPoker);
     this.route.queryParams.subscribe(params => {
       this.session.id = params.sessionId;
-      this.session.user.name = params.userId;
+      if (params.userId) {
+        this.session.user.name = params.userId;
+      }
       if (this.session.id) {
         if (this.session.user.name) {
           this.joinSession();
@@ -72,7 +75,7 @@ export class PlanningSessionComponent implements OnInit {
   }
 
   public joinSession(): void {
-    console.log('planning: joinSession.');
+    this.cookieService.usingUsername(this.session.user.name);
     this.sessionService.joinSession(SessionType.REFINEMENT, this.session.id, this.session.user.name).subscribe(session => {
       if (session) {
         this.status = '';
@@ -93,7 +96,7 @@ export class PlanningSessionComponent implements OnInit {
     });
   }
   public createSession(): void {
-    console.log('planning: createSession.');
+    this.cookieService.usingUsername(this.session.user.name);
     this.sessionService.sessionCreate(this.session.user.name, SessionType.REFINEMENT).subscribe(
       session => {
         this.status = '';
@@ -187,7 +190,8 @@ export class PlanningSessionComponent implements OnInit {
     this.switchToPhase(message.payload);
   }
   getLinkUrl(): void {
-    const result = `${this.baseUrl}?sessionId=${this.session.id}&userId=`;
+    const result = `${this.baseUrl}?sessionId=${this.session.id}`;
     this.clipboard.copy(result);
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});
   }
 }

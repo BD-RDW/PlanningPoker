@@ -11,6 +11,8 @@ import { ChartModule } from 'primeng/chart';
 import { PrimeIcons } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -51,7 +53,9 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     ToastModule
   ],
   providers: [PrimeIcons,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    CookieService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
