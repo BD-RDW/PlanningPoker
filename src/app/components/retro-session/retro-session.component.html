@@ -3,13 +3,13 @@
 </div>
 <div class="retrospective-mainpanel">
   <div *ngIf="!retroService.inSession">
-    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="retroService.username"
+    <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="retroService.session.user.name"
       style="width: 200px;margin-left: 20px;"> <br>
     <div class="group">
       <button id="new_retro_session" (click)="createSession()">Create new session</button><br>
     </div>
     <div class="group">
-      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="retroService.sessionId"
+      <label for="sessionId">Session Id:</label><input id="retro_session_id" name="sessionId" type="text" [(ngModel)]="retroService.session.id"
         style="width: 200px;margin-left: 20px;"><br />
       <button id="join_retro_session" (click)="joinSession()">Join existing session</button>
     </div>
@@ -18,20 +18,20 @@
     <div id="userPanel" class="user-panel" >
       <span>Users:</span>
       <ul>
-        <li *ngFor="let user of retroService.users">
+        <li *ngFor="let user of retroService.session.users">
           <span>{{user.name}}</span>
         </li>
       </ul>
     </div>
     <div id="retroMainpanel" class="main-panel">
-      <app-retrospective-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.userId" [availableVotes]="retroService.availableVotes"
+      <app-retrospective-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.session.user.id" [availableVotes]="retroService.availableVotes"
         (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" 
         (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retrospective-column>
     </div>
     <div id="controlePanel" class="controlePanel">
       <div>
-        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{retroService.sessionId}}</a></label><br />
-        <label>User: {{retroService.username}} ({{retroService.userId}})</label><br />
+        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{retroService.session.id}}</a></label><br />
+        <label>User: {{retroService.session.user.name}} ({{retroService.session.user.id}})</label><br />
         <label>votes: {{retroService.availableVotes}}</label><br />
       </div>
       <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">

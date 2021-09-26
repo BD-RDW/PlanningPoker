@@ -35,7 +35,7 @@ app.post('/rest/session/:id', (req, res) => {
         user.role = Role.TeamMember;
         const userId = sessionMgr.addUser(user, session);
         res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
-        return res.status(200).send({ sessionId: session.id, userId: user.id, username: user.username });
+        return res.status(200).send({ sessionId: session.id, userId: user.id, name: user.name });
     }
     return res.sendStatus(404);
    });
@@ -48,10 +48,10 @@ app.post('/rest/session', (req, res) => {
         res.status(500).send(`Unable to create a session of type ${req.params.type}`);
     }
 
-    const user: User = { id: undefined, username: req.body.username, role: Role.ScrumMaster };
+    const user: User = { id: undefined, name: req.body.name, role: Role.ScrumMaster };
     const sessionId = sessionMgr.newSession(sessionType, user);
     res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
-    res.send({ sessionId, userId: user.id, username: user.username } );
+    res.send({ sessionId, userId: user.id, username: user.name } );
    });
 
 /* get all sessions */

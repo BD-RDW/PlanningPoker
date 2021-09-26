@@ -30,7 +30,7 @@ abstract class AbstractManager {
         if (session && session.users) {
             session.users.forEach(u => {
                 if (u.conn) {
-                    const username = this.getSessionMgr().findUser(message.userId).username;
+                    const username = this.getSessionMgr().findUser(message.userId).name;
                     const wsMessage: WsMessage = { action: 'NewMessage', sessionId: session.id, userId: u.id, payload: message.payload };
                     u.conn.send(JSON.stringify(wsMessage, this.skipFields));
                 }

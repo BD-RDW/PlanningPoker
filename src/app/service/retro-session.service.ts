@@ -7,26 +7,23 @@ import { catchError, map } from 'rxjs/operators';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 
 import { RetrospectiveColumnData, RetrospectiveNote } from '../model/retrospective-data';
-import { User, SessionType } from '../model/session';
+import { User, SessionType, Session, UserInfo } from '../model/session';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RetroSessionServiceService {
+export class RetroSessionService {
 
   public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
 
   columnData: RetrospectiveColumnData[] = [];
 
   public inSession = false;
-  public sessionId: string;
-  public userId: number;
-  public username = '';
+  public session: Session =
+      {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
   public availableVotes = 5;
 
   private draggedMessage: RetrospectiveNote;
-
-  public users: UserInfo[] = [];
 
   private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote'];
 
@@ -35,15 +32,13 @@ export class RetroSessionServiceService {
               private websocketService: WebsocketService) { }
 
   public joinSession(): Observable<boolean> {
-    return this.sessionService.joinSession(SessionType.RETROSPECTIVE, this.sessionId, this.username).pipe(
+    return this.sessionService.joinSession(SessionType.RETROSPECTIVE, this.session.id, this.session.user.name).pipe(
       map(session => {
         if (session) {
           this.inSession = true;
-          this.sessionId = session.sessionId;
-          this.userId = session.userId;
-          this.username = session.username;
-          this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
-          const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId };
+          this.session = JSON.parse(JSON.stringify(session));
+          this.websocketService.init(this.processMessage, this.session.id, this.actions, document.location.href);
+          const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id };
           this.websocketService.send(wsMessage);
         } else {
           this.inSession = false;
@@ -57,15 +52,13 @@ export class RetroSessionServiceService {
     );
   }
   public createSession(): Observable<boolean> {
-    return this.sessionService.sessionCreate(this.username, SessionType.RETROSPECTIVE).pipe(
+    return this.sessionService.sessionCreate(this.session.user.name, SessionType.RETROSPECTIVE).pipe(
       map(session => {
         this.inSession = true;
-        this.sessionId = session.sessionId;
-        this.userId = session.userId;
-        this.username = session.username;
+        this.session = JSON.parse(JSON.stringify(session));
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
-        const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}` };
+        this.websocketService.init(handler, this.session.id, this.actions, document.location.href);
+        const wsMessage: WsMessage = { action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}` };
         this.websocketService.send(wsMessage);
         return true;
       }),
@@ -76,7 +69,7 @@ export class RetroSessionServiceService {
     );
   }
   public addMessage($event): void {
-    const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event };
+    const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.session.id, userId: this.session.user.id, payload: $event };
     this.websocketService.send(wsMessage);
   }
   public voted($event): void {
@@ -108,10 +101,10 @@ export class RetroSessionServiceService {
     }
   }
   private updateUserlist(message: WsMessage): void {
-    this.users = this.getUsersFromMessage(message);
+    this.session.users = this.getUsersFromMessage(message);
   }
   private getUsersFromMessage(message: WsMessage): UserInfo[] {
-    return (message.payload as User[]).map(u => ({ name: u.username })).sort((u1, u2) => {
+    return (message.payload as User[]).map(u => ({ name: u.name, role: null, vote: null, id: null })).sort((u1, u2) => {
       if (u1.name > u2.name) { return 1; }
       if (u1.name < u2.name) { return -1; }
       return 0;
@@ -141,27 +134,24 @@ export class RetroSessionServiceService {
   }
 
   addNote(colId: number): void {
-    const wsMessage: WsMessage = { action: 'AddNote', sessionId: this.sessionId, userId: this.userId, payload:  colId};
+    const wsMessage: WsMessage = { action: 'AddNote', sessionId: this.session.id, userId: this.session.user.id, payload:  colId};
     this.websocketService.send(wsMessage);
   }
   sendUpdatedNote(note: RetrospectiveNote): void {
-    const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    const wsMessage: WsMessage = { action: 'UpdateNote', sessionId: this.session.id, userId: this.session.user.id, payload:  note};
     this.websocketService.send(wsMessage);
   }
   sendEditNote(note: RetrospectiveNote): void {
-    const wsMessage: WsMessage = { action: 'EditNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    const wsMessage: WsMessage = { action: 'EditNote', sessionId: this.session.id, userId: this.session.user.id, payload:  note};
     this.websocketService.send(wsMessage);
   }
   sendDeleteNote(note: RetrospectiveNote): void {
-    const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: this.sessionId, userId: this.userId, payload:  note};
+    const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: this.session.id, userId: this.session.user.id, payload:  note};
     this.websocketService.send(wsMessage);
   }
   public mergeNotes(notes2Merge: NotesToMerge): void {
-    const wsMessage: WsMessage = { action: 'MergeNotes', sessionId: this.sessionId, userId: this.userId, payload:  notes2Merge};
+    const wsMessage: WsMessage = { action: 'MergeNotes', sessionId: this.session.id, userId: this.session.user.id, payload:  notes2Merge};
     this.websocketService.send(wsMessage);
   }
 
-}
-interface UserInfo {
-  name: string;
 }

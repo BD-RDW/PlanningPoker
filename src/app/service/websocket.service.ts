@@ -35,7 +35,6 @@ export class WebsocketService {
           console.log(`Action received; ${data.action}`);
           this.thereHasBeenContact = true;
           this.handlers.forEach(h => {
-            console.log(`Checking: handler.sessionId: ${h.sessionId}, message.sessionId; ${data.sessionId}`);
             if (h.sessionId && h.sessionId === data.sessionId) {
               if (h.actions.includes(data.action)) {
                 handled = true;

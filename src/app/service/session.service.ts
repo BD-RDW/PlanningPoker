@@ -13,19 +13,21 @@ export class SessionService {
   constructor(private http: HttpClient) { }
 
   sessionCreate(username: string, sessionType: SessionType): Observable<Session> {
-    const body = { username, type: sessionType };
-    return this.http.post<Session>(this.sessionUrl, body)
+    const body = { name: username, type: sessionType };
+    return this.http.post<SessionResponse>(this.sessionUrl, body)
     .pipe(
-      map( session => {
-        return  session;
+      map( postResponse => {
+        // tslint:disable-next-line:max-line-length
+        return  {id: postResponse.sessionId, type: sessionType, user: {id: postResponse.userId, name: username, role: null }, users: [] } as Session;
       }),
        catchError(this.handleError<boolean>('sessionCreate', false)));
   }
   joinSession(sessionType: SessionType, sessionId: string, username: string): Observable<Session> {
-    return this.http.post<Session>(`${this.sessionUrl}/${sessionId}`, { username, sessionType })
+    return this.http.post<SessionResponse>(`${this.sessionUrl}/${sessionId}`, { name: username, sessionType })
     .pipe(
-      map( session => {
-        return  session;
+      map( postResponse => {
+        // tslint:disable-next-line:max-line-length
+        return  {id: postResponse.sessionId, type: sessionType, user: {id: postResponse.userId, name: username, role: null }, users: [] } as Session;
       }),
        catchError(this.handleError<boolean>('joinSession', false)));
   }
@@ -50,3 +52,8 @@ export class SessionService {
       };
     }
   }
+interface SessionResponse {
+  sessionId: string;
+  username; string;
+  userId: number;
+}

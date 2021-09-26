@@ -8,7 +8,7 @@ import {SessionService} from '../../service/session.service';
 import {WebsocketService} from '../../service/websocket.service';
 
 import { environment } from '../../../environments/environment';
-import { User, UserVotes, SessionType } from '../../model/session';
+import { User, UserVotes, SessionType, Session } from '../../model/session';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
@@ -27,22 +27,19 @@ export class PlanningSessionComponent implements OnInit {
 
   public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');
 
+  public session: Session =
+    {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
+  // public users: User[] = [];
+  public inSession = false;
 
-  public sessionId: string;
-  public userId: number;
-  public username = '';
   public messages  = 'Default message';
-  // public message = '';
   public status = '';
-  public users: User[] = [];
 
   public switchPhase: string;
   public phase: string;
-  public myRole: string;
+  // public myRole: string;
 
   private baseUrl: string;
-
-  public inSession = false;
 
   public cardNumbers = environment.CARD_SYMBOLS;
   public chartColors = environment.CHART_COLORS;
@@ -55,8 +52,6 @@ export class PlanningSessionComponent implements OnInit {
     private route: ActivatedRoute,
     private clipboard: Clipboard)
   {
-    this.inSession = false;
-    this.sessionId = null;
     this.baseUrl = document.location.href;
     if (this.baseUrl.indexOf('?') >= 0) {
       this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));
@@ -66,10 +61,10 @@ export class PlanningSessionComponent implements OnInit {
   ngOnInit(): void {
     this.tabSelectedEvent.emit(TabSelected.PlanningPoker);
     this.route.queryParams.subscribe(params => {
-      this.sessionId = params.sessionId;
-      this.username = params.userId;
-      if (this.sessionId) {
-        if (this.username) {
+      this.session.id = params.sessionId;
+      this.session.user.name = params.userId;
+      if (this.session.id) {
+        if (this.session.user.name) {
           this.joinSession();
         }
       }
@@ -77,16 +72,15 @@ export class PlanningSessionComponent implements OnInit {
   }
 
   public joinSession(): void {
-    this.sessionService.joinSession(SessionType.REFINEMENT, this.sessionId, this.username).subscribe(session => {
+    console.log('planning: joinSession.');
+    this.sessionService.joinSession(SessionType.REFINEMENT, this.session.id, this.session.user.name).subscribe(session => {
       if (session) {
         this.status = '';
         this.messages = 'In session\n';
         this.inSession = true;
-        this.sessionId = session.sessionId;
-        this.userId = session.userId;
-        this.username = session.username;
-        this.websocketService.init(this.processMessage, this.sessionId, this.actions, document.location.href);
-        this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
+        this.session = JSON.parse(JSON.stringify(session));
+        this.websocketService.init(this.processMessage, this.session.id, this.actions, document.location.href);
+        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});
       } else {
         this.inSession = false;
         console.log('Unable to join that session!!');
@@ -99,16 +93,15 @@ export class PlanningSessionComponent implements OnInit {
     });
   }
   public createSession(): void {
-    this.sessionService.sessionCreate(this.username, SessionType.REFINEMENT).subscribe(
+    console.log('planning: createSession.');
+    this.sessionService.sessionCreate(this.session.user.name, SessionType.REFINEMENT).subscribe(
       session => {
         this.status = '';
         this.inSession = true;
-        this.sessionId = session.sessionId;
-        this.userId = session.userId;
-        this.username = session.username;
+        this.session = JSON.parse(JSON.stringify(session));
         const handler = (this.processMessage).bind(this);
-        this.websocketService.init(handler, this.sessionId, this.actions, document.location.href);
-        this.websocketService.send({ action: 'JoinSession', sessionId: this.sessionId, userId: this.userId, payload: `Joining session ${this.sessionId}`});
+        this.websocketService.init(handler, this.session.id, this.actions, document.location.href);
+        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});
       },
       err => {
         console.log(err);
@@ -120,10 +113,10 @@ export class PlanningSessionComponent implements OnInit {
   public switchPhaseHandler(): void {
     if (this.phase === 'voting') {
       this.switchToPhase('showResults');
-      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.sessionId, userId: this.userId, payload: this.phase});
+      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});
     } else if (this.phase === 'showResults') {
       this.switchToPhase('voting');
-      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.sessionId, userId: this.userId, payload: this.phase});
+      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});
     } else {
       console.log(`Unknown phase ${this.phase}`);
     }
@@ -142,14 +135,14 @@ export class PlanningSessionComponent implements OnInit {
   }
 
   public addMessage($event): void {
-    const wsMessage = { action: 'AddMessage', sessionId: this.sessionId, userId: this.userId, payload: $event } as WsMessage;
+    const wsMessage = { action: 'AddMessage', sessionId: this.session.id, userId: this.session.user.id, payload: $event } as WsMessage;
     console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);
     this.websocketService.send(wsMessage);
   }
 
   public cardSelected($event): void {
     this.websocketService.send({ action: 'EnterVote',
-      sessionId: this.sessionId, userId: this.userId, payload: $event });
+      sessionId: this.session.id, userId: this.session.user.id, payload: $event });
   }
   public showThatTheUserHasVoted(user: User): boolean {
     return user.vote && this.phase === 'voting';
@@ -165,15 +158,15 @@ export class PlanningSessionComponent implements OnInit {
     }
   }
   private processUpdateSession(message: WsMessage): void {
-    this.users = this.getUsersFromMessage(message);
-    if (! this.myRole) {
-      this.myRole = this.users.find(u => u.id === this.userId).role;
+    this.session.users = this.getUsersFromMessage(message);
+    if (! this.session.user.role) {
+      this.session.user.role = this.session.users.find(u => u.id === this.session.user.id).role;
     }
   }
   private getUsersFromMessage(message: WsMessage): User[] {
     return  (message.payload as User[]).sort((u1, u2) => {
-      if (u1.username > u2.username) { return 1; }
-      if (u1.username < u2.username) { return -1; }
+      if (u1.name > u2.name) { return 1; }
+      if (u1.name < u2.name) { return -1; }
       return 0;
     });
   }
@@ -181,7 +174,7 @@ export class PlanningSessionComponent implements OnInit {
     this.newMessage.next(message.payload);
   }
   private updateVotes(message: WsMessage): void {
-    this.users.forEach( u => {
+    this.session.users.forEach( u => {
       const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);
       if ( tempVote) {
         u.vote = tempVote.vote;
@@ -194,7 +187,7 @@ export class PlanningSessionComponent implements OnInit {
     this.switchToPhase(message.payload);
   }
   getLinkUrl(): void {
-    const result = `${this.baseUrl}?sessionId=${this.sessionId}&userId=`;
+    const result = `${this.baseUrl}?sessionId=${this.session.id}&userId=`;
     this.clipboard.copy(result);
   }
 }

@@ -1,14 +1,14 @@
 export interface Session {
-    sessionId: string;
-    userId: number;
-    username: string;
-    phase: string;
-    users: User[];
+    id: string;
+    type: SessionType;
+    user: User;
+    phase?: string;
+    users: UserInfo[];
 }
 
 export interface User {
     id: number;
-    username: string;
+    name: string;
     role: string;
     vote?: string;
 }
@@ -17,6 +17,13 @@ export interface UserVotes {
     vote: string;
 }
 export enum SessionType {
+    UNKNOWN = 'UNKNOWN',
     REFINEMENT = 'REFINEMENT',
     RETROSPECTIVE = 'RETROSPECTIVE'
+}
+export interface UserInfo {
+    id: number;
+    name: string;
+    vote?: string;
+    role: string;
 }

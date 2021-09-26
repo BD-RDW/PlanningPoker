@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
 import { RetrospectiveNote } from '../../model/retrospective-data';
 import { NotesToMerge } from '../../model/notes-to-merge';
 import * as sanitizeHtml from 'sanitize-html';
-import { RetroSessionServiceService } from 'src/app/service/retro-session-service.service';
+import { RetroSessionService } from 'src/app/service/retro-session.service';
 
 @Component({
   selector: 'app-retrospective-message',
@@ -23,7 +23,7 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
   @Output() votedEvent = new EventEmitter<RetrospectiveNote>();
   @Output() mergeNotesEvent = new EventEmitter<NotesToMerge>();
 
-  constructor(public retroService: RetroSessionServiceService) { }
+  constructor(public retroService: RetroSessionService) { }
 
 
   ngOnInit(): void {

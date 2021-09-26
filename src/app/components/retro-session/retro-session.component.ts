@@ -9,7 +9,7 @@ import { saveAs } from '../../../../node_modules/file-saver';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import * as moment from 'moment';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
-import { RetroSessionServiceService } from 'src/app/service/retro-session-service.service';
+import { RetroSessionService } from 'src/app/service/retro-session.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { TabSelected } from '../../shared/tab-selected';
 
@@ -32,7 +32,7 @@ export class RetroSessionComponent implements OnInit {
 
   private baseUrl: string;
 
-  constructor(public retroService: RetroSessionServiceService,
+  constructor(public retroService: RetroSessionService,
               private route: ActivatedRoute,
               private clipboard: Clipboard) {
     this.baseUrl = document.location.href;
@@ -44,10 +44,10 @@ export class RetroSessionComponent implements OnInit {
   ngOnInit(): void {
     this.tabSelectedEvent.emit(TabSelected.Retrospective);
     this.route.queryParams.subscribe(params => {
-      this.retroService.sessionId = params.sessionId;
-      this.retroService.username = params.userId;
-      if (this.retroService.sessionId) {
-        if (this.retroService.username) {
+      this.retroService.session.id = params.sessionId;
+      this.retroService.session.user.name = params.userId;
+      if (this.retroService.session.id) {
+        if (this.retroService.session.user.name) {
           this.joinSession();
         }
       }
@@ -95,7 +95,7 @@ export class RetroSessionComponent implements OnInit {
     this.retroService.mergeNotes(notes2Merge);
   }
   getLinkUrl(): void {
-    const result = `${this.baseUrl}?sessionId=${this.retroService.sessionId}&userId=`;
+    const result = `${this.baseUrl}?sessionId=${this.retroService.session.id}&userId=`;
     this.clipboard.copy(result);
   }
   public auxilaryMenu(): void {
@@ -104,7 +104,4 @@ export class RetroSessionComponent implements OnInit {
     const filename = 'RetrospectiveNotes_' + moment(Date.now()).format('YYYYMMDD_HHmmss') + '.txt';
     saveAs(blob, filename);
   }
-}
-interface UserInfo {
-  name: string;
 }
