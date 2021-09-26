@@ -75,6 +75,7 @@ ERROR               (any)           <- Server                                   
 20210915 : Added: Retrospective note voting
 20210921 : Session joining using an URL
 20210923 : Added HashLocationStrategy
+20210926 : Added cookie for user name and refactoring
 ```
 # ToDo
 https://stackoverflow.com/questions/43535048/angular-2-routing-does-not-work-when-deployed-to-http-server
