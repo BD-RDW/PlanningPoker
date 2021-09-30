@@ -43,20 +43,22 @@ export class RetroSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.retroService.session.user.name = this.cookieService.getUsername();
-    this.tabSelectedEvent.emit(TabSelected.Retrospective);
-    this.route.queryParams.subscribe(params => {
-      this.retroService.session.id = params.sessionId;
-      if (params.userId) {
-        this.retroService.session.user.name = params.userId;
-      }
-      if (this.retroService.session.id) {
-        if (this.retroService.session.user.name) {
-
-          this.joinSession();
+    if (! this.retroService.inSession) {
+      this.retroService.session.user.name = this.cookieService.getUsername();
+      this.tabSelectedEvent.emit(TabSelected.Retrospective);
+      this.route.queryParams.subscribe(params => {
+        this.retroService.session.id = params.sessionId;
+        if (params.userId) {
+          this.retroService.session.user.name = params.userId;
         }
-      }
-    });
+        if (this.retroService.session.id) {
+          if (this.retroService.session.user.name) {
+
+            this.joinSession();
+          }
+        }
+      });
+    }
   }
 
   public joinSession(): void {

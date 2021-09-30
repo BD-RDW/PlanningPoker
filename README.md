@@ -78,9 +78,10 @@ ERROR               (any)           <- Server                                   
 20210926 : Added cookie for user name and refactoring
 ```
 # ToDo
-https://stackoverflow.com/questions/43535048/angular-2-routing-does-not-work-when-deployed-to-http-server
 
 - replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu) 
+
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
