@@ -80,12 +80,10 @@ ERROR               (any)           <- Server                                   
 20210926 : Added cookie for user name and refactoring
 20210930 : Fixed an issue with the retrospective session when switching tabs
 20211010 : Replace auxilary button by a menu and added moodboard
+20211010 : Fixed an issue on Chrome with empty retrospective notes being edited.
 ```
 # ToDo
 
-- replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu)
-- mood board for retrospective
-- Retrospective note being editted by somebody - place holder on chrome
 - Card 0 on Planningboard animation on select
 - Update userlist on planningboard when somebody joins session. Marks who has selected a card are removed.
 

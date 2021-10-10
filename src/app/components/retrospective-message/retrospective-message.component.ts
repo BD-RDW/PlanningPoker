@@ -95,4 +95,7 @@ export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
     return txt
     ;
   }
+  public getMessageTxtOrPlaceholder(): string {
+    return this.message.txt ? this.message.txt : 'Being edited...';
+  }
 }

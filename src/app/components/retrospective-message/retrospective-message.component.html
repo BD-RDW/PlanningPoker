@@ -6,7 +6,7 @@
       <button class="pi pi-times-circle" [disabled]="message.userId"  (click)="deleteMessage()"> </button>
     </div>
     <div *ngIf="messageIsBeingEdittedByMe()"><textarea #noteTextarea class="noteText" placeholder="Enter your remark" [(ngModel)]="message.txt" (keydown)="processText($event)"></textarea></div>
-    <span *ngIf="messageIsBeingEdittedButNotByMe()" class="blur-text">{{message.txt}}</span>
+    <span *ngIf="messageIsBeingEdittedButNotByMe()" class="blur-text">{{getMessageTxtOrPlaceholder()}}</span>
     <span *ngIf="messageIsNotBeingEditted()" [innerHTML]="getMessageTxt()"></span>
     <div class="messageFooter" *ngIf="messageIsNotBeingEditted()">
       <button class="pi pi-thumbs-up" (click)="voteMessage()" [disabled]="stillHaveVotes()"> </button>
