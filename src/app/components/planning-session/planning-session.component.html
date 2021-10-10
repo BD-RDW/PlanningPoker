@@ -43,7 +43,7 @@
                         <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{session.id}}</a></label><br />
                         <label>User: {{session.user.name}} ({{session.user.id}})</label><br />
                     </div>
-                    <button *ngIf="session.user.role==='ScrumMaster'" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
+                    <button *ngIf="isAdmin()" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
                     <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
                         <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
                     </div>

@@ -29,7 +29,7 @@ export class SessionMgr {
         while (this.findSession(sessionId)) {
             sessionId = Math.random().toString(36).substring(2, 14);
         }
-        const session: Session = { id: sessionId, type: sessionType.toUpperCase(), users: [ ] };
+        const session: Session = { id: sessionId, type: sessionType.toUpperCase(), users: [ ], showMoodboard: false };
         this.sessions.push(session);
         user.role = Role.ScrumMaster;
         this.addUser(user, session);
@@ -82,6 +82,8 @@ export interface Session {
     type: string;
     phase?: string;
     users: User[];
+    showMoodboard: boolean;
+    moodboardValues?: number[];
 }
 
 export interface User {
@@ -92,7 +94,7 @@ export interface User {
 }
 
 export enum Role {
-    Unknown = ('Unknown' as any),
-    ScrumMaster = ('ScrumMaster' as any),
-    TeamMember = ('TeamMember' as any)
+    Unknown = 'Unknown',
+    ScrumMaster = 'ScrumMaster',
+    TeamMember = 'TeamMember'
 }

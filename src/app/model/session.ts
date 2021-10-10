@@ -27,3 +27,8 @@ export interface UserInfo {
     vote?: string;
     role: string;
 }
+export enum Role {
+    Unknown = 'Unknown',
+    ScrumMaster = 'ScrumMaster',
+    TeamMember = 'TeamMember'
+}

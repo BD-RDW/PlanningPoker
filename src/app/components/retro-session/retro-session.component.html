@@ -1,5 +1,6 @@
 <div class='auxilaryMenuButton' *ngIf="retroService.inSession">
-  <button id='auxilaryMenu' class="pi pi-bars" (click)="auxilaryMenu()"> </button>
+  <button  id='auxilaryMenu' class="pi pi-bars" (click)="auxilaryMenu.toggle($event)"> </button>
+  <p-menu #auxilaryMenu [popup]=true [model]="menuItems"></p-menu>
 </div>
 <div class="retrospective-mainpanel">
   <div *ngIf="!retroService.inSession">
@@ -24,6 +25,12 @@
       </ul>
     </div>
     <div id="retroMainpanel" class="main-panel">
+      <div id="moodBoard" class="moodboard" *ngIf="retroService.showMoodboard"><h2>Moodboard</h2>
+        <div *ngFor="let icon of icons; let i = index" style="text-align: center;">
+          <fa-icon [icon]="icon" class="mbIcon" (click)="myMoodSelection(i)"></fa-icon><br/>
+          <span>cnt: {{retroService.moodboardCounts[i]}}</span>
+        </div>
+      </div>
       <app-retrospective-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.session.user.id" [availableVotes]="retroService.availableVotes"
         (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" 
         (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retrospective-column>

@@ -6,8 +6,8 @@ import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 
-import { RetrospectiveColumnData, RetrospectiveNote } from '../model/retrospective-data';
-import { User, SessionType, Session, UserInfo } from '../model/session';
+import { RetrospectiveColumnData, RetrospectiveNote, MoodboardStatus, MoodboardUpdate } from '../model/retrospective-data';
+import { User, SessionType, Session, UserInfo, Role } from '../model/session';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,13 @@ export class RetroSessionService {
       {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
   public availableVotes = 5;
 
+  public showMoodboard = false;
+  public moodboardSelected: number;
+  public moodboardCounts: number[] = [];
+
   private draggedMessage: RetrospectiveNote;
 
-  private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote'];
+  private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote', 'StatusMoodboard'];
 
 
   constructor(private sessionService: SessionService,
@@ -72,6 +76,12 @@ export class RetroSessionService {
     const wsMessage: WsMessage = { action: 'AddMessage', sessionId: this.session.id, userId: this.session.user.id, payload: $event };
     this.websocketService.send(wsMessage);
   }
+  public moodboardStatusUpdate(countSize: number): void {
+    const moodboardUpdate: MoodboardUpdate = {display: !this.showMoodboard, arraySize: countSize};
+    const wsMessage: WsMessage = { action: 'UpdateMoodboard'
+        , sessionId: this.session.id, userId: this.session.user.id, payload: moodboardUpdate };
+    this.websocketService.send(wsMessage);
+  }
   public voted($event): void {
     this.availableVotes--;
     this.sendUpdatedNote($event);
@@ -97,11 +107,20 @@ export class RetroSessionService {
       case 'InitRetrospective': this.initRetrospective(message); break;
       case 'UpdateNote': this.updateNote(message); break;
       case 'DeleteNote': this.deleteNote(message); break;
+      case 'StatusMoodboard': this.moodboardStatus(message); break;
       default: console.log(`RetroSessionComponent.processMessage: Unknown message action (${message.action}) received.`);
     }
   }
+  private moodboardStatus(message: WsMessage): void {
+    const mbStatus = message.payload as MoodboardStatus;
+    this.showMoodboard = mbStatus.display;
+    this.moodboardCounts = mbStatus.values;
+  }
   private updateUserlist(message: WsMessage): void {
     this.session.users = this.getUsersFromMessage(message);
+    if (! this.session.user.role) {
+      this.session.user.role = this.session.users.find(u => u.id === this.session.user.id).role;
+    }
   }
   private getUsersFromMessage(message: WsMessage): UserInfo[] {
     return (message.payload as User[]).map(u => ({ name: u.name, role: null, vote: null, id: null })).sort((u1, u2) => {
@@ -154,4 +173,16 @@ export class RetroSessionService {
     this.websocketService.send(wsMessage);
   }
 
+  public isAdmin(): boolean {
+    return this.session.user.role === Role.ScrumMaster;
+  }
+
+  public myMoodSelection(selection: number): void {
+    const moodboardUpdate: MoodboardUpdate = {display: this.showMoodboard, arraySize: this.moodboardCounts.length
+      , previousvalue: this.moodboardSelected, currentValue: selection};
+    const wsMessage: WsMessage = { action: 'UpdateMoodboard'
+        , sessionId: this.session.id, userId: this.session.user.id, payload: moodboardUpdate };
+    this.moodboardSelected = selection;
+    this.websocketService.send(wsMessage);
+  }
 }

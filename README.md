@@ -34,6 +34,8 @@ DeleteNote          (Retrospective) <- Server informs User that the note 1s remo
 MergeNotes          (Retrospective) -> User informs server to merge 2 notes             ==> payload: NotesToMerge
 UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
 DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
+UpdateMoodboard     (Retrospective) -> Scrummaster informs server that moodboard should be shown  ==> payload: MoodboardUpdate
+StatusMoodboard     (Retrospective) <- Server informs User that moodboard should be shown         ==> payload: MoodboardStatus
 
 ERROR               (any)           <- Server                                           ==> payload: errormessage
 ```
@@ -76,11 +78,15 @@ ERROR               (any)           <- Server                                   
 20210921 : Session joining using an URL
 20210923 : Added HashLocationStrategy
 20210926 : Added cookie for user name and refactoring
+20210930 : Fixed an issue with the retrospective session when switching tabs
 ```
 # ToDo
 
-- replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu) 
-
+- replace auxilary menu by a primeng [ContextMenu](https://www.primefaces.org/primeng/showcase/#/contextmenu)
+- mood board for retrospective
+- Retrospective note being editted by somebody - place holder on chrome
+- Card 0 on Planningboard animation on select
+- Update userlist on planningboard when somebody joins session. Marks who has selected a card are removed.
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.

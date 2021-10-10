@@ -44,7 +44,7 @@
   align-content: stretch;
 }
 
-.main-panel :last-child {
+.main-panel > :last-child {
   border-right: solid 1px blue;
 }
 
@@ -76,4 +76,21 @@
   flex-direction: row;
   align-items: stretch;
   align-content: stretch;
+}
+
+.moodboard {
+  flex-grow: 1;
+  max-width:25%;
+  border-left: solid 1px blue;
+  padding: 10px 10px  10px 10px;
+}
+
+.moodboard h2{
+  text-align: center;
+  border-right: solid 0px transparent;
+}
+
+.mbIcon {
+  font-size: 120px;
+  color: yellow;
 }

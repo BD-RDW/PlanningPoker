@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Session, SessionType } from '../model/session';
+import { Session, SessionType, User } from '../model/session';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class SessionService {
     .pipe(
       map( postResponse => {
         // tslint:disable-next-line:max-line-length
-        return  {id: postResponse.sessionId, type: sessionType, user: {id: postResponse.userId, name: username, role: null }, users: [] } as Session;
+        return  {id: postResponse.id, type: sessionType, user: postResponse.user, users: [] } as Session;
       }),
        catchError(this.handleError<boolean>('sessionCreate', false)));
   }
@@ -27,7 +27,7 @@ export class SessionService {
     .pipe(
       map( postResponse => {
         // tslint:disable-next-line:max-line-length
-        return  {id: postResponse.sessionId, type: sessionType, user: {id: postResponse.userId, name: username, role: null }, users: [] } as Session;
+        return  {id: postResponse.id, type: sessionType, user: postResponse.user, users: [] } as Session;
       }),
        catchError(this.handleError<boolean>('joinSession', false)));
   }
@@ -53,7 +53,7 @@ export class SessionService {
     }
   }
 interface SessionResponse {
-  sessionId: string;
-  username; string;
-  userId: number;
+  id: string;
+  type: SessionType;
+  user: User;
 }

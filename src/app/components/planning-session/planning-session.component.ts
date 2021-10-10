@@ -8,7 +8,7 @@ import {SessionService} from '../../service/session.service';
 import {WebsocketService} from '../../service/websocket.service';
 
 import { environment } from '../../../environments/environment';
-import { User, UserVotes, SessionType, Session } from '../../model/session';
+import { User, UserVotes, SessionType, Session, Role } from '../../model/session';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
@@ -193,5 +193,9 @@ export class PlanningSessionComponent implements OnInit {
     const result = `${this.baseUrl}?sessionId=${this.session.id}`;
     this.clipboard.copy(result);
     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});
+  }
+
+  public isAdmin(): boolean {
+    return this.session.user.role === Role.ScrumMaster;
   }
 }

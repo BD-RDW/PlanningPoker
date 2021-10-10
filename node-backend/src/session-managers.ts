@@ -4,6 +4,7 @@ import * as WebSocket from 'ws';
 import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
 import { RefinementInfoPerSession } from './model/refinement';
 import { NotesToMerge } from './model/notes-to-merge';
+import { MoodboardStatus, MoodboardUpdate } from './model/moodboard-status';
 
 abstract class AbstractManager {
     // JoinSession   (Session)       -> User get added to the session
@@ -103,7 +104,8 @@ export class RetrospectiveSessionMgr extends AbstractManager {
     // MergeNotes          (Retrospective) -> User informs server to merge 2 notes             ==> payload: NotesToMerge
     // UpdateNote          (Retrospective) <- Server updates note                              ==> payload: colId
     // DeleteNote          (Retrospective) <- Server informs User that the note 1s removed     ==> payload: RetrospectiveNote
-
+    // UpdateMoodboard     (Retrospective) -> Scrummaster informs server that moodboard should be shown  ==> payload: MoodboardUpdate
+    // StatusMoodboard     (Retrospective) <- Server informs User that moodboard should be shown         ==> payload: MoodboardStatus
     retrospectiveInfo: RetrospectiveInfoPerSession[] = [];
 
     constructor(private sessionMgr: SessionMgr) {
@@ -122,6 +124,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
             case 'EditNote': this.processEditNote(message, ws); break;
             case 'DeleteNote': this.processDeleteNote(message, ws); break;
             case 'MergeNotes': this.processMergeNotes(message, ws); break;
+            case 'UpdateMoodboard': this.processUpdateMoodboard(message, ws); break;
             default: {
                 const wsMessage: WsMessage = {action: 'ERROR', payload: `Unable to process message action ${message.action}`
                     , sessionId: message.sessionId, userId: message.userId};
@@ -133,6 +136,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
     private processJoinSession(message: WsMessage, ws: WebSocket): void {
         this.addUserToSession(message, ws);
         this.updateRefinementStatus(message, ws);
+        this.sentUpdateMoodboard(message);
     }
     private processAddMessage(message: WsMessage, ws: WebSocket): void {
         this.processMessage(message);
@@ -259,6 +263,37 @@ export class RetrospectiveSessionMgr extends AbstractManager {
             }
         });
     }
+
+    // UpdateMoodboard     (Retrospective) -> Scrummaster informs server that moodboard should be shown  ==> payload: MoodboardUpdate
+    // StatusMoodboard     (Retrospective) <- Server informs User that moodboard should be shown         ==> payload: MoodboardStatus
+    private processUpdateMoodboard(message: WsMessage, ws: WebSocket): void {
+        const session = this.sessionMgr.findSessionForUser(message.userId);
+        const status = message.payload as MoodboardUpdate;
+        session.showMoodboard = status.display;
+        if (! session.moodboardValues) {
+            session.moodboardValues = new Array(status.arraySize);
+            for (let i = 0; i < session.moodboardValues.length; i++) {
+                session.moodboardValues[i] = 0;
+            }
+        }
+        if (status.previousvalue !== undefined) {
+            session.moodboardValues[status.previousvalue]--;
+        }
+        if (status.currentValue !== undefined) {
+            session.moodboardValues[status.currentValue]++;
+        }
+        this.sentUpdateMoodboard(message);
+    }
+    private sentUpdateMoodboard(message: WsMessage): void {
+        const session = this.sessionMgr.findSessionForUser(message.userId);
+        const statusMessage: MoodboardStatus = {display: session.showMoodboard, values: session.moodboardValues };
+        session.users.forEach(u => {
+            if (u.conn) {
+                const wsMessage: WsMessage = { action: 'StatusMoodboard', sessionId: session.id, userId: u.id, payload: statusMessage };
+                u.conn.send(JSON.stringify(wsMessage, this.skipFields));
+            }
+        });
+    }
 }
 
 export class RefinementSessionMgr extends AbstractManager {
@@ -268,7 +303,7 @@ export class RefinementSessionMgr extends AbstractManager {
     // NewMessage        (Session)       <- Server distributes message
     // EnterVote         (Refinement)    -> User enters vote
     // UpdateVotes       (Refinement)    <- Server updates user votes ==> Vote
-    // SwitchPhase       (Refinemnet)    -> Scrummaster switches phase
+    // SwitchPhase       (Refinement)    -> Scrummaster switches phase
     // UpdatePhase       (Refinement)    <- Server updates phase
 
     refinementInfo: RefinementInfoPerSession[] = [];
@@ -337,7 +372,7 @@ export class RefinementSessionMgr extends AbstractManager {
             }
         });
     }
-    // SwitchPhase   (Refinemnet)    -> Scrummaster switches phase
+    // SwitchPhase   (Refinement)    -> Scrummaster switches phase
     // UpdatePhase   (Refinement)    <- Server updates phase
     private processSwitchPhase(message: WsMessage): void {
         const phase = message.payload;

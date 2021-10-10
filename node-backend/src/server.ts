@@ -33,17 +33,16 @@ app.post('/rest/session/:id', (req, res) => {
         }
         const user: User = req.body;
         user.role = Role.TeamMember;
-        const userId = sessionMgr.addUser(user, session);
+        user.id = sessionMgr.addUser(user, session);
         res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
-        return res.status(200).send({ sessionId: session.id, userId: user.id, name: user.name });
+        return res.status(200).send({ id: session.id, type: session.type, user });
     }
     return res.sendStatus(404);
    });
 
-/* Create a new refinement session */
+/* Create a new session */
 app.post('/rest/session', (req, res) => {
-    /* Here just until the refinement part of the project has been refactored */
-    const sessionType = req.body.type ? req.body.type : 'REFINEMENT';
+    const sessionType = req.body.type;
     if (sessionType !== 'RETROSPECTIVE' && sessionType !== 'REFINEMENT') {
         res.status(500).send(`Unable to create a session of type ${req.params.type}`);
     }
@@ -51,7 +50,7 @@ app.post('/rest/session', (req, res) => {
     const user: User = { id: undefined, name: req.body.name, role: Role.ScrumMaster };
     const sessionId = sessionMgr.newSession(sessionType, user);
     res.header(HEADER_CONTENT_TYPE, CONTENT_TYPE_JSON);
-    res.send({ sessionId, userId: user.id, username: user.name } );
+    res.send({ id: sessionId, type: sessionType,  user } );
    });
 
 /* get all sessions */

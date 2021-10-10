@@ -13,6 +13,8 @@ import { DialogModule } from 'primeng/dialog';
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
+import { MenuModule } from 'primeng/menu';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -50,7 +52,9 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     ButtonModule,
     ChartModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    MenuModule,
+    FontAwesomeModule
   ],
   providers: [PrimeIcons,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
