@@ -79,6 +79,7 @@ ERROR               (any)           <- Server                                   
 20210923 : Added HashLocationStrategy
 20210926 : Added cookie for user name and refactoring
 20210930 : Fixed an issue with the retrospective session when switching tabs
+20211010 : Replace auxilary button by a menu and added moodboard
 ```
 # ToDo
 
