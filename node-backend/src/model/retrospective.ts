@@ -12,6 +12,7 @@ export interface RetrospectiveNote {
   votes?: number;
 }
 export interface RetrospectiveInfoPerSession {
-  sessionId: string;
   retrospectiveData: RetrospectiveColumn[];
+  showMoodboard: boolean;
+  moodboardValues?: number[];
 }

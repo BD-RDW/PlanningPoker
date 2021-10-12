@@ -1,5 +1,5 @@
-import { SessionMgr } from './session';
-import { Session } from './session';
+import { SessionMgr } from './session-manager';
+import { Session } from './model/session';
 
 export class ReportingService {
   private changed = false;

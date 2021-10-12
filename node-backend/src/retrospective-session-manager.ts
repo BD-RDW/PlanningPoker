@@ -1,6 +1,6 @@
 import { AbstractManager } from './abstract-manager';
 import { WsMessage } from './model/message';
-import { Session, SessionMgr } from './session';
+import { SessionMgr } from './session-manager';
 import * as WebSocket from 'ws';
 import { RetrospectiveInfoPerSession, RetrospectiveNote } from './model/retrospective';
 import { NotesToMerge } from './model/notes-to-merge';
@@ -62,27 +62,17 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   }
   private updateRefinementStatus(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
-      let retrospectiveSession = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
-      if (!retrospectiveSession) {
-          retrospectiveSession = {
-              sessionId: message.sessionId, retrospectiveData: [
-                  { column: 1, title: 'What went well', notes: [] },
-                  { column: 2, title: 'What could be improved', notes: [] },
-                  { column: 3, title: 'Actions', notes: [] }
-              ]
-          };
-          this.retrospectiveInfo.push(retrospectiveSession);
-      }
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       // tslint:disable-next-line:max-line-length
-      const retroInfo: WsMessage = { action: 'InitRetrospective', sessionId: session.id, userId: message.userId, payload: retrospectiveSession.retrospectiveData };
+      const retroInfo: WsMessage = { action: 'InitRetrospective', sessionId: session.id, userId: message.userId, payload: retrospectiveInfo.retrospectiveData };
       ws.send(JSON.stringify(retroInfo, this.skipFields));
   }
   // AddNote       (Retrospective) -> User adds new note
   // UpdateNote    (Retrospective) <- Server updates note
   private processAddNote(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       const colId = parseInt(message.payload, 10);
-      const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
       const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === colId);
       let noteId = -1;
       retrospectiveInfo.retrospectiveData.forEach(col => {
@@ -104,7 +94,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processEditNote(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const note: RetrospectiveNote = message.payload;
-      const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === note.col);
       const editNote = columnNotes.notes.find(n => n.id === note.id);
       editNote.userId = message.userId;
@@ -120,7 +110,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processUpdateNote(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const note: RetrospectiveNote = message.payload;
-      const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === note.col);
       const index = columnNotes.notes.findIndex(n => n.id === note.id);
       columnNotes.notes.splice(index, 1, note);
@@ -137,7 +127,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processDeleteNote(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const note: RetrospectiveNote = message.payload;
-      const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       const columnNotes = retrospectiveInfo.retrospectiveData.find(rd => rd.column === note.col);
       const deletedNote = columnNotes.notes.find(n => n.id === note.id);
       const index = columnNotes.notes.indexOf(deletedNote, 0);
@@ -158,7 +148,7 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processMergeNotes(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const notes2Merge: NotesToMerge = message.payload;
-      const retrospectiveInfo = this.retrospectiveInfo.find(ri => ri.sessionId === message.sessionId);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
 
       const column2DeleteNoteFrom = retrospectiveInfo.retrospectiveData.find(rd => rd.notes.find(n => n.id === notes2Merge.note2MergeId));
       const baseNoteColumn        = retrospectiveInfo.retrospectiveData.find(rd => rd.notes.find(n => n.id === notes2Merge.baseNoteId));
@@ -188,24 +178,28 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processUpdateMoodboard(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const status = message.payload as MoodboardUpdate;
-      session.showMoodboard = status.display;
-      if (! session.moodboardValues) {
-          session.moodboardValues = new Array(status.arraySize);
-          for (let i = 0; i < session.moodboardValues.length; i++) {
-              session.moodboardValues[i] = 0;
-          }
+      console.log(`status: ${JSON.stringify(status)}`);
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
+      retrospectiveInfo.showMoodboard = status.display;
+      if (! retrospectiveInfo.moodboardValues) {
+        retrospectiveInfo.moodboardValues = new Array(status.arraySize);
+        for (let i = 0; i < retrospectiveInfo.moodboardValues.length; i++) {
+          retrospectiveInfo.moodboardValues[i] = 0;
+        }
       }
       if (status.previousvalue !== undefined) {
-          session.moodboardValues[status.previousvalue]--;
+        retrospectiveInfo.moodboardValues[status.previousvalue]--;
       }
       if (status.currentValue !== undefined) {
-          session.moodboardValues[status.currentValue]++;
+        retrospectiveInfo.moodboardValues[status.currentValue]++;
       }
       this.sentUpdateMoodboard(message);
   }
   private sentUpdateMoodboard(message: WsMessage): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
-      const statusMessage: MoodboardStatus = {display: session.showMoodboard, values: session.moodboardValues };
+      const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
+      const statusMessage: MoodboardStatus = {display: retrospectiveInfo.showMoodboard, values: retrospectiveInfo.moodboardValues };
+      console.log(`statusMessage: ${JSON.stringify(statusMessage)}`);
       session.users.forEach(u => {
           if (u.conn) {
               const wsMessage: WsMessage = { action: 'StatusMoodboard', sessionId: session.id, userId: u.id, payload: statusMessage };

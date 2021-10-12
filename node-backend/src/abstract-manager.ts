@@ -1,5 +1,6 @@
 import { WsMessage } from './model/message';
-import { Session, SessionMgr } from './session';
+import { SessionMgr } from './session-manager';
+import { Session } from './model/session';
 import * as WebSocket from 'ws';
 
 export abstract class AbstractManager {
@@ -17,7 +18,8 @@ export abstract class AbstractManager {
     // UpdateSession (Session)       <- Server updates userlist ==> Join
     addUserToSession(message: WsMessage, ws: WebSocket): void {
         const session = this.getSessionMgr().findSessionForUser(message.userId);
-        this.getSessionMgr().findUser(message.userId).conn = ws;
+        const user = this.getSessionMgr().findUser(message.userId);
+        user.conn = ws;
         this.updateSessionInfo(session);
     }
     // AddMessage    (Session)       -> Usermessage received

@@ -1,10 +1,14 @@
 export interface RefinementInfoPerSession {
-  sessionId: string;
-  phase: string;
+  phase: RefinementPhase;
   userInfo: RefinementUserInfo[];
 }
 
 export interface RefinementUserInfo {
   userid: number;
   vote: string;
+}
+
+export enum RefinementPhase {
+  Voting = 'voting',
+  ShowResults = 'showResults'
 }

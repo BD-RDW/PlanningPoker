@@ -4,7 +4,8 @@ import * as path from 'path.js';
 import * as http from 'http';
 import { AddressInfo } from 'net';
 import * as WebSocket from 'ws';
-import { SessionMgr, Session, User, Role } from './session';
+import { SessionMgr } from './session-manager';
+import { Session, User, Role, SessionType } from './model/session';
 import * as bodyParser from 'body-parser';
 import { WsMessage } from './model/message';
 import { RefinementSessionMgr } from './refinement-session-manager';
@@ -44,7 +45,7 @@ app.post('/rest/session/:id', (req, res) => {
 /* Create a new session */
 app.post('/rest/session', (req, res) => {
     const sessionType = req.body.type;
-    if (sessionType !== 'RETROSPECTIVE' && sessionType !== 'REFINEMENT') {
+    if (sessionType !== SessionType.RETROSPECTIVE && sessionType !== SessionType.REFINEMENT) {
         res.status(500).send(`Unable to create a session of type ${req.params.type}`);
     }
 
@@ -64,8 +65,8 @@ app.get('/rest/sessions', (req, res) => {
 app.delete('/rest/session/:sessionId', (req, res) => {
     if (sessionMgr.findSession(req.params.sessionId)) {
         switch (sessionMgr.findSession(req.params.sessionId).type) {
-            case 'RETROSPECTIVE' : retroSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
-            case 'REFINEMENT' : refinementSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
+            case SessionType.RETROSPECTIVE : retroSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
+            case SessionType.REFINEMENT : refinementSessionMgr.deleteSession(req.params.sessionId); return res.status(204).send(); break;
         }
         return res.status(404).send(`Unknown session type (${sessionMgr.findSession(req.params.sessionId).type}) in session ${sessionMgr.findSession(req.params.sessionId)}`);
     }
@@ -114,8 +115,8 @@ wss.on('connection', (ws: WebSocket) => {
                 ws.close();
             }
             switch (session.type.toUpperCase()) {
-                case 'RETROSPECTIVE' : retroSessionMgr.processWsMessage(message, ws); break;
-                case 'REFINEMENT' : refinementSessionMgr.processWsMessage(message, ws); break;
+                case SessionType.RETROSPECTIVE : retroSessionMgr.processWsMessage(message, ws); break;
+                case SessionType.REFINEMENT : refinementSessionMgr.processWsMessage(message, ws); break;
                 default: {
                     wsMessage = {action: 'ERROR', payload: `Unable to process session type ${session.type}`
                     , sessionId: message.sessionId, userId: message.userId};

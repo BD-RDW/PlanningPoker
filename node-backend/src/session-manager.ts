@@ -1,5 +1,7 @@
-import * as WebSocket from 'ws';
 import { ReportingService } from './reporting-service';
+import { Session, User, Role, SessionType } from './model/session';
+import { RefinementInfoPerSession, RefinementPhase } from './model/refinement';
+import { RetrospectiveInfoPerSession } from './model/retrospective';
 
 export class SessionMgr {
     private sessions: Session[] = [];
@@ -29,9 +31,13 @@ export class SessionMgr {
         while (this.findSession(sessionId)) {
             sessionId = Math.random().toString(36).substring(2, 14);
         }
-        const session: Session = { id: sessionId, type: sessionType.toUpperCase(), users: [ ], showMoodboard: false };
+        let sessionData;
+        switch (sessionType) {
+            case SessionType.RETROSPECTIVE : sessionData = this.createRetrospectiveSessionData(); break;
+            case SessionType.REFINEMENT : sessionData = this.createRefinementSessionData(); break;
+        }
+        const session: Session = { id: sessionId, type: sessionType.toUpperCase(), users: [], sessionTypeData: sessionData };
         this.sessions.push(session);
-        user.role = Role.ScrumMaster;
         this.addUser(user, session);
         this.reportingService.signalChanges();
         return session.id;
@@ -75,26 +81,19 @@ export class SessionMgr {
         if (k === 'conn') { return undefined; } return v;
     }
 
-}
+    createRetrospectiveSessionData(): RetrospectiveInfoPerSession {
+        return {
+            showMoodboard: false,
+            moodboardValues: null,
+            retrospectiveData: [
+                { column: 1, title: 'What went well', notes: [] },
+                { column: 2, title: 'What could be improved', notes: [] },
+                { column: 3, title: 'Actions', notes: [] }
+            ]
+        };
+    }
+    createRefinementSessionData(): RefinementInfoPerSession {
+        return { phase: RefinementPhase.Voting, userInfo: [] };
+    }
 
-export interface Session {
-    id: string;
-    type: string;
-    phase?: string;
-    users: User[];
-    showMoodboard: boolean;
-    moodboardValues?: number[];
-}
-
-export interface User {
-    id: number;
-    name: string;
-    role: Role;
-    conn?: WebSocket;
-}
-
-export enum Role {
-    Unknown = 'Unknown',
-    ScrumMaster = 'ScrumMaster',
-    TeamMember = 'TeamMember'
 }
