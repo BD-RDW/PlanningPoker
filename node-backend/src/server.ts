@@ -7,7 +7,8 @@ import * as WebSocket from 'ws';
 import { SessionMgr, Session, User, Role } from './session';
 import * as bodyParser from 'body-parser';
 import { WsMessage } from './model/message';
-import { RetrospectiveSessionMgr, RefinementSessionMgr } from './session-managers';
+import { RefinementSessionMgr } from './refinement-session-manager';
+import { RetrospectiveSessionMgr } from './retrospective-session-manager';
 
 const ENCODING_UTF8 = 'utf-8';
 const HEADER_CONTENT_TYPE = 'Content-Type';
