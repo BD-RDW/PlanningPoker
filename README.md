@@ -81,10 +81,10 @@ ERROR               (any)           <- Server                                   
 20210930 : Fixed an issue with the retrospective session when switching tabs
 20211010 : Replace auxilary button by a menu and added moodboard
 20211010 : Fixed an issue on Chrome with empty retrospective notes being edited.
+20211012 : Fixed an issue with Card 0 on Planningboard having no animation on select.
 ```
 # ToDo
 
-- Card 0 on Planningboard animation on select
 - Update userlist on planningboard when somebody joins session. Marks who has selected a card are removed.
 
 

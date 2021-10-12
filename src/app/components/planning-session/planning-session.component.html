@@ -1,16 +1,14 @@
 <div  style="max-width: 99%; max-height: 99%; overflow: hidden;">
     <div *ngIf="!inSession">
-        <label for="username">User Id:</label><input id="planning_username" name="username" type="text"
-                                                     [(ngModel)]="session.user.name"
-                                                     style="width: 200px;margin-left: 20px;"> <br>
+        <label for="username">User Id:</label>
+        <input id="planning_username" name="username" type="text" [(ngModel)]="session.user.name" style="width: 200px;margin-left: 20px;"> <br>
         <div class="group">
             <button id="new_planning_session" (click)="createSession()">Create new session</button>
             <br>
         </div>
         <div class="group">
-            <label for="sessionId">Session Id:</label><input id="planning_session_id" name="sessionId" type="text"
-                                                             [(ngModel)]="session.id"
-                                                             style="width: 200px;margin-left: 20px;"><br/>
+            <label for="sessionId">Session Id:</label>
+            <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="session.id" style="width: 200px;margin-left: 20px;"><br/>
             <button id="join_planning_session" (click)="joinSession()">Join existing session</button>
         </div>
     </div>
@@ -29,8 +27,7 @@
             <div id="planningMainpanel" class="p-col-8 mainPanel">
                 <div *ngIf="phase==='voting'">
                     <div class="card-panel">
-                        <app-cards-view [cardNumbers]="cardNumbers"
-                                        (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+                        <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
                     </div>
                 </div>
                 <div class="result-panel" *ngIf="phase==='showResults'">

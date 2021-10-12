@@ -26,6 +26,17 @@ export class CardsViewComponent implements OnInit {
     let index = 2;
     let selectedCard = null;
     const card1 = document.getElementById('card1');
+    card1.addEventListener('click', (event) => {
+      if (selectedCard) {
+          selectedCard.getElementById('svgGroup').style.transform = 'translate(0, 0) scale(1)';
+          selectedCard.getElementById('cardRect').style.fill = 'white';
+      }
+      selectedCard = event.target;
+      selectedCard.getElementById('svgGroup').style.transform = 'translate(-10px, -14px) scale(1.15)';
+      selectedCard.getElementById('cardRect').style.fill = 'url(#grad1)';
+      this.cardClicked('0');
+  });
+
     card1.addEventListener('click', () => {
         console.log('0');
     });
