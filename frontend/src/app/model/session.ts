@@ -3,7 +3,7 @@ export interface Session {
     type: SessionType;
     user: User;
     phase?: string;
-    users: UserInfo[];
+    users: User[];
 }
 
 export interface User {
@@ -21,12 +21,12 @@ export enum SessionType {
     REFINEMENT = 'REFINEMENT',
     RETROSPECTIVE = 'RETROSPECTIVE'
 }
-export interface UserInfo {
-    id: number;
-    name: string;
-    vote?: string;
-    role: string;
-}
+// export interface UserInfo {
+//     id: number;
+//     name: string;
+//     vote?: string;
+//     role: string;
+// }
 export enum Role {
     Unknown = 'Unknown',
     ScrumMaster = 'ScrumMaster',

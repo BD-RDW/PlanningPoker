@@ -2,6 +2,7 @@ import { WsMessage } from './model/message';
 import { SessionMgr } from './session-manager';
 import { Session } from './model/session';
 import * as WebSocket from 'ws';
+import { RefinementInfoPerSession } from './model/refinement';
 
 export abstract class AbstractManager {
     // JoinSession   (Session)       -> User get added to the session
@@ -29,7 +30,6 @@ export abstract class AbstractManager {
         if (session && session.users) {
             session.users.forEach(u => {
                 if (u.conn) {
-                    const username = this.getSessionMgr().findUser(message.userId).name;
                     const wsMessage: WsMessage = { action: 'NewMessage', sessionId: session.id, userId: u.id, payload: message.payload };
                     u.conn.send(JSON.stringify(wsMessage, this.skipFields));
                 }
@@ -69,16 +69,24 @@ export abstract class AbstractManager {
     }
     updateSessionInfo(session: Session): void {
         let action = 'Unknown';
+        let planningSessionInfo;
         switch (session.type) {
-            case 'REFINEMENT': action = 'UpdatePlanSession'; break;
+            case 'REFINEMENT': action = 'UpdatePlanSession'; planningSessionInfo = session.sessionTypeData; break;
             case 'RETROSPECTIVE': action = 'UpdateRetroSession'; break;
             default: console.log(`updateSessionInfo: Unable to update session: Unknown session type ${session.type}`);
                      console.log(`Session: ${JSON.stringify(session)}`);
                      return;
         }
+        
+        let users = session.users.map(u => {
+            let ui = (session.sessionTypeData as RefinementInfoPerSession).userInfo.filter(ui => ui.userid === u.id);
+            let vote = ui && ui.length > 0 ? ui[0].vote : undefined;
+            return { id: u.id, name: u.name, role: u.role, vote: vote};
+        });
+        console.log(JSON.stringify(users));
         session.users.forEach(u2 => {
             if (u2.conn) {
-                const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u2.id, payload: session.users };
+                const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u2.id, payload: users };
                 u2.conn.send(JSON.stringify(sessionInfo, this.skipFields));
             }
         });

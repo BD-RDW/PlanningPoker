@@ -83,7 +83,8 @@ ERROR               (any)           <- Server                                   
 20211010 : Fixed an issue on Chrome with empty retrospective notes being edited.
 20211012 : Fixed an issue with Card 0 on Planningboard having no animation on select.
 20211012 : Refactoring node-backend
-20211015 : Restructured project. now the frontend has his own directory and doesn't contain the backend. 
+20211015 : Restructured project. now the frontend has his own directory and doesn't contain the backend.
+20211015 : Fixed error in planning board that the indication that a user has selected a card disappears when someone new joins the session.  
 ```
 # ToDo
 

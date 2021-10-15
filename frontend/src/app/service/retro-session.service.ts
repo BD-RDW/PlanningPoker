@@ -7,7 +7,7 @@ import { catchError, map } from 'rxjs/operators';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 
 import { RetrospectiveColumnData, RetrospectiveNote, MoodboardStatus, MoodboardUpdate } from '../model/retrospective-data';
-import { User, SessionType, Session, UserInfo, Role } from '../model/session';
+import { User, SessionType, Session, Role } from '../model/session';
 
 @Injectable({
   providedIn: 'root'
@@ -122,7 +122,7 @@ export class RetroSessionService {
       this.session.user.role = this.session.users.find(u => u.id === this.session.user.id).role;
     }
   }
-  private getUsersFromMessage(message: WsMessage): UserInfo[] {
+  private getUsersFromMessage(message: WsMessage): User[] {
     return (message.payload as User[]).map(u => ({ name: u.name, role: null, vote: null, id: null })).sort((u1, u2) => {
       if (u1.name > u2.name) { return 1; }
       if (u1.name < u2.name) { return -1; }
