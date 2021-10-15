@@ -178,7 +178,6 @@ export class RetrospectiveSessionMgr extends AbstractManager {
   private processUpdateMoodboard(message: WsMessage, ws: WebSocket): void {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const status = message.payload as MoodboardUpdate;
-      console.log(`status: ${JSON.stringify(status)}`);
       const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       retrospectiveInfo.showMoodboard = status.display;
       if (! retrospectiveInfo.moodboardValues) {
@@ -199,7 +198,6 @@ export class RetrospectiveSessionMgr extends AbstractManager {
       const session = this.sessionMgr.findSessionForUser(message.userId);
       const retrospectiveInfo = session.sessionTypeData as RetrospectiveInfoPerSession;
       const statusMessage: MoodboardStatus = {display: retrospectiveInfo.showMoodboard, values: retrospectiveInfo.moodboardValues };
-      console.log(`statusMessage: ${JSON.stringify(statusMessage)}`);
       session.users.forEach(u => {
           if (u.conn) {
               const wsMessage: WsMessage = { action: 'StatusMoodboard', sessionId: session.id, userId: u.id, payload: statusMessage };

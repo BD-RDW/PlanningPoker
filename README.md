@@ -42,21 +42,21 @@ ERROR               (any)           <- Server                                   
  
 ## Deployment
 
-1. Bouw frontend (met npm run build). Deze plaatst de bestanden in node-backend/dist/public
-1. Bouw backend (met npm run compile).
-1. Run: vanuit node-backend/dist: node server/server.js
+1. Bouw <project-dir>/frontend (met npm run build). Deze plaatst de bestanden in <project-dir>node-backend/dist/public
+1. Bouw <project-dir>/backend (met npm run compile).
+1. Run: vanuit <project-dir>/backend/dist: node server/server.js
 
 ## Rollout to OpenShift
 
 - build application als described above
-- from directory node-backend
+- from directory <project-dir>/backend
 - oc login
 - oc project wd-scrum-ont
 - oc start-build nodejs --from-dir .
 - open Openshift UI en select project wd-scrum-ont
 - when deployment of nodejs is ready open the deployment descriptor
 - copy the image sha
-- place the new image sha in scrum-tooling-deploy\overlays\ont\kustomization.yaml
+- place the new image sha in scrum-tooling-deploy\base\kustomization.yaml
 - run scrum-tooling-deploy\deploy.sh
 
 # Changes:
@@ -82,6 +82,8 @@ ERROR               (any)           <- Server                                   
 20211010 : Replace auxilary button by a menu and added moodboard
 20211010 : Fixed an issue on Chrome with empty retrospective notes being edited.
 20211012 : Fixed an issue with Card 0 on Planningboard having no animation on select.
+20211012 : Refactoring node-backend
+20211015 : Restructured project. now the frontend has his own directory and doesn't contain the backend. 
 ```
 # ToDo
 
