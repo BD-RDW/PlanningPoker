@@ -83,7 +83,6 @@ export abstract class AbstractManager {
             let vote = ui && ui.length > 0 ? ui[0].vote : undefined;
             return { id: u.id, name: u.name, role: u.role, vote: vote};
         });
-        console.log(JSON.stringify(users));
         session.users.forEach(u2 => {
             if (u2.conn) {
                 const sessionInfo: WsMessage = { action, sessionId: session.id, userId: u2.id, payload: users };

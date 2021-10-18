@@ -84,11 +84,12 @@ ERROR               (any)           <- Server                                   
 20211012 : Fixed an issue with Card 0 on Planningboard having no animation on select.
 20211012 : Refactoring node-backend
 20211015 : Restructured project. now the frontend has his own directory and doesn't contain the backend.
-20211015 : Fixed error in planning board that the indication that a user has selected a card disappears when someone new joins the session.  
+20211015 : Fixed error in planning board that the indication that a user has selected a card disappears when someone new joins the session. Also removed interface UserInfo in the frontend
 ```
 # ToDo
 
-- Update userlist on planningboard when somebody joins session. Marks who has selected a card are removed.
+- Added unittests
+- perhaps add more moodboard types.
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.

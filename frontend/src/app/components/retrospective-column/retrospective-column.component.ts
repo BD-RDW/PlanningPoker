@@ -22,7 +22,7 @@ export class RetrospectiveColumnComponent implements OnInit {
 
   constructor(private sessionService: SessionService) { }
   ngOnInit(): void {
-    this.columnData.notes = this.columnData.notes;
+    // this.columnData.notes = this.columnData.notes;
   }
   addMessage(): void {
     this.newNoteEvent.emit();

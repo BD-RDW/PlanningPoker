@@ -16,10 +16,12 @@ describe('CardsViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CardsViewComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
+    // https://stackoverflow.com/questions/51422496/karma-input-parameter-unit-testing
+    // https://betterprogramming.pub/testing-angular-components-with-input-3bd6c07cfaf6
     expect(component).toBeTruthy();
   });
 });

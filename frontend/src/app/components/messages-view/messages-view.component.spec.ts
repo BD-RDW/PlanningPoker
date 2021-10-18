@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { MessagesViewComponent } from './messages-view.component';
 
@@ -16,6 +17,7 @@ describe('MessagesViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MessagesViewComponent);
     component = fixture.componentInstance;
+    component.messageReceived = of('testing');
     fixture.detectChanges();
   });
 
