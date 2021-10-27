@@ -27,7 +27,7 @@ export class RetroSessionService {
   public moodboardSelected: number;
   public moodboardCounts: number[] = [];
 
-  private draggedMessage: RetrospectiveNote;
+  draggedMessage: RetrospectiveNote;
 
   private actions: string[] = ['UpdateRetroSession', 'NewMessage', 'InitRetrospective', 'UpdateNote', 'DeleteNote', 'StatusMoodboard'];
 
@@ -51,6 +51,7 @@ export class RetroSessionService {
       }),
       catchError(() => {
         this.inSession = false;
+        this.session = undefined;
         return of(this.inSession);
       })
     );
@@ -68,6 +69,7 @@ export class RetroSessionService {
       }),
       catchError(() => {
         this.inSession = false;
+        this.session = undefined;
         return of(this.inSession);
       })
     );
@@ -123,7 +125,7 @@ export class RetroSessionService {
     }
   }
   private getUsersFromMessage(message: WsMessage): User[] {
-    return (message.payload as User[]).map(u => ({ name: u.name, role: null, vote: null, id: null })).sort((u1, u2) => {
+    return (message.payload as User[]).map(u => ({ name: u.name, role: u.role, vote: null, id: u.id })).sort((u1, u2) => {
       if (u1.name > u2.name) { return 1; }
       if (u1.name < u2.name) { return -1; }
       return 0;
@@ -168,16 +170,16 @@ export class RetroSessionService {
     const wsMessage: WsMessage = { action: 'DeleteNote', sessionId: this.session.id, userId: this.session.user.id, payload:  note};
     this.websocketService.send(wsMessage);
   }
-  public mergeNotes(notes2Merge: NotesToMerge): void {
+  mergeNotes(notes2Merge: NotesToMerge): void {
     const wsMessage: WsMessage = { action: 'MergeNotes', sessionId: this.session.id, userId: this.session.user.id, payload:  notes2Merge};
     this.websocketService.send(wsMessage);
   }
 
-  public isAdmin(): boolean {
+  isAdmin(): boolean {
     return this.session.user.role === Role.ScrumMaster;
   }
 
-  public myMoodSelection(selection: number): void {
+  myMoodSelection(selection: number): void {
     const moodboardUpdate: MoodboardUpdate = {display: this.showMoodboard, arraySize: this.moodboardCounts.length
       , previousvalue: this.moodboardSelected, currentValue: selection};
     const wsMessage: WsMessage = { action: 'UpdateMoodboard'
