@@ -1,0 +1,43 @@
+<h2>Test Straten</h2>
+
+<div class="card" *ngIf="this.showAdReservationForm | async">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmitAddTestStraat()">
+        <div>
+            <label for="gebruiker">Gebruiker: </label>
+            <input id="gebruiker" type="text" formControlName="gebruiker">
+        </div>
+        <div>
+            <label for="project">Project: </label>
+            <input id="project" type="text" formControlName="project">
+        </div>
+        <div>
+            <label for="teststraat">Teststraat: </label>
+            <input id="teststraat" type="text" formControlName="teststraat">
+        </div>
+
+        <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+    </form>
+
+</div>
+<hr>
+<div>
+    <table *ngIf="savedTestStraten.length > 0">
+        <th>Gebruiker</th>
+        <th>Project</th>
+        <th>Teststraat</th>
+        <th>Edit</th>
+        <tr *ngFor="let t of savedTestStraten">
+            <td>{{t.gebruiker}}</td>
+            <td>{{t.project}}</td>
+            <td>{{t.teststraat}}</td>
+            <td>
+                <button>clear</button>
+            </td>
+        </tr>
+
+    </table>
+    <div *ngIf="savedTestStraten.length === 0">Geen data voor  testSTatraten gevonden.</div>
+    <div *ngIf="(showAdReservationForm  | async) === false">
+        <button (click)="changeShowAdForm()">Voeg toe</button>
+    </div>
+</div>

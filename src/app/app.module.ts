@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TabViewModule } from 'primeng/tabview';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
@@ -21,6 +21,7 @@ import { CardsViewComponent } from './components/cards-view/cards-view.component
 import { ResultViewComponent } from './components/result-view/result-view.component';
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
 import { MessagesViewComponent } from './components/messages-view/messages-view.component';
+import { TestStratenComponent } from './components/test-straten/test-straten.component';
 
 @NgModule({
   declarations: [
@@ -33,20 +34,22 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     PlanningSessionComponent,
     CardsViewComponent,
     ResultViewComponent,
-    MessagesViewComponent
+    MessagesViewComponent,
+    TestStratenComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    TabViewModule,
-    ScrollPanelModule,
-    BrowserAnimationsModule,
-    ButtonModule,
-    ChartModule,
-    DialogModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        TabViewModule,
+        ScrollPanelModule,
+        BrowserAnimationsModule,
+        ButtonModule,
+        ChartModule,
+        DialogModule,
+        ReactiveFormsModule
+    ],
   providers: [PrimeIcons],
   bootstrap: [AppComponent]
 })
