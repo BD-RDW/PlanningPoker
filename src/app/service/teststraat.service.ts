@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
+import {Observable, of} from 'rxjs';
 
 export interface TestStraat {
     gebruiker: string;
@@ -7,25 +8,39 @@ export interface TestStraat {
     teststraat: string;
 }
 
+export interface Dweet {
+    thing: string;
+    created: string;
+    content: TestStraat;
+}
+
+export interface Dweets {
+    this: string;
+    by: string;
+    the: string;
+    with: Dweet[];
+}
+
+
 @Injectable({
     providedIn: 'root'
 })
 export class TeststraatService {
-    testStraten: TestStraat[] = [];
+
+    uniqueId = 'asddfdgvee';
 
     constructor(private http: HttpClient) {
     }
 
-    add(teststraat: TestStraat): void {
-        this.testStraten.push(teststraat);
+    add(teststraat: TestStraat): Observable<Dweets> {
+        const body = {'gebruiker': teststraat.gebruiker, 'project': teststraat.project, 'teststraat': teststraat.teststraat};
+        return this.http
+            .post<Dweets>(`https://dweet.io/dweet/for/${this.uniqueId}`, body);
     }
 
-    getAll(): TestStraat[] {
-        return this.testStraten;
+    getAll(): Observable<Dweets> {
+        return this.http
+            .get<Dweets>(`https://dweet.io/get/dweets/for/${this.uniqueId}`);
     }
 
-    removeAll(): TestStraat[] {
-        this.testStraten = [];
-        return this.testStraten;
-    }
 }

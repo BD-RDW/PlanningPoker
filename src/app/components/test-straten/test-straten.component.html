@@ -3,41 +3,42 @@
 <div class="card" *ngIf="this.showAdReservationForm | async">
     <form [formGroup]="profileForm" (ngSubmit)="onSubmitAddTestStraat()">
         <div>
-            <label for="gebruiker">Gebruiker: </label>
+            <label class="form-label-width" for="gebruiker">Gebruiker: </label>
             <input id="gebruiker" type="text" formControlName="gebruiker">
         </div>
         <div>
-            <label for="project">Project: </label>
+            <label class="form-label-width" for="project">Project: </label>
             <input id="project" type="text" formControlName="project">
         </div>
         <div>
-            <label for="teststraat">Teststraat: </label>
+            <label class="form-label-width" for="teststraat">Teststraat: </label>
             <input id="teststraat" type="text" formControlName="teststraat">
         </div>
 
         <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+        <button (click)="changeShowAdForm()">Annuleer</button>
     </form>
-
+    <hr>
 </div>
-<hr>
-<div>
-    <table *ngIf="savedTestStraten.length > 0">
+
+<div >
+    <table *ngIf="testStraten.length > 0">
         <th>Gebruiker</th>
         <th>Project</th>
         <th>Teststraat</th>
-        <th>Edit</th>
-        <tr *ngFor="let t of savedTestStraten">
+<!--        <th>Edit</th>-->
+        <tr *ngFor="let t of testStraten ">
             <td>{{t.gebruiker}}</td>
             <td>{{t.project}}</td>
             <td>{{t.teststraat}}</td>
-            <td>
-                <button>clear</button>
-            </td>
+<!--            <td>-->
+<!--                <button>clear</button>-->
+<!--            </td>-->
         </tr>
 
     </table>
-    <div *ngIf="savedTestStraten.length === 0">Geen data voor  testSTatraten gevonden.</div>
-    <div *ngIf="(showAdReservationForm  | async) === false">
+    <div *ngIf="testStraten.length === 0">Geen data voor de teststraten gevonden.</div>
+    <p *ngIf="(showAdReservationForm  | async) === false">
         <button (click)="changeShowAdForm()">Voeg toe</button>
-    </div>
+    </p>
 </div>

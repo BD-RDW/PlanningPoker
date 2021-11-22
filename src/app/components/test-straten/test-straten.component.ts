@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {of} from 'rxjs';
-import {HttpClientModule} from '@angular/common/http';
-import {TestStraat, TeststraatService} from '../../service/teststraat.service';
+import {Dweet, Dweets, TestStraat, TeststraatService} from '../../service/teststraat.service';
+import {caesarCipher} from '../../util/caesarCipher';
 
 @Component({
     selector: 'app-test-straten',
@@ -16,16 +16,39 @@ export class TestStratenComponent implements OnInit {
         project: new FormControl('', Validators.required),
         teststraat: new FormControl('', Validators.required),
     });
-    randomId = 'hjhdjdfdgv';
-    savedTestStraten: TestStraat[] = [];
+
+    testStraten: TestStraat[] = [];
 
     constructor(private testStratenService: TeststraatService) {
     }
 
     ngOnInit(): void {
-
+        this.getTeststratenData();
     }
 
+
+    private getTeststratenData(): void {
+        this.testStratenService.getAll().subscribe(
+            (data: Dweets) => {
+                if (data.this === 'failed') {
+                    this.testStraten = [];
+                } else {
+                    this.testStraten = [];
+                    data.with.forEach((dweet: Dweet) => {
+                        if (Object.keys(dweet.content).length !== 0) {
+                            const teststraat = {
+                                gebruiker: caesarCipher(dweet.content.gebruiker, 3, true),
+                                project: caesarCipher(dweet.content.project, 3, true),
+                                teststraat: caesarCipher(dweet.content.teststraat, 3, true)
+                            } as TestStraat;
+                            this.testStraten.push(teststraat);
+                        }
+                    });
+                }
+            },
+            (error) => {console.log('error', error)}
+        );
+    }
 
     changeShowAdForm(): void {
         this.showAdReservationForm = of(true);
@@ -35,18 +58,22 @@ export class TestStratenComponent implements OnInit {
         if (this.profileForm !== undefined
             && this.profileForm !== null
             && this.profileForm.value !== null) {
-
-            console.log(this.profileForm.value);
             this.showAdReservationForm = of(false);
-            console.log(this.showAdReservationForm);
             const teststraat = {
-                gebruiker: this.profileForm.value.gebruiker,
-                project: this.profileForm.value.project,
-                teststraat: this.profileForm.value.teststraat
+                gebruiker: caesarCipher(this.profileForm.value.gebruiker, 3),
+                project: caesarCipher(this.profileForm.value.project, 3),
+                teststraat: caesarCipher(this.profileForm.value.teststraat, 3)
             } as TestStraat;
-            this.testStratenService.add(teststraat);
-            this.savedTestStraten.push(teststraat);
-            this.profileForm.reset();
+            this.testStratenService.add(teststraat).subscribe(
+                (data) => {
+                    this.profileForm.reset();
+                    this.getTeststratenData();
+                },
+                (error) => {
+                    console.log('error...', error);
+                }
+            );
+
         }
     }
 }
