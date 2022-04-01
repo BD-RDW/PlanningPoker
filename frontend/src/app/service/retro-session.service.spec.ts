@@ -291,6 +291,7 @@ describe('RetroSessionService', () => {
     spyOn(window.console, 'log');
     service.processMessage({action: 'XXXX', sessionId: 'XyZ', userId: 2, payload: 'Test chat message'});
     expect(window.console.log).toHaveBeenCalled();
+    expect(window.console.log).toHaveBeenCalledWith('RetroSessionComponent.processMessage: Unknown message action (XXXX) received.');
   });
 
 
