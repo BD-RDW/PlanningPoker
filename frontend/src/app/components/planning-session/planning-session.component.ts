@@ -30,6 +30,7 @@ export class PlanningSessionComponent implements OnInit {
   public session: Session =
     {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
   public inSession = false;
+  public sessiontype = 'new';
 
   public messages  = 'Default message';
   public status = '';
@@ -67,6 +68,7 @@ export class PlanningSessionComponent implements OnInit {
         this.session.user.name = params.userId;
       }
       if (this.session.id) {
+        this.sessiontype='existing';
         if (this.session.user.name) {
           this.joinSession();
         }
@@ -111,6 +113,13 @@ export class PlanningSessionComponent implements OnInit {
         this.status = 'Unable to create a session!';
       }
     );
+  }
+
+  public openSession(): void {
+    switch (this.sessiontype) {
+      case 'new' : this.createSession(); break;
+      case 'existing' : this.joinSession(); break;
+    }
   }
 
   public switchPhaseHandler(): void {
@@ -189,12 +198,12 @@ export class PlanningSessionComponent implements OnInit {
   private updatePhase(message: WsMessage): void {
     this.switchToPhase(message.payload);
   }
+
   getLinkUrl(): void {
     const result = `${this.baseUrl}?sessionId=${this.session.id}`;
     this.clipboard.copy(result);
     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});
   }
-
   public isAdmin(): boolean {
     return this.session.user.role === Role.ScrumMaster;
   }

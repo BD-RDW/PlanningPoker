@@ -8,10 +8,11 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { PrimeIcons } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
-import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
 import { MenuModule } from 'primeng/menu';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -27,6 +28,7 @@ import { CardsViewComponent } from './components/cards-view/cards-view.component
 import { ResultViewComponent } from './components/result-view/result-view.component';
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
 import { MessagesViewComponent } from './components/messages-view/messages-view.component';
+import { SessionInitComponent } from './components/session-init/session-init.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     PlanningSessionComponent,
     CardsViewComponent,
     ResultViewComponent,
-    MessagesViewComponent
+    MessagesViewComponent,
+    SessionInitComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +53,7 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
     ScrollPanelModule,
     BrowserAnimationsModule,
     ButtonModule,
+    RadioButtonModule,
     ChartModule,
     DialogModule,
     ToastModule,

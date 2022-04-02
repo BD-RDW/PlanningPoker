@@ -61,6 +61,7 @@ ERROR               (any)           <- Server                                   
 
 # Changes:
 ```
+20220401 : Upgrade to Angular 13
 20210615 : Fixed a handler mix-up
 20210621 : Added Edit and delete for retrospective notes
 20210622 : Added hearthbeat every minute
@@ -90,6 +91,8 @@ ERROR               (any)           <- Server                                   
 
 - Added unittests
 - perhaps add more moodboard types.
+- Add the checks when new user is added on user panel op planning tab
+- Add moving a message on retrospective panel
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
