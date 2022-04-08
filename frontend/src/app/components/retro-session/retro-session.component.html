@@ -3,7 +3,9 @@
   <p-menu #auxilaryMenu [popup]=true [model]="menuItems"></p-menu>
 </div>
 <div class="retrospective-mainpanel">
-  <div *ngIf="!retroService.inSession">
+  <app-session-init *ngIf="!retroService.inSession" (onStartSession)="openSession($event)" [sessionId]="retroService.session.id"></app-session-init>
+  
+  <!-- div *ngIf="!retroService.inSession">
     <label for="username">User Id:</label><input id="retro_username" name="username" type="text" [(ngModel)]="retroService.session.user.name"
       style="width: 200px;margin-left: 20px;"> <br>
     <div class="group">
@@ -14,7 +16,7 @@
         style="width: 200px;margin-left: 20px;"><br />
       <button id="join_retro_session" (click)="joinSession()">Join existing session</button>
     </div>
-  </div>
+  </div -->
   <div class="retrospective-panel" *ngIf="retroService.inSession">
     <div id="userPanel" class="user-panel" >
       <span>Users:</span>
@@ -31,9 +33,9 @@
           <span>cnt: {{retroService.moodboardCounts[i]}}</span>
         </div>
       </div>
-      <app-retrospective-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.session.user.id" [availableVotes]="retroService.availableVotes"
+      <app-retro-column *ngFor="let col of retroService.columnData" [columnData]="col"  [userId]="retroService.session.user.id" [availableVotes]="retroService.availableVotes"
         (newNoteEvent)="addNote(col.column)" (votedEvent)="voted($event)" (updateNoteEvent)="sendUpdatedNote($event)" (editNoteEvent)="sendEditNote($event)" 
-        (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retrospective-column>
+        (deleteNoteEvent)="sendDeleteNote($event)" (mergeNotesEvent)="mergeNotes($event)" class="panel-column"></app-retro-column>
     </div>
     <div id="controlePanel" class="controlePanel">
       <div>

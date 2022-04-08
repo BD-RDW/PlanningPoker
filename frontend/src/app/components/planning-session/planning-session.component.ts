@@ -14,6 +14,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
 
 import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
+import { SessionConnectType, SessionInfo } from 'src/app/model/session-info';
 
 @Component({
     selector: 'app-planning-session',
@@ -70,15 +71,15 @@ export class PlanningSessionComponent implements OnInit {
       if (this.session.id) {
         this.sessiontype='existing';
         if (this.session.user.name) {
-          this.joinSession();
+          this.joinSession({username: this.session.user.name, sessionId: this.session.id} as SessionInfo);
         }
       }
     });
   }
 
-  public joinSession(): void {
-    this.cookieService.usingUsername(this.session.user.name);
-    this.sessionService.joinSession(SessionType.REFINEMENT, this.session.id, this.session.user.name).subscribe(session => {
+  public joinSession(sessionInfo: SessionInfo): void {
+    this.cookieService.usingUsername(sessionInfo.username);
+    this.sessionService.joinSession(SessionType.REFINEMENT, sessionInfo.sessionId, sessionInfo.username).subscribe(session => {
       if (session) {
         this.status = '';
         this.messages = 'In session\n';
@@ -97,9 +98,9 @@ export class PlanningSessionComponent implements OnInit {
       this.status = 'Unable to join that session!';
     });
   }
-  public createSession(): void {
-    this.cookieService.usingUsername(this.session.user.name);
-    this.sessionService.sessionCreate(this.session.user.name, SessionType.REFINEMENT).subscribe(
+  public createSession(sessionInfo: SessionInfo): void {
+    this.cookieService.usingUsername(sessionInfo.username);
+    this.sessionService.sessionCreate(sessionInfo.username, SessionType.REFINEMENT).subscribe(
       session => {
         this.status = '';
         this.inSession = true;
@@ -115,10 +116,10 @@ export class PlanningSessionComponent implements OnInit {
     );
   }
 
-  public openSession(): void {
-    switch (this.sessiontype) {
-      case 'new' : this.createSession(); break;
-      case 'existing' : this.joinSession(); break;
+  public openSession($event: SessionInfo): void {
+    switch ($event.state) {
+      case SessionConnectType.NEW : this.createSession($event); break;
+      case SessionConnectType.EXISTING : this.joinSession($event); break;
     }
   }
 

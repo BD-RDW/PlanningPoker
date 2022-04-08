@@ -13,6 +13,10 @@ export class ScrumCookieServiceService {
     this.username = this.cookieService.get(this.usernameCookie);
   }
 
+  removeCookies(): void {
+    this.cookieService.deleteAll();
+  }
+
   getUsername(): string {
     return this.username;
   }

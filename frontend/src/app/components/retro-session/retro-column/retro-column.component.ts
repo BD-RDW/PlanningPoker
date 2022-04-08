@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { RetrospectiveColumnData, RetrospectiveNote } from '../../model/retrospective-data';
-import { SessionService } from '../../service/session.service';
-import { NotesToMerge } from '../../model/notes-to-merge';
+import { RetrospectiveColumnData, RetrospectiveNote } from '../../../model/retrospective-data';
+import { SessionService } from '../../../service/session.service';
+import { NotesToMerge } from '../../../model/notes-to-merge';
 
 @Component({
-  selector: 'app-retrospective-column',
-  templateUrl: './retrospective-column.component.html',
-  styleUrls: ['./retrospective-column.component.css']
+  selector: 'app-retro-column',
+  templateUrl: './retro-column.component.html',
+  styleUrls: ['./retro-column.component.css']
 })
-export class RetrospectiveColumnComponent implements OnInit {
+export class RetroColumnComponent implements OnInit {
 
   @Input() userId: number;
   @Input() columnData: RetrospectiveColumnData;

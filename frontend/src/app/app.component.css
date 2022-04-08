@@ -34,3 +34,13 @@ p-toast {
   flex:0;
   background-color: transparent;
 }
+
+:host ::ng-deep .p-tabmenu .p-tabmenu-nav-content .p-tabmenu-nav .p-tabmenuitem.p-highlight {
+  background-color: #81f3f7;
+  border-bottom: 2px solid darkblue;
+  border-right: 2px solid darkblue;
+}
+
+:host ::ng-deep .p-tabmenu .p-tabmenu-nav-content .p-tabmenu-nav .p-tabmenuitem.p-highlight a {
+  background-color: transparent;
+}

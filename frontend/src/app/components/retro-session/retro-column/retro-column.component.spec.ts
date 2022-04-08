@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionService } from 'src/app/service/session.service';
 
-import { RetrospectiveColumnComponent } from './retrospective-column.component';
+import { RetrospectiveColumnComponent } from './retro-column.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('RetrospectiveColumnComponent', () => {

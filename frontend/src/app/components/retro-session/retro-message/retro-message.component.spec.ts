@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RetroSessionService } from 'src/app/service/retro-session.service';
 
-import { RetrospectiveMessageComponent } from './retrospective-message.component';
+import { RetroMessageComponent } from './retro-message.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('RetrospectiveMessageComponent', () => {
-  let component: RetrospectiveMessageComponent;
-  let fixture: ComponentFixture<RetrospectiveMessageComponent>;
+  let component: RetroMessageComponent;
+  let fixture: ComponentFixture<RetroMessageComponent>;
   let retroSessionServiceMock: RetroSessionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RetrospectiveMessageComponent ],
+      declarations: [ RetroMessageComponent ],
       imports: [ HttpClientTestingModule ],
       providers: [ RetroSessionService ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RetrospectiveMessageComponent);
+    fixture = TestBed.createComponent(RetroMessageComponent);
     component = fixture.componentInstance;
     retroSessionServiceMock = fixture.debugElement.injector.get(RetroSessionService);
   });

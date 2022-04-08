@@ -1,0 +1,30 @@
+:host {
+    min-width: 250px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 5px;
+}
+li {
+    padding-bottom: 5px;
+}
+    input {
+    width: 200px;
+    display: inline-block;
+}
+    label {
+    display: inline-block;
+    margin: 5px 10px 0 10px;
+}
+    button {
+    margin: 5px 0px 15px 0;
+    padding: 5px 10px 5px 10px;
+    font-size: larger;
+}
+    .select-session {
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 20px 20px 0 0;
+}
+  

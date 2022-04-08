@@ -8,11 +8,12 @@ import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 import { RetroSessionService } from 'src/app/service/retro-session.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TabSelected } from '../../shared/tab-selected';
 import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
 import { RetrospectiveNote } from '../../model/retrospective-data';
 import { MenuItem } from 'primeng/api';
+import { SessionConnectType, SessionInfo } from 'src/app/model/session-info';
 
 @Component({
   selector: 'app-retro-session',
@@ -61,17 +62,18 @@ export class RetroSessionComponent implements OnInit {
         }
         if (this.retroService.session.id) {
           if (this.retroService.session.user.name) {
-
-            this.joinSession();
+            this.joinSession({username: this.retroService.session.user.name, sessionId: this.retroService.session.id} as SessionInfo);
+          } else {
+            
           }
         }
       });
     }
   }
 
-  public joinSession(): void {
-    this.cookieService.usingUsername(this.retroService.session.user.name);
-    this.retroService.joinSession().subscribe(r => {
+  public joinSession(sessionInfo: SessionInfo): void {
+    this.cookieService.usingUsername(sessionInfo.username);
+    this.retroService.joinSession(sessionInfo).subscribe(r => {
       if (!this.retroService.inSession) {
         console.log('Unable to join that session!!');
         this.status = 'Unable to join that session';
@@ -82,9 +84,9 @@ export class RetroSessionComponent implements OnInit {
       }
     });
   }
-  public createSession(): void {
-    this.cookieService.usingUsername(this.retroService.session.user.name);
-    this.retroService.createSession().subscribe(r => {
+  public createSession(sessionInfo: SessionInfo): void {
+    this.cookieService.usingUsername(sessionInfo.username);
+    this.retroService.createSession(sessionInfo).subscribe(r => {
       if (! r) {
         console.log('Unable to create session!!');
         this.status = 'Unable to create session';
@@ -95,6 +97,14 @@ export class RetroSessionComponent implements OnInit {
       }
     });
   }
+
+  public openSession($event: SessionInfo): void {
+    switch ($event.state) {
+      case SessionConnectType.NEW : this.createSession($event); break;
+      case SessionConnectType.EXISTING : this.joinSession($event); break;
+    }
+  }
+
   public addMessage($event): void {
     this.retroService.addMessage($event);
   }

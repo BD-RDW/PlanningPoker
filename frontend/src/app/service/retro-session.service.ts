@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { SessionService } from './session.service';
 import { WebsocketService } from './websocket.service';
 import { WsMessage } from '../model/message';
-import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { NotesToMerge } from 'src/app/model/notes-to-merge';
 
 import { RetrospectiveColumnData, RetrospectiveNote, MoodboardStatus, MoodboardUpdate } from '../model/retrospective-data';
 import { User, SessionType, Session, Role } from '../model/session';
+import { SessionInfo } from 'src/app/model/session-info';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,8 @@ export class RetroSessionService {
   constructor(private sessionService: SessionService,
               private websocketService: WebsocketService) { }
 
-  public joinSession(): Observable<boolean> {
-    return this.sessionService.joinSession(SessionType.RETROSPECTIVE, this.session.id, this.session.user.name).pipe(
+  public joinSession(sessionInfo: SessionInfo): Observable<boolean> {
+    return this.sessionService.joinSession(SessionType.RETROSPECTIVE, sessionInfo.sessionId, sessionInfo.username).pipe(
       map(session => {
         if (session) {
           this.inSession = true;
@@ -56,8 +57,8 @@ export class RetroSessionService {
       })
     );
   }
-  public createSession(): Observable<boolean> {
-    return this.sessionService.sessionCreate(this.session.user.name, SessionType.RETROSPECTIVE).pipe(
+  public createSession(sessionInfo: SessionInfo): Observable<boolean> {
+    return this.sessionService.sessionCreate(sessionInfo.username, SessionType.RETROSPECTIVE).pipe(
       map(session => {
         this.inSession = true;
         this.session = JSON.parse(JSON.stringify(session));

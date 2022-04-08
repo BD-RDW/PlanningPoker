@@ -1,0 +1,17 @@
+<label for="username">User Id:</label>
+<input id="planning_username" name="username" type="text" [(ngModel)]="sessionInfo.username"/> <br>
+<div class="select-session">
+    <ul>
+        <li>
+            <p-radioButton name="sessieType" value="{{sessionConnectType[0]}}" [(ngModel)]="sessionInfo.state" inputId="sessionNew"></p-radioButton>
+            <label for="sessionNew">Create new Session</label>
+        </li>
+        <li>
+            <p-radioButton name="sessieType" value="{{sessionConnectType[1]}}" [(ngModel)]="sessionInfo.state" inputId="sessionExisting"></p-radioButton>
+            <label for="sessionExisting">Join existing session with id: </label>
+            <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="sessionInfo.sessionId" [disabled]="sessionInfo.state!==sessionConnectType[1]"/>
+        </li>
+    </ul>
+    <button id="Start" (click)="openSession()">Start</button>
+</div>
+

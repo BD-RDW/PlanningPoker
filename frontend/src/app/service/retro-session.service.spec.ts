@@ -7,7 +7,7 @@ import { Role, SessionType, Session, User } from '../model/session';
 import { of, throwError } from 'rxjs';
 import { WsMessage } from '../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote, MoodboardStatus, MoodboardUpdate } from '../model/retrospective-data';
-import { RetrospectiveColumnComponent } from '../components/retrospective-column/retrospective-column.component';
+import { RetrospectiveColumnComponent } from '../components/retro-session/retro-column/retro-column.component';
 
 describe('RetroSessionService', () => {
   let service: RetroSessionService;

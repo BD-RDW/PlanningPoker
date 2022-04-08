@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, ɵ_sanitizeHtml } from '@angular/core';
-import { RetrospectiveNote } from '../../model/retrospective-data';
-import { NotesToMerge } from '../../model/notes-to-merge';
+import { RetrospectiveNote } from '../../../model/retrospective-data';
+import { NotesToMerge } from '../../../model/notes-to-merge';
 import * as sanitizeHtml from 'sanitize-html';
 import { RetroSessionService } from 'src/app/service/retro-session.service';
 
 @Component({
-  selector: 'app-retrospective-message',
-  templateUrl: './retrospective-message.component.html',
-  styleUrls: ['./retrospective-message.component.css']
+  selector: 'app-retro-message',
+  templateUrl: './retro-message.component.html',
+  styleUrls: ['./retro-message.component.css']
 })
-export class RetrospectiveMessageComponent implements OnInit, AfterViewInit {
+export class RetroMessageComponent implements OnInit, AfterViewInit {
   @ViewChild('noteTextarea') textElement: ElementRef;
 
   public tempMessage: string;

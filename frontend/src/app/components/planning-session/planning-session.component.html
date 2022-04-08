@@ -1,4 +1,6 @@
-<div *ngIf="!inSession" class="login-panel">
+<app-session-init *ngIf="!inSession" (onStartSession)="openSession($event)" [sessionId]="session.id"></app-session-init>
+
+<!-- <div *ngIf="!inSession" class="login-panel">
     <label for="username">User Id:</label>
     <input id="planning_username" name="username" type="text" [(ngModel)]="session.user.name"> <br>
     <div class="select-session">
@@ -15,7 +17,7 @@
         </ul>
         <button id="Start" (click)="openSession()">Start</button>
     </div>
-</div>
+</div> -->
 <div *ngIf="inSession">
     <div class="three-panel-container">
         <div id="userPanel" class="user-panel">Users: <br>

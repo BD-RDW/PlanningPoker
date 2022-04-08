@@ -22,10 +22,10 @@ import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing-module';
 import { RetroSessionComponent } from './components/retro-session/retro-session.component';
 import { StatusComponent } from './components/status/status.component';
-import { RetrospectiveColumnComponent } from './components/retrospective-column/retrospective-column.component';
-import { RetrospectiveMessageComponent } from './components/retrospective-message/retrospective-message.component';
-import { CardsViewComponent } from './components/cards-view/cards-view.component';
-import { ResultViewComponent } from './components/result-view/result-view.component';
+import { RetroColumnComponent } from './components/retro-session/retro-column/retro-column.component';
+import { RetroMessageComponent } from './components/retro-session/retro-message/retro-message.component';
+import { CardsViewComponent } from './components/planning-session/cards-view/cards-view.component';
+import { ResultViewComponent } from './components/planning-session/result-view/result-view.component';
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
 import { MessagesViewComponent } from './components/messages-view/messages-view.component';
 import { SessionInitComponent } from './components/session-init/session-init.component';
@@ -36,8 +36,8 @@ import { SessionInitComponent } from './components/session-init/session-init.com
     HomeComponent,
     RetroSessionComponent,
     StatusComponent,
-    RetrospectiveColumnComponent,
-    RetrospectiveMessageComponent,
+    RetroColumnComponent,
+    RetroMessageComponent,
     PlanningSessionComponent,
     CardsViewComponent,
     ResultViewComponent,
