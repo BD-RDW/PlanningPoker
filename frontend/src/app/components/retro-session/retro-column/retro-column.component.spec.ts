@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionService } from 'src/app/service/session.service';
 
-import { RetrospectiveColumnComponent } from './retro-column.component';
+import { RetroColumnComponent } from './retro-column.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-describe('RetrospectiveColumnComponent', () => {
-  let component: RetrospectiveColumnComponent;
-  let fixture: ComponentFixture<RetrospectiveColumnComponent>;
+describe('RetroColumnComponent', () => {
+  let component: RetroColumnComponent;
+  let fixture: ComponentFixture<RetroColumnComponent>;
   let service: SessionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RetrospectiveColumnComponent ],
+      declarations: [ RetroColumnComponent ],
       imports: [ HttpClientTestingModule ],
       providers: [ SessionService ]
     })
@@ -19,7 +19,7 @@ describe('RetrospectiveColumnComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RetrospectiveColumnComponent);
+    fixture = TestBed.createComponent(RetroColumnComponent);
     component = fixture.componentInstance;
     service = fixture.debugElement.injector.get(SessionService);
   });

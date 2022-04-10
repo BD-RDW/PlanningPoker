@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e "
+    "e2e": "ng e2e ",
+    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
+    "storybook": "npm run docs:json && start-storybook -p 6006",
+    "build-storybook": "npm run docs:json && build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@types/sanitize-html": "^2.3.2",
-    "chart.js": "^3.7.0",
+    "chart.js": "^3.7.1",
     "file-saver": "^2.0.5",
     "moment": "^2.29.1",
     "ngx-cookie-service": "^13.1.2",
@@ -34,6 +37,7 @@
     "reconnecting-websocket": "^4.4.0",
     "rxjs": "~7.5.0",
     "sanitize-html": "^2.7.0",
+    "storybook": "^6.4.20",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.5"
   },
@@ -41,7 +45,18 @@
     "@angular-devkit/build-angular": "~13.3.1",
     "@angular/cli": "~13.3.1",
     "@angular/compiler-cli": "~13.3.1",
+    "@babel/core": "^7.17.9",
+    "@compodoc/compodoc": "^1.1.19",
+    "@storybook/addon-actions": "^6.4.20",
+    "@storybook/addon-essentials": "^6.4.20",
+    "@storybook/addon-interactions": "^6.4.20",
+    "@storybook/addon-links": "^6.4.20",
+    "@storybook/angular": "^6.4.20",
+    "@storybook/builder-webpack5": "^6.4.20",
+    "@storybook/manager-webpack5": "^6.4.20",
+    "@storybook/testing-library": "^0.0.9",
     "@types/jasmine": "~3.6.0",
+    "babel-loader": "^8.2.4",
     "codelyzer": "^6.0.0",
     "eslint": "^8.12.0",
     "jasmine-core": "~4.0.0",
@@ -52,9 +67,14 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "msw": "^0.39.2",
+    "msw-storybook-addon": "^1.6.3",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.6.3"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

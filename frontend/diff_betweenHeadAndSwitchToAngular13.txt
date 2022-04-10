@@ -1,0 +1,342 @@
+diff --git a/README.md b/README.md
+index 3bdad75..144bda6 100644
+--- a/README.md
++++ b/README.md
+@@ -61,6 +61,7 @@ ERROR               (any)           <- Server
+ 
+ # Changes:
+ ```
++20220401 : Upgrade to Angular 13
+ 20210615 : Fixed a handler mix-up
+ 20210621 : Added Edit and delete for retrospective notes
+ 20210622 : Added hearthbeat every minute
+@@ -90,6 +91,8 @@ ERROR               (any)           <- Server
+ 
+ - Added unittests
+ - perhaps add more moodboard types.
++- Add the checks when new user is added on user panel op planning tab
++- Add moving a message on retrospective panel
+ 
+ 
+ This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+diff --git a/frontend/package.json b/frontend/package.json
+index 808813f..569c8f8 100644
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "planning-session",
+-  "version": "0.1.0",
++  "version": "0.2.0",
+   "scripts": {
+     "ng": "ng",
+     "start": "ng serve  --proxy-config proxy.conf.json",
+diff --git a/frontend/src/app/app.component.css b/frontend/src/app/app.component.css
+index 20003b4..9ccada5 100644
+--- a/frontend/src/app/app.component.css
++++ b/frontend/src/app/app.component.css
+@@ -1,25 +1,36 @@
++:host {
++  width: 100vw;
++  height: 100vh;
++  display:flex;
++  flex-direction:column;
++  align-items: stretch;
++}
++p-toast {
++  flex:0;
++}
+ .container {
++  flex-grow:1;
++  align-self: stretch;
+   display:flex;
+   flex-direction:column;
+   align-items: stretch;
+-  width: 100vw;
+-  height: 100vh;
+   padding: 10px;
+ }
+ .kop {
+-  height:35px;
++  flex:0;
+   text-align: center;
+-  flex-grow:0;
++}
++.kop h1 {
++  margin-bottom: 5px;
+ }
+ .mainPanel {
+   flex-grow:1;
+-  align-items: stretch;
+-  background-color: transparent;
+   display:flex;
+   flex-direction:column;
++  align-items: stretch;
++  background-color: transparent;
+ }
+ .footer {
++  flex:0;
+   background-color: transparent;
+-  flex-grow:0;
+ }
+-
+diff --git a/frontend/src/app/app.module.ts b/frontend/src/app/app.module.ts
+index 66f17d8..9e09c76 100644
+--- a/frontend/src/app/app.module.ts
++++ b/frontend/src/app/app.module.ts
+@@ -8,10 +8,11 @@ import { TabMenuModule } from 'primeng/tabmenu';
+ import { ScrollPanelModule } from 'primeng/scrollpanel';
+ import { ButtonModule } from 'primeng/button';
+ import { ChartModule } from 'primeng/chart';
++import { RadioButtonModule } from 'primeng/radiobutton';
+ import { PrimeIcons } from 'primeng/api';
+ import { DialogModule } from 'primeng/dialog';
+-import {ToastModule} from 'primeng/toast';
+-import {MessageService} from 'primeng/api';
++import { ToastModule } from 'primeng/toast';
++import { MessageService } from 'primeng/api';
+ import { CookieService } from 'ngx-cookie-service';
+ import { MenuModule } from 'primeng/menu';
+ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+@@ -27,6 +28,7 @@ import { CardsViewComponent } from './components/cards-view/cards-view.component
+ import { ResultViewComponent } from './components/result-view/result-view.component';
+ import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
+ import { MessagesViewComponent } from './components/messages-view/messages-view.component';
++import { SessionInitComponent } from './components/session-init/session-init.component';
+ 
+ @NgModule({
+   declarations: [
+@@ -39,7 +41,8 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
+     PlanningSessionComponent,
+     CardsViewComponent,
+     ResultViewComponent,
+-    MessagesViewComponent
++    MessagesViewComponent,
++    SessionInitComponent
+   ],
+   imports: [
+     BrowserModule,
+@@ -50,6 +53,7 @@ import { MessagesViewComponent } from './components/messages-view/messages-view.
+     ScrollPanelModule,
+     BrowserAnimationsModule,
+     ButtonModule,
++    RadioButtonModule,
+     ChartModule,
+     DialogModule,
+     ToastModule,
+diff --git a/frontend/src/app/components/planning-session/planning-session.component.css b/frontend/src/app/components/planning-session/planning-session.component.css
+index 1235720..e4af42b 100644
+--- a/frontend/src/app/components/planning-session/planning-session.component.css
++++ b/frontend/src/app/components/planning-session/planning-session.component.css
+@@ -1,14 +1,47 @@
+-.controlePanel a {
++.controle-panel a {
+   color: darkblue;
+   font-weight: bold;
+ }
+-.controlePanel {
+-
++.controle-panel {
+   display: flex;
+   flex-direction: column;
+   align-content: stretch;
+   border: 10px white solid;
+-  height: 100%;
+   min-width: 300px;
+   max-width: 300px;
++}
++.three-panel-container {
++  display: flex;
++  flex-direction: row;
++  align-items: stretch;
++}
++.user-panel {
++  min-width: 200px;
++  max-width: 200px;
++}
++:host {
++  background-color: transparent;
++}
++
++.login-panel input {
++  width: 200px;
++  display: inline-block;
++}
++.login-panel label {
++  display: inline-block;
++  margin: 5px 10px 0 10px;
++}
++.login-panel button {
++  margin: 5px 0px 15px 0;
++}
++.select-session {
++  display: inline-block;
++  vertical-align: bottom;
++  margin: 20px 20px 0 0;
++  width: 50%;
++}
++
++.select-session ul {
++  list-style-type: none;
++  padding-left: 5px;
+ }
+\ No newline at end of file
+diff --git a/frontend/src/app/components/planning-session/planning-session.component.html b/frontend/src/app/components/planning-session/planning-session.component.html
+index eb3c354..8494c77 100644
+--- a/frontend/src/app/components/planning-session/planning-session.component.html
++++ b/frontend/src/app/components/planning-session/planning-session.component.html
+@@ -1,56 +1,58 @@
+-<div  style="max-width: 99%; max-height: 99%; overflow: hidden;">
+-    <div *ngIf="!inSession">
+-        <label for="username">User Id:</label>
+-        <input id="planning_username" name="username" type="text" [(ngModel)]="session.user.name" style="width: 200px;margin-left: 20px;"> <br>
+-        <div class="group">
+-            <button id="new_planning_session" (click)="createSession()">Create new session</button>
+-            <br>
+-        </div>
+-        <div class="group">
+-            <label for="sessionId">Session Id:</label>
+-            <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="session.id" style="width: 200px;margin-left: 20px;"><br/>
+-            <button id="join_planning_session" (click)="joinSession()">Join existing session</button>
+-        </div>
++<div *ngIf="!inSession" class="login-panel">
++    <label for="username">User Id:</label>
++    <input id="planning_username" name="username" type="text" [(ngModel)]="session.user.name"> <br>
++    <div class="select-session">
++        <ul>
++            <li>
++                <p-radioButton name="sessieType" value="new" [(ngModel)]="sessiontype" inputId="sessionNew"></p-radioButton>
++                <label for="sessionNew">Create new Session</label>
++            </li>
++            <li>
++                <p-radioButton name="sessieType" value="existing" [(ngModel)]="sessiontype" inputId="sessionExisting"></p-radioButton>
++                <label for="sessionExisting">Join existing session with id: </label>
++                <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="session.id" [disabled]="sessiontype!=='existing'"><br/>
++            </li>
++        </ul>
++        <button id="Start" (click)="openSession()">Start</button>
+     </div>
+-    <div *ngIf="inSession" style="height: 100%;">
+-        <div class="p-grid" style="height: 100%;">
+-            <div id="userPanel" class="p-col-2 user-panel">Users: <br>
+-                <ul>
+-                    <li *ngFor="let user of session.users">
+-                        <span>{{user.name}}
+-                            <i [ngClass]="{'pi pi-check' :  user.vote && phase === 'voting' }"></i>
+-                            <i *ngIf="user.vote && phase === 'showResults'">( {{user.vote}} )</i>
+-                        </span>
+-                    </li>
+-                </ul>
+-            </div>
+-            <div id="planningMainpanel" class="p-col-8 mainPanel">
+-                <div *ngIf="phase==='voting'">
+-                    <div class="card-panel">
+-                        <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+-                    </div>
+-                </div>
+-                <div class="result-panel" *ngIf="phase==='showResults'">
+-                    <app-result-view [users]="session.users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
++</div>
++<div *ngIf="inSession">
++    <div class="three-panel-container">
++        <div id="userPanel" class="user-panel">Users: <br>
++            <ul>
++                <li *ngFor="let user of session.users">
++                    <span>{{user.name}}
++                        <i [ngClass]="{'pi pi-check' :  user.vote && phase === 'voting' }"></i>
++                        <i *ngIf="user.vote && phase === 'showResults'">( {{user.vote}} )</i>
++                    </span>
++                </li>
++            </ul>
++        </div>
++        <div id="planningMainpanel" class="main-panel">
++            <div *ngIf="phase==='voting'">
++                <div class="card-panel">
++                    <app-cards-view [cardNumbers]="cardNumbers" (cardSelectedEvent)="cardSelected($event)"></app-cards-view>
+                 </div>
+             </div>
+-            <div id="controlePanel" class="p-col-2">
+-                <div class="controlePanel">
+-                    <div>
+-                        <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{session.id}}</a></label><br />
+-                        <label>User: {{session.user.name}} ({{session.user.id}})</label><br />
+-                    </div>
+-                    <button *ngIf="isAdmin()" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
+-                    <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
+-                        <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
+-                    </div>
++            <div class="result-panel" *ngIf="phase==='showResults'">
++                <app-result-view [users]="session.users" [choices]="cardNumbers" [colors]="chartColors"></app-result-view>
++            </div>
++        </div>
++        <div id="controlePanel" class="controle-panel">
++            <div class="controlePanel">
++                <div>
++                    <label>Session: <a (click)="getLinkUrl()" title="click to copy the session-url">{{session.id}}</a></label><br />
++                    <label>User: {{session.user.name}} ({{session.user.id}})</label><br />
++                </div>
++                <button *ngIf="isAdmin()" pButton type="button" label="{{switchPhase}}" (click)="switchPhaseHandler()"></button>
++                <div id="messagePanel"  style="flex-grow: 1; border: 1px solid black; padding:4px;margin-bottom: 20px;">
++                    <app-messages-view [messageReceived]="newMessage" (messageEntered)="addMessage($event)"></app-messages-view>
+                 </div>
+             </div>
+-          
+         </div>
++        
+     </div>
+-    <p-scrollPanel class="footer">
+-        <p>{{status}}</p>
+-    </p-scrollPanel>
+ </div>
+-
++<p-scrollPanel class="footer">
++    <p>{{status}}</p>
++</p-scrollPanel>
+diff --git a/frontend/src/app/components/planning-session/planning-session.component.ts b/frontend/src/app/components/planning-session/planning-session.component.ts
+index 5e5a84e..43a2cf7 100644
+--- a/frontend/src/app/components/planning-session/planning-session.component.ts
++++ b/frontend/src/app/components/planning-session/planning-session.component.ts
+@@ -30,6 +30,7 @@ export class PlanningSessionComponent implements OnInit {
+   public session: Session =
+     {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};
+   public inSession = false;
++  public sessiontype = 'new';
+ 
+   public messages  = 'Default message';
+   public status = '';
+@@ -67,6 +68,7 @@ export class PlanningSessionComponent implements OnInit {
+         this.session.user.name = params.userId;
+       }
+       if (this.session.id) {
++        this.sessiontype='existing';
+         if (this.session.user.name) {
+           this.joinSession();
+         }
+@@ -113,6 +115,13 @@ export class PlanningSessionComponent implements OnInit {
+     );
+   }
+ 
++  public openSession(): void {
++    switch (this.sessiontype) {
++      case 'new' : this.createSession(); break;
++      case 'existing' : this.joinSession(); break;
++    }
++  }
++
+   public switchPhaseHandler(): void {
+     if (this.phase === 'voting') {
+       this.switchToPhase('showResults');
+@@ -189,12 +198,12 @@ export class PlanningSessionComponent implements OnInit {
+   private updatePhase(message: WsMessage): void {
+     this.switchToPhase(message.payload);
+   }
++
+   getLinkUrl(): void {
+     const result = `${this.baseUrl}?sessionId=${this.session.id}`;
+     this.clipboard.copy(result);
+     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});
+   }
+-
+   public isAdmin(): boolean {
+     return this.session.user.role === Role.ScrumMaster;
+   }

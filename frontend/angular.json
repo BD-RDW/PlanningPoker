@@ -28,7 +28,7 @@
               "node_modules/primeng/resources/themes/fluent-light/theme.css",
               "./node_modules/primeflex/primeflex.css",
               "./node_modules/primeicons/primeicons.css",
-              "./node_modules/chart.js/dist/Chart.js",
+              "./node_modules/chart.js/dist/chart.js",
               "src/styles.css"
             ],
             "scripts": []

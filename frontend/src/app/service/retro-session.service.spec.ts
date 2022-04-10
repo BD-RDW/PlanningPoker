@@ -7,7 +7,8 @@ import { Role, SessionType, Session, User } from '../model/session';
 import { of, throwError } from 'rxjs';
 import { WsMessage } from '../model/message';
 import { RetrospectiveColumnData, RetrospectiveNote, MoodboardStatus, MoodboardUpdate } from '../model/retrospective-data';
-import { RetrospectiveColumnComponent } from '../components/retro-session/retro-column/retro-column.component';
+import { RetroColumnComponent } from '../components/retro-session/retro-column/retro-column.component';
+import { SessionConnectType } from '../model/session-info';
 
 describe('RetroSessionService', () => {
   let service: RetroSessionService;
@@ -301,7 +302,7 @@ describe('RetroSessionService', () => {
     ]};
     spyOn(sessionServiceMock, 'sessionCreate').and.callFake(() => of(session));
     spyOn(websocketServiceMock, 'init').and.callFake(() => of(session));
-    service.createSession().subscribe(() => {
+    service.createSession({username:'testUser',state:SessionConnectType.NEW,sessionId:undefined}).subscribe(() => {
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalled();
       // tslint:disable-next-line:max-line-length
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalledWith('testUser', SessionType.RETROSPECTIVE);
@@ -318,7 +319,7 @@ describe('RetroSessionService', () => {
     console.log('create session fails');
     spyOn(sessionServiceMock, 'sessionCreate').and.callFake(() => throwError('404'));
     spyOn(websocketServiceMock, 'init').and.callFake(() => of(null));
-    service.createSession().subscribe(() => {
+    service.createSession({username:'testUser',state:SessionConnectType.NEW,sessionId:undefined}).subscribe(() => {
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalled();
       // tslint:disable-next-line:max-line-length
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalledWith('testUser', SessionType.RETROSPECTIVE);
@@ -335,7 +336,7 @@ describe('RetroSessionService', () => {
     console.log('join session fails');
     spyOn(sessionServiceMock, 'sessionCreate').and.callFake(() =>  throwError('404'));
     spyOn(websocketServiceMock, 'init').and.callFake(() => of(null));
-    service.createSession().subscribe(() => {
+    service.createSession({username:'testUser',state:SessionConnectType.NEW,sessionId:undefined}).subscribe(() => {
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalled();
       // tslint:disable-next-line:max-line-length
       expect(sessionServiceMock.sessionCreate).toHaveBeenCalledWith('testUser', SessionType.RETROSPECTIVE);
