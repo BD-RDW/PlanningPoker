@@ -472,19 +472,7 @@
         },
         {
             "name": "User",
-            "id": "interface-User-9c7e5f1bbbab702cb032307d130876cb68969b0cd4eedef32a0c8cad8081a54e5f8f577ed6ad4539c1b99a1d246cb34031d198c2ea8eba440e64e91b14f01fdc",
-            "file": "src/stories/User.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "export interface User {}\n",
-            "properties": [],
-            "indexSignatures": [],
-            "methods": []
-        },
-        {
-            "name": "User",
-            "id": "interface-User-021f11d03c49e5018035d584d2a0899cee4eda0e4c5e08d8ea0eaf30947b5b03ce39e056e87f4ae313458de112893c6dd09f36af7870d9763fa7aac82250404a-1",
+            "id": "interface-User-021f11d03c49e5018035d584d2a0899cee4eda0e4c5e08d8ea0eaf30947b5b03ce39e056e87f4ae313458de112893c6dd09f36af7870d9763fa7aac82250404a",
             "file": "src/app/model/session.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -530,6 +518,18 @@
             ],
             "indexSignatures": [],
             "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "User",
+            "id": "interface-User-9c7e5f1bbbab702cb032307d130876cb68969b0cd4eedef32a0c8cad8081a54e5f8f577ed6ad4539c1b99a1d246cb34031d198c2ea8eba440e64e91b14f01fdc-1",
+            "file": "src/stories/User.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface User {}\n",
+            "properties": [],
+            "indexSignatures": [],
             "methods": [],
             "isDuplicate": true,
             "duplicateId": 1,
@@ -619,6 +619,106 @@
         }
     ],
     "injectables": [
+        {
+            "name": "MessageServiceMock",
+            "id": "injectable-MessageServiceMock-a6d803f46028d9b5222d89634be66078cfb8d7b27b489396c9c35e6984cc5706b61fb1bb281742df090a468cea24f05143dd1fe103ee6ef4110ec2e84a421081",
+            "file": "src/stories/mocks/MessageServiceMock.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "add",
+                    "args": [
+                        {
+                            "name": "message",
+                            "type": "Message",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 8,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "message",
+                            "type": "Message",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "addAll",
+                    "args": [
+                        {
+                            "name": "messages",
+                            "type": "Message[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "messages",
+                            "type": "Message[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "clear",
+                    "args": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "key",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Message } from 'primeng/api';\nimport { Injectable } from '@angular/core';\n@Injectable({\n    providedIn: 'root'\n  })\n// eslint-disable-next-line @typescript-eslint/no-empty-interface\nexport class MessageServiceMock {\n    add(message: Message): void {\n      console.log('MessageServiceMock.add()')\n    }\n    addAll(messages: Message[]): void {\n      console.log('MessageServiceMock.addAll()')\n    }\n    clear(key?: string): void {\n      console.log('MessageServiceMock.clear()')\n    }\n}\n",
+            "type": "injectable"
+        },
         {
             "name": "RetroSessionService",
             "id": "injectable-RetroSessionService-7380cb13ba719ded2d38fa626bec87c566e8618054eb7d1694b9d8ac30780bccb9af42897901542099486a50b54a8829ba117ec9da80167667f480d0ca3b0823",
@@ -1415,9 +1515,9 @@
             "type": "injectable"
         },
         {
-            "name": "ScrumCookieServiceService",
-            "id": "injectable-ScrumCookieServiceService-72f83faf84f85ad5bc3c09c72dac3698b1f0a86c57f95df6d9569d35399312b856ecb35d5aa0901bf1d7ce5a754c25d5c66d01ff4550fd5d54d01fa524e70a29",
-            "file": "src/app/service/scrum-cookie-service.service.ts",
+            "name": "ScrumCookieService",
+            "id": "injectable-ScrumCookieService-76d566e6be134845120fc91867debf20c08e861335b50cdd911a07754ce4bbd12d3a0a20358eeaa98cda38641808158e57ea9ac1c8917f73fdbba3a62568539f",
+            "file": "src/app/service/scrum-cookie.service.ts",
             "properties": [
                 {
                     "name": "username",
@@ -1499,7 +1599,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\nimport { CookieService } from 'ngx-cookie-service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class ScrumCookieServiceService {\n  private usernameCookie = 'scrumUser';\n\n  private username: string;\n\n  constructor(private cookieService: CookieService) {\n    this.username = this.cookieService.get(this.usernameCookie);\n  }\n\n  removeCookies(): void {\n    this.cookieService.deleteAll();\n  }\n\n  getUsername(): string {\n    return this.username;\n  }\n\n  usingUsername(usernameNow: string): void {\n    if (usernameNow !== this.username) {\n      this.username = usernameNow;\n      console.log(`Username set to ${this.username}`);\n      this.cookieService.set(this.usernameCookie, this.username, 365);\n    }\n  }\n\n}\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { CookieService } from 'ngx-cookie-service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class ScrumCookieService {\n  private usernameCookie = 'scrumUser';\n\n  private username: string;\n\n  constructor(private cookieService: CookieService) {\n    this.username = this.cookieService.get(this.usernameCookie);\n  }\n\n  removeCookies(): void {\n    this.cookieService.deleteAll();\n  }\n\n  getUsername(): string {\n    return this.username;\n  }\n\n  usingUsername(usernameNow: string): void {\n    if (usernameNow !== this.username) {\n      this.username = usernameNow;\n      console.log(`Username set to ${this.username}`);\n      this.cookieService.set(this.usernameCookie, this.username, 365);\n    }\n  }\n\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -1526,6 +1626,72 @@
                     }
                 ]
             },
+            "type": "injectable"
+        },
+        {
+            "name": "ScrumCookieServiceMock",
+            "id": "injectable-ScrumCookieServiceMock-9f739d27a2a75d6fe7361390771d575f74c043fe5fd8b10535c660bb26d60a8596ecd5c4e041dd63c78e5716f57836f6e94ca5ccd1f2d593c1a1bb0ce92ed147",
+            "file": "src/stories/mocks/SrcumCookieServiceMock.ts",
+            "properties": [
+                {
+                    "name": "username",
+                    "defaultValue": "'testuser'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getUsername",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "setUsername",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 10,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\n@Injectable({\n    providedIn: 'root'\n  })\n// eslint-disable-next-line @typescript-eslint/no-empty-interface\nexport class ScrumCookieServiceMock {\n\n  private username = 'testuser';\n\n  setUsername(name: string) {\n    console.log(`ScrumCookieServiceMock.setUsername('${name}')`);\n    this.username = name;\n  }\n\n  getUsername(): string {\n    console.log('ScrumCookieServiceMock.getUsername()');\n    return this.username;\n  }\n}\n",
             "type": "injectable"
         },
         {
@@ -2912,7 +3078,7 @@
         },
         {
             "name": "PlanningSessionComponent",
-            "id": "component-PlanningSessionComponent-a92925385529b7f82d8bb1a998ace83fe7a2d77733b7438cd03333924f0acd9cb8ed842d3274aabaf0ee900b02ec2fe2f07181250bdbf44c1d665f670c5f5d15",
+            "id": "component-PlanningSessionComponent-02349585a7fa169c720e1f2ac9f2dcc33bd621b203d8cd525cb3738c9859fdbbab9312b595a36cb0d306053992b93e34e4b345d2fd0fc4aeefbb98a58a80fdb2",
             "file": "src/app/components/planning-session/planning-session.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3531,7 +3697,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, Output, EventEmitter } from '@angular/core';\r\nimport { Clipboard } from '@angular/cdk/clipboard';\r\nimport { ActivatedRoute, ParamMap } from '@angular/router';\r\nimport {MessageService} from 'primeng/api';\r\nimport { WsMessage } from 'src/app/model/message';\r\n\r\nimport {SessionService} from '../../service/session.service';\r\nimport {WebsocketService} from '../../service/websocket.service';\r\n\r\nimport { environment } from '../../../environments/environment';\r\nimport { User, UserVotes, SessionType, Session, Role } from '../../model/session';\r\n\r\nimport { BehaviorSubject, Subject } from 'rxjs';\r\nimport { TabSelected } from '../../shared/tab-selected';\r\n\r\nimport { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';\r\nimport { SessionConnectType, SessionInfo } from 'src/app/model/session-info';\r\n\r\n@Component({\r\n    selector: 'app-planning-session',\r\n    templateUrl: './planning-session.component.html',\r\n    styleUrls: ['./planning-session.component.css'],\r\n    providers: []\r\n})\r\nexport class PlanningSessionComponent implements OnInit {\r\n\r\n  @Output() tabSelectedEvent = new EventEmitter<TabSelected>();\r\n\r\n  public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');\r\n\r\n  public session: Session =\r\n    {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};\r\n  public inSession = false;\r\n  public sessiontype = 'new';\r\n\r\n  public messages  = 'Default message';\r\n  public status = '';\r\n\r\n  public switchPhase: string;\r\n  public phase: string;\r\n\r\n  private baseUrl: string;\r\n\r\n  public cardNumbers = environment.CARD_SYMBOLS;\r\n  public chartColors = environment.CHART_COLORS;\r\n\r\n  private actions: string[] = ['UpdatePlanSession', 'NewMessage', 'UpdateVotes', 'UpdatePhase'];\r\n\r\n  constructor(\r\n    private sessionService: SessionService,\r\n    private websocketService: WebsocketService,\r\n    private route: ActivatedRoute,\r\n    private clipboard: Clipboard,\r\n    private cookieService: ScrumCookieServiceService,\r\n    private messageService: MessageService)\r\n  {\r\n    this.baseUrl = document.location.href;\r\n    if (this.baseUrl.indexOf('?') >= 0) {\r\n      this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));\r\n    }\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.session.user.name = this.cookieService.getUsername();\r\n    this.tabSelectedEvent.emit(TabSelected.PlanningPoker);\r\n    this.route.queryParams.subscribe(params => {\r\n      this.session.id = params.sessionId;\r\n      if (params.userId) {\r\n        this.session.user.name = params.userId;\r\n      }\r\n      if (this.session.id) {\r\n        this.sessiontype='existing';\r\n        if (this.session.user.name) {\r\n          this.joinSession({username: this.session.user.name, sessionId: this.session.id} as SessionInfo);\r\n        }\r\n      }\r\n    });\r\n  }\r\n\r\n  public joinSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.sessionService.joinSession(SessionType.REFINEMENT, sessionInfo.sessionId, sessionInfo.username).subscribe(session => {\r\n      if (session) {\r\n        this.status = '';\r\n        this.messages = 'In session\\n';\r\n        this.inSession = true;\r\n        this.session = JSON.parse(JSON.stringify(session));\r\n        this.websocketService.init(this.processMessage, this.session.id, this.actions, document.location.href);\r\n        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});\r\n      } else {\r\n        this.inSession = false;\r\n        console.log('Unable to join that session!!');\r\n        this.status = 'Unable to join that session!';\r\n      }\r\n    },\r\n    err => {\r\n      console.log(err);\r\n      this.status = 'Unable to join that session!';\r\n    });\r\n  }\r\n  public createSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.sessionService.sessionCreate(sessionInfo.username, SessionType.REFINEMENT).subscribe(\r\n      session => {\r\n        this.status = '';\r\n        this.inSession = true;\r\n        this.session = JSON.parse(JSON.stringify(session));\r\n        const handler = (this.processMessage).bind(this);\r\n        this.websocketService.init(handler, this.session.id, this.actions, document.location.href);\r\n        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});\r\n      },\r\n      err => {\r\n        console.log(err);\r\n        this.status = 'Unable to create a session!';\r\n      }\r\n    );\r\n  }\r\n\r\n  public openSession($event: SessionInfo): void {\r\n    switch ($event.state) {\r\n      case SessionConnectType.NEW : this.createSession($event); break;\r\n      case SessionConnectType.EXISTING : this.joinSession($event); break;\r\n    }\r\n  }\r\n\r\n  public switchPhaseHandler(): void {\r\n    if (this.phase === 'voting') {\r\n      this.switchToPhase('showResults');\r\n      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});\r\n    } else if (this.phase === 'showResults') {\r\n      this.switchToPhase('voting');\r\n      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});\r\n    } else {\r\n      console.log(`Unknown phase ${this.phase}`);\r\n    }\r\n  }\r\n\r\n  private switchToPhase(phase: string): void {\r\n    if (phase === 'voting') {\r\n      this.phase = 'voting';\r\n      this.switchPhase = 'Finish voting';\r\n    } else if (phase === 'showResults') {\r\n      this.phase = 'showResults';\r\n      this.switchPhase = 'Start voting';\r\n    } else {\r\n      console.log(`Unknown phase ${phase}`);\r\n    }\r\n  }\r\n\r\n  public addMessage($event): void {\r\n    const wsMessage = { action: 'AddMessage', sessionId: this.session.id, userId: this.session.user.id, payload: $event } as WsMessage;\r\n    console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);\r\n    this.websocketService.send(wsMessage);\r\n  }\r\n\r\n  public cardSelected($event): void {\r\n    this.websocketService.send({ action: 'EnterVote',\r\n      sessionId: this.session.id, userId: this.session.user.id, payload: $event });\r\n  }\r\n  public showThatTheUserHasVoted(user: User): boolean {\r\n    return user.vote && this.phase === 'voting';\r\n  }\r\n\r\n  processMessage = (message: WsMessage) => {\r\n    switch (message.action) {\r\n      case 'UpdatePlanSession' : this.processUpdateSession(message); break;\r\n      case 'NewMessage' : this.addNewMessage(message); break;\r\n      case 'UpdateVotes' : this.updateVotes(message); break;\r\n      case 'UpdatePhase' : this.updatePhase(message); break;\r\n      default: console.log(`PlanningSessionComponent.processMessage: Unknown message action (${message.action}) received.`);\r\n    }\r\n  }\r\n  private processUpdateSession(message: WsMessage): void {\r\n    this.session.users = this.getUsersFromMessage(message);\r\n    if (! this.session.user.role) {\r\n      this.session.user.role = this.session.users.find(u => u.id === this.session.user.id).role;\r\n    }\r\n  }\r\n  private getUsersFromMessage(message: WsMessage): User[] {\r\n    return  (message.payload as User[]).sort((u1, u2) => {\r\n      if (u1.name > u2.name) { return 1; }\r\n      if (u1.name < u2.name) { return -1; }\r\n      return 0;\r\n    });\r\n  }\r\n  private addNewMessage(message: WsMessage): void {\r\n    this.newMessage.next(message.payload);\r\n  }\r\n  private updateVotes(message: WsMessage): void {\r\n    this.session.users.forEach( u => {\r\n      const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);\r\n      if ( tempVote) {\r\n        u.vote = tempVote.vote;\r\n      } else {\r\n        u.vote = undefined;\r\n      }\r\n    });\r\n  }\r\n  private updatePhase(message: WsMessage): void {\r\n    this.switchToPhase(message.payload);\r\n  }\r\n\r\n  getLinkUrl(): void {\r\n    const result = `${this.baseUrl}?sessionId=${this.session.id}`;\r\n    this.clipboard.copy(result);\r\n    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});\r\n  }\r\n  public isAdmin(): boolean {\r\n    return this.session.user.role === Role.ScrumMaster;\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit, Output, EventEmitter } from '@angular/core';\r\nimport { Clipboard } from '@angular/cdk/clipboard';\r\nimport { ActivatedRoute, ParamMap } from '@angular/router';\r\nimport {MessageService} from 'primeng/api';\r\nimport { WsMessage } from 'src/app/model/message';\r\n\r\nimport {SessionService} from '../../service/session.service';\r\nimport {WebsocketService} from '../../service/websocket.service';\r\n\r\nimport { environment } from '../../../environments/environment';\r\nimport { User, UserVotes, SessionType, Session, Role } from '../../model/session';\r\n\r\nimport { BehaviorSubject, Subject } from 'rxjs';\r\nimport { TabSelected } from '../../shared/tab-selected';\r\n\r\nimport { ScrumCookieService } from '../../service/scrum-cookie.service';\r\nimport { SessionConnectType, SessionInfo } from 'src/app/model/session-info';\r\n\r\n@Component({\r\n    selector: 'app-planning-session',\r\n    templateUrl: './planning-session.component.html',\r\n    styleUrls: ['./planning-session.component.css'],\r\n    providers: []\r\n})\r\nexport class PlanningSessionComponent implements OnInit {\r\n\r\n  @Output() tabSelectedEvent = new EventEmitter<TabSelected>();\r\n\r\n  public newMessage: Subject<string> = new BehaviorSubject<string>('Status...');\r\n\r\n  public session: Session =\r\n    {id: null, type: SessionType.UNKNOWN, user: {id: null, name: null, role: null, vote: null}, phase: null,  users: []};\r\n  public inSession = false;\r\n  public sessiontype = 'new';\r\n\r\n  public messages  = 'Default message';\r\n  public status = '';\r\n\r\n  public switchPhase: string;\r\n  public phase: string;\r\n\r\n  private baseUrl: string;\r\n\r\n  public cardNumbers = environment.CARD_SYMBOLS;\r\n  public chartColors = environment.CHART_COLORS;\r\n\r\n  private actions: string[] = ['UpdatePlanSession', 'NewMessage', 'UpdateVotes', 'UpdatePhase'];\r\n\r\n  constructor(\r\n    private sessionService: SessionService,\r\n    private websocketService: WebsocketService,\r\n    private route: ActivatedRoute,\r\n    private clipboard: Clipboard,\r\n    private cookieService: ScrumCookieService,\r\n    private messageService: MessageService)\r\n  {\r\n    this.baseUrl = document.location.href;\r\n    if (this.baseUrl.indexOf('?') >= 0) {\r\n      this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));\r\n    }\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.session.user.name = this.cookieService.getUsername();\r\n    this.tabSelectedEvent.emit(TabSelected.PlanningPoker);\r\n    this.route.queryParams.subscribe(params => {\r\n      this.session.id = params.sessionId;\r\n      if (params.userId) {\r\n        this.session.user.name = params.userId;\r\n      }\r\n      if (this.session.id) {\r\n        this.sessiontype='existing';\r\n        if (this.session.user.name) {\r\n          this.joinSession({username: this.session.user.name, sessionId: this.session.id} as SessionInfo);\r\n        }\r\n      }\r\n    });\r\n  }\r\n\r\n  public joinSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.sessionService.joinSession(SessionType.REFINEMENT, sessionInfo.sessionId, sessionInfo.username).subscribe(session => {\r\n      if (session) {\r\n        this.status = '';\r\n        this.messages = 'In session\\n';\r\n        this.inSession = true;\r\n        this.session = JSON.parse(JSON.stringify(session));\r\n        this.websocketService.init(this.processMessage, this.session.id, this.actions, document.location.href);\r\n        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});\r\n      } else {\r\n        this.inSession = false;\r\n        console.log('Unable to join that session!!');\r\n        this.status = 'Unable to join that session!';\r\n      }\r\n    },\r\n    err => {\r\n      console.log(err);\r\n      this.status = 'Unable to join that session!';\r\n    });\r\n  }\r\n  public createSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.sessionService.sessionCreate(sessionInfo.username, SessionType.REFINEMENT).subscribe(\r\n      session => {\r\n        this.status = '';\r\n        this.inSession = true;\r\n        this.session = JSON.parse(JSON.stringify(session));\r\n        const handler = (this.processMessage).bind(this);\r\n        this.websocketService.init(handler, this.session.id, this.actions, document.location.href);\r\n        this.websocketService.send({ action: 'JoinSession', sessionId: this.session.id, userId: this.session.user.id, payload: `Joining session ${this.session.id}`});\r\n      },\r\n      err => {\r\n        console.log(err);\r\n        this.status = 'Unable to create a session!';\r\n      }\r\n    );\r\n  }\r\n\r\n  public openSession($event: SessionInfo): void {\r\n    switch ($event.state) {\r\n      case SessionConnectType.NEW : this.createSession($event); break;\r\n      case SessionConnectType.EXISTING : this.joinSession($event); break;\r\n    }\r\n  }\r\n\r\n  public switchPhaseHandler(): void {\r\n    if (this.phase === 'voting') {\r\n      this.switchToPhase('showResults');\r\n      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});\r\n    } else if (this.phase === 'showResults') {\r\n      this.switchToPhase('voting');\r\n      this.websocketService.send({ action: 'SwitchPhase', sessionId: this.session.id, userId: this.session.user.id, payload: this.phase});\r\n    } else {\r\n      console.log(`Unknown phase ${this.phase}`);\r\n    }\r\n  }\r\n\r\n  private switchToPhase(phase: string): void {\r\n    if (phase === 'voting') {\r\n      this.phase = 'voting';\r\n      this.switchPhase = 'Finish voting';\r\n    } else if (phase === 'showResults') {\r\n      this.phase = 'showResults';\r\n      this.switchPhase = 'Start voting';\r\n    } else {\r\n      console.log(`Unknown phase ${phase}`);\r\n    }\r\n  }\r\n\r\n  public addMessage($event): void {\r\n    const wsMessage = { action: 'AddMessage', sessionId: this.session.id, userId: this.session.user.id, payload: $event } as WsMessage;\r\n    console.log(`PlanningSessionManager.addMessage: ${JSON.stringify(wsMessage)}`);\r\n    this.websocketService.send(wsMessage);\r\n  }\r\n\r\n  public cardSelected($event): void {\r\n    this.websocketService.send({ action: 'EnterVote',\r\n      sessionId: this.session.id, userId: this.session.user.id, payload: $event });\r\n  }\r\n  public showThatTheUserHasVoted(user: User): boolean {\r\n    return user.vote && this.phase === 'voting';\r\n  }\r\n\r\n  processMessage = (message: WsMessage) => {\r\n    switch (message.action) {\r\n      case 'UpdatePlanSession' : this.processUpdateSession(message); break;\r\n      case 'NewMessage' : this.addNewMessage(message); break;\r\n      case 'UpdateVotes' : this.updateVotes(message); break;\r\n      case 'UpdatePhase' : this.updatePhase(message); break;\r\n      default: console.log(`PlanningSessionComponent.processMessage: Unknown message action (${message.action}) received.`);\r\n    }\r\n  }\r\n  private processUpdateSession(message: WsMessage): void {\r\n    this.session.users = this.getUsersFromMessage(message);\r\n    if (! this.session.user.role) {\r\n      this.session.user.role = this.session.users.find(u => u.id === this.session.user.id).role;\r\n    }\r\n  }\r\n  private getUsersFromMessage(message: WsMessage): User[] {\r\n    return  (message.payload as User[]).sort((u1, u2) => {\r\n      if (u1.name > u2.name) { return 1; }\r\n      if (u1.name < u2.name) { return -1; }\r\n      return 0;\r\n    });\r\n  }\r\n  private addNewMessage(message: WsMessage): void {\r\n    this.newMessage.next(message.payload);\r\n  }\r\n  private updateVotes(message: WsMessage): void {\r\n    this.session.users.forEach( u => {\r\n      const tempVote = (message.payload as UserVotes[]).find(uv => u.id === uv.userid);\r\n      if ( tempVote) {\r\n        u.vote = tempVote.vote;\r\n      } else {\r\n        u.vote = undefined;\r\n      }\r\n    });\r\n  }\r\n  private updatePhase(message: WsMessage): void {\r\n    this.switchToPhase(message.payload);\r\n  }\r\n\r\n  getLinkUrl(): void {\r\n    const result = `${this.baseUrl}?sessionId=${this.session.id}`;\r\n    this.clipboard.copy(result);\r\n    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});\r\n  }\r\n  public isAdmin(): boolean {\r\n    return this.session.user.role === Role.ScrumMaster;\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3572,7 +3738,7 @@
                     },
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": ""
                     },
@@ -3623,7 +3789,7 @@
                     },
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -4505,7 +4671,7 @@
         },
         {
             "name": "RetroSessionComponent",
-            "id": "component-RetroSessionComponent-90f08f28ed07ad69004a133ed47af6929ea8696995b7c774bcba2fb19befb2ad60a2236874d6df1f46a6148b2d447bdfcd3cd80dd71c8a2b3d1c0f11a5a7d9bb",
+            "id": "component-RetroSessionComponent-a6327300937c56479b88f9993f750920490e292eca68f9f2d990dde08cb727166b5dcf45cb85b2678dc150944c48500041f1a01d3c2facc63d7524f736477433",
             "file": "src/app/components/retro-session/retro-session.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -5033,7 +5199,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, OnInit, Output } from '@angular/core';\r\nimport { Clipboard } from '@angular/cdk/clipboard';\r\nimport {MessageService} from 'primeng/api';\r\nimport { saveAs } from '../../../../node_modules/file-saver';\r\nimport { faSmile, faFrown, faMeh } from '@fortawesome/free-solid-svg-icons';\r\n\r\nimport { Observable } from 'rxjs';\r\nimport * as moment from 'moment';\r\nimport { NotesToMerge } from 'src/app/model/notes-to-merge';\r\nimport { RetroSessionService } from 'src/app/service/retro-session.service';\r\nimport { ActivatedRoute } from '@angular/router';\r\nimport { TabSelected } from '../../shared/tab-selected';\r\nimport { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';\r\nimport { RetrospectiveNote } from '../../model/retrospective-data';\r\nimport { MenuItem } from 'primeng/api';\r\nimport { SessionConnectType, SessionInfo } from 'src/app/model/session-info';\r\n\r\n@Component({\r\n  selector: 'app-retro-session',\r\n  templateUrl: './retro-session.component.html',\r\n  styleUrls: ['./retro-session.component.css']\r\n})\r\nexport class RetroSessionComponent implements OnInit {\r\n\r\n  @Output() tabSelectedEvent = new EventEmitter<TabSelected>();\r\n  public newMessage: Observable<string> = this.retroService.newMessage;\r\n\r\n  public menuItems: MenuItem[] = [\r\n    {label: 'export', command: () => { this.saveNotes(); }},\r\n  ];\r\n\r\n  public icons = [faSmile, faMeh, faFrown];\r\n\r\n  public messages = 'Default message';\r\n  public message = '';\r\n  public status = '';\r\n\r\n  public display = false;\r\n\r\n  private baseUrl: string;\r\n\r\n  constructor(public retroService: RetroSessionService,\r\n              private route: ActivatedRoute,\r\n              private clipboard: Clipboard,\r\n              private cookieService: ScrumCookieServiceService,\r\n              private messageService: MessageService) {\r\n\r\n    this.retroService.session.user.name = this.cookieService.getUsername();\r\n    this.baseUrl = document.location.href;\r\n    if (this.baseUrl.indexOf('?') >= 0) {\r\n      this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));\r\n    }\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    if (! this.retroService.inSession) {\r\n      this.tabSelectedEvent.emit(TabSelected.Retrospective);\r\n      this.route.queryParams.subscribe(params => {\r\n        this.retroService.session.id = params.sessionId;\r\n        if (params.userId) {\r\n          this.retroService.session.user.name = params.userId;\r\n        }\r\n        if (this.retroService.session.id) {\r\n          if (this.retroService.session.user.name) {\r\n            this.joinSession({username: this.retroService.session.user.name, sessionId: this.retroService.session.id} as SessionInfo);\r\n          } else {\r\n            \r\n          }\r\n        }\r\n      });\r\n    }\r\n  }\r\n\r\n  public joinSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.retroService.joinSession(sessionInfo).subscribe(r => {\r\n      if (!this.retroService.inSession) {\r\n        console.log('Unable to join that session!!');\r\n        this.status = 'Unable to join that session';\r\n      } else {\r\n        if (this.retroService.isAdmin()) {\r\n         this.menuItems.push ({label: 'moodboard', command: () => { alert('Show moodboard'); }});\r\n        }\r\n      }\r\n    });\r\n  }\r\n  public createSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.retroService.createSession(sessionInfo).subscribe(r => {\r\n      if (! r) {\r\n        console.log('Unable to create session!!');\r\n        this.status = 'Unable to create session';\r\n      } else {\r\n        if (this.retroService.isAdmin()) {\r\n         this.menuItems.push ({label: 'moodboard', command: () => { this.moodboardStatusUpdate(); }});\r\n        }\r\n      }\r\n    });\r\n  }\r\n\r\n  public openSession($event: SessionInfo): void {\r\n    switch ($event.state) {\r\n      case SessionConnectType.NEW : this.createSession($event); break;\r\n      case SessionConnectType.EXISTING : this.joinSession($event); break;\r\n    }\r\n  }\r\n\r\n  public addMessage($event): void {\r\n    this.retroService.addMessage($event);\r\n  }\r\n\r\n  public voted($event): void {\r\n    this.retroService.voted($event);\r\n  }\r\n  addNote(colId: number): void {\r\n    this.retroService.addNote(colId);\r\n  }\r\n  sendUpdatedNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendUpdatedNote(note);\r\n  }\r\n  sendEditNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendEditNote(note);\r\n  }\r\n  sendDeleteNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendDeleteNote(note);\r\n  }\r\n  public mergeNotes(notes2Merge: NotesToMerge): void {\r\n    console.log(`Merging note ${notes2Merge.note2MergeId} into note ${notes2Merge.baseNoteId}`);\r\n    console.log(JSON.stringify(notes2Merge));\r\n    this.retroService.mergeNotes(notes2Merge);\r\n  }\r\n  getLinkUrl(): void {\r\n    const result = `${this.baseUrl}?sessionId=${this.retroService.session.id}`;\r\n    this.clipboard.copy(result);\r\n    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});\r\n  }\r\n  public saveNotes(): void {\r\n    const nodeTexts: string[] = this.retroService.columnData.map(cd => cd.title + '\\n' + cd.notes.map(n => '\\t' + n.txt + '\\n') + '\\n\\n');\r\n    const blob = new Blob(nodeTexts, {type: 'text/plain;charset=utf-8'});\r\n    const filename = 'RetrospectiveNotes_' + moment(Date.now()).format('YYYYMMDD_HHmmss') + '.txt';\r\n    saveAs(blob, filename);\r\n  }\r\n  public myMoodSelection(selection: number): void {\r\n    this.retroService.myMoodSelection(selection);\r\n  }\r\n  public moodboardStatusUpdate(): void {\r\n    this.retroService.moodboardStatusUpdate(this.icons.length);\r\n  }\r\n}\r\n",
+            "sourceCode": "import { Component, EventEmitter, OnInit, Output } from '@angular/core';\r\nimport { Clipboard } from '@angular/cdk/clipboard';\r\nimport {MessageService} from 'primeng/api';\r\nimport { saveAs } from '../../../../node_modules/file-saver';\r\nimport { faSmile, faFrown, faMeh } from '@fortawesome/free-solid-svg-icons';\r\n\r\nimport { Observable } from 'rxjs';\r\nimport * as moment from 'moment';\r\nimport { NotesToMerge } from 'src/app/model/notes-to-merge';\r\nimport { RetroSessionService } from 'src/app/service/retro-session.service';\r\nimport { ActivatedRoute } from '@angular/router';\r\nimport { TabSelected } from '../../shared/tab-selected';\r\nimport { ScrumCookieService } from '../../service/scrum-cookie.service';\r\nimport { RetrospectiveNote } from '../../model/retrospective-data';\r\nimport { MenuItem } from 'primeng/api';\r\nimport { SessionConnectType, SessionInfo } from 'src/app/model/session-info';\r\n\r\n@Component({\r\n  selector: 'app-retro-session',\r\n  templateUrl: './retro-session.component.html',\r\n  styleUrls: ['./retro-session.component.css']\r\n})\r\nexport class RetroSessionComponent implements OnInit {\r\n\r\n  @Output() tabSelectedEvent = new EventEmitter<TabSelected>();\r\n  public newMessage: Observable<string> = this.retroService.newMessage;\r\n\r\n  public menuItems: MenuItem[] = [\r\n    {label: 'export', command: () => { this.saveNotes(); }},\r\n  ];\r\n\r\n  public icons = [faSmile, faMeh, faFrown];\r\n\r\n  public messages = 'Default message';\r\n  public message = '';\r\n  public status = '';\r\n\r\n  public display = false;\r\n\r\n  private baseUrl: string;\r\n\r\n  constructor(public retroService: RetroSessionService,\r\n              private route: ActivatedRoute,\r\n              private clipboard: Clipboard,\r\n              private cookieService: ScrumCookieService,\r\n              private messageService: MessageService) {\r\n\r\n    this.retroService.session.user.name = this.cookieService.getUsername();\r\n    this.baseUrl = document.location.href;\r\n    if (this.baseUrl.indexOf('?') >= 0) {\r\n      this.baseUrl = this.baseUrl.substring(0, this.baseUrl.indexOf('?'));\r\n    }\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    if (! this.retroService.inSession) {\r\n      this.tabSelectedEvent.emit(TabSelected.Retrospective);\r\n      this.route.queryParams.subscribe(params => {\r\n        this.retroService.session.id = params.sessionId;\r\n        if (params.userId) {\r\n          this.retroService.session.user.name = params.userId;\r\n        }\r\n        if (this.retroService.session.id) {\r\n          if (this.retroService.session.user.name) {\r\n            this.joinSession({username: this.retroService.session.user.name, sessionId: this.retroService.session.id} as SessionInfo);\r\n          } else {\r\n            \r\n          }\r\n        }\r\n      });\r\n    }\r\n  }\r\n\r\n  public joinSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.retroService.joinSession(sessionInfo).subscribe(r => {\r\n      if (!this.retroService.inSession) {\r\n        console.log('Unable to join that session!!');\r\n        this.status = 'Unable to join that session';\r\n      } else {\r\n        if (this.retroService.isAdmin()) {\r\n         this.menuItems.push ({label: 'moodboard', command: () => { alert('Show moodboard'); }});\r\n        }\r\n      }\r\n    });\r\n  }\r\n  public createSession(sessionInfo: SessionInfo): void {\r\n    this.cookieService.usingUsername(sessionInfo.username);\r\n    this.retroService.createSession(sessionInfo).subscribe(r => {\r\n      if (! r) {\r\n        console.log('Unable to create session!!');\r\n        this.status = 'Unable to create session';\r\n      } else {\r\n        if (this.retroService.isAdmin()) {\r\n         this.menuItems.push ({label: 'moodboard', command: () => { this.moodboardStatusUpdate(); }});\r\n        }\r\n      }\r\n    });\r\n  }\r\n\r\n  public openSession($event: SessionInfo): void {\r\n    switch ($event.state) {\r\n      case SessionConnectType.NEW : this.createSession($event); break;\r\n      case SessionConnectType.EXISTING : this.joinSession($event); break;\r\n    }\r\n  }\r\n\r\n  public addMessage($event): void {\r\n    this.retroService.addMessage($event);\r\n  }\r\n\r\n  public voted($event): void {\r\n    this.retroService.voted($event);\r\n  }\r\n  addNote(colId: number): void {\r\n    this.retroService.addNote(colId);\r\n  }\r\n  sendUpdatedNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendUpdatedNote(note);\r\n  }\r\n  sendEditNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendEditNote(note);\r\n  }\r\n  sendDeleteNote(note: RetrospectiveNote): void {\r\n    this.retroService.sendDeleteNote(note);\r\n  }\r\n  public mergeNotes(notes2Merge: NotesToMerge): void {\r\n    console.log(`Merging note ${notes2Merge.note2MergeId} into note ${notes2Merge.baseNoteId}`);\r\n    console.log(JSON.stringify(notes2Merge));\r\n    this.retroService.mergeNotes(notes2Merge);\r\n  }\r\n  getLinkUrl(): void {\r\n    const result = `${this.baseUrl}?sessionId=${this.retroService.session.id}`;\r\n    this.clipboard.copy(result);\r\n    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Url copied to clipboard'});\r\n  }\r\n  public saveNotes(): void {\r\n    const nodeTexts: string[] = this.retroService.columnData.map(cd => cd.title + '\\n' + cd.notes.map(n => '\\t' + n.txt + '\\n') + '\\n\\n');\r\n    const blob = new Blob(nodeTexts, {type: 'text/plain;charset=utf-8'});\r\n    const filename = 'RetrospectiveNotes_' + moment(Date.now()).format('YYYYMMDD_HHmmss') + '.txt';\r\n    saveAs(blob, filename);\r\n  }\r\n  public myMoodSelection(selection: number): void {\r\n    this.retroService.myMoodSelection(selection);\r\n  }\r\n  public moodboardStatusUpdate(): void {\r\n    this.retroService.moodboardStatusUpdate(this.icons.length);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5068,7 +5234,7 @@
                     },
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": ""
                     },
@@ -5110,7 +5276,7 @@
                     },
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -5135,7 +5301,7 @@
         },
         {
             "name": "SessionInitComponent",
-            "id": "component-SessionInitComponent-2bf0d0f523dcb1122c24a6379ed26ebdbf7481218a3ad10ba87ae9de3df7da426b57342fd13d23b07c82a5a3efad16b5b4e044f5a29cebee6750a882c1aa0bc8",
+            "id": "component-SessionInitComponent-746162b74efe8b58845458a475fab5bbdb87748269c4ddac1f06a2d96d6aae712dfc9c1ef01528961bc018b0806eb0f3ab96502282116c25d8d3aa5cd49ac52b",
             "file": "src/app/components/session-init/session-init.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -5173,11 +5339,20 @@
             ],
             "propertiesClass": [
                 {
-                    "name": "sessionConnectType",
-                    "defaultValue": "[SessionConnectType.NEW, SessionConnectType.EXISTING]",
+                    "name": "disableSessionIdChange",
+                    "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "[]",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19
+                },
+                {
+                    "name": "selectedRadioButton",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
                     "optional": false,
                     "description": "",
                     "line": 18
@@ -5199,7 +5374,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 26,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5209,7 +5384,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 36,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5224,7 +5399,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';\nimport { SessionInfo, SessionConnectType } from '../../model/session-info';\nimport { MessageService } from 'primeng/api';\n\nimport { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';\n\n@Component({\n  selector: 'app-session-init',\n  templateUrl: './session-init.component.html',\n  styleUrls: ['./session-init.component.css']\n})\nexport class SessionInitComponent implements OnInit {\n\n  @Output() onStartSession = new EventEmitter<SessionInfo>();\n  @Input()  sessionId: string;\n  \n  sessionInfo: SessionInfo;\n  sessionConnectType = [SessionConnectType.NEW, SessionConnectType.EXISTING];\n\n  constructor(\n    private cookieService: ScrumCookieServiceService,\n    private messageService: MessageService\n    ) { }\n\n  ngOnInit(): void {\n    this.sessionInfo = {username: this.cookieService.getUsername(), sessionId: this.sessionId, state: SessionConnectType.NEW}\n    if (this.sessionId) {\n      this.sessionInfo.state = SessionConnectType.EXISTING\n    }\n  }\n\n  public openSession(): void {\n    console.log(`SessionInfo: ${JSON.stringify(this.sessionInfo)}`)\n    if (!this.sessionInfo.username || this.sessionInfo.username.trim().length == 0) {\n      this.messageService.add({severity:'error', summary:'Username is empty', detail:'Username has to be entered'});\n    }\n    else if (this.sessionInfo.state === SessionConnectType.EXISTING && (!this.sessionInfo.sessionId || this.sessionInfo.sessionId.trim().length == 0)) {\n      this.messageService.add({severity:'error', summary:'SessionId is empty', detail:'A valid sessionId has to be entered when joining an existing session'});\n      return;\n    } else {\n      this.onStartSession.emit(this.sessionInfo);\n    }\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';\nimport { SessionInfo, SessionConnectType } from '../../model/session-info';\nimport { MessageService } from 'primeng/api';\n\nimport { ScrumCookieService } from '../../service/scrum-cookie.service';\n\n@Component({\n  selector: 'app-session-init',\n  templateUrl: './session-init.component.html',\n  styleUrls: ['./session-init.component.css']\n})\nexport class SessionInitComponent implements OnInit {\n\n  @Output() onStartSession = new EventEmitter<SessionInfo>();\n  @Input()  sessionId: string;\n  \n  sessionInfo: SessionInfo;\n  selectedRadioButton: string;\n  disableSessionIdChange = false;\n\n  constructor(\n    private cookieService: ScrumCookieService,\n    private messageService: MessageService\n    ) { }\n\n  ngOnInit(): void {\n    this.sessionInfo = {username: this.cookieService.getUsername(), sessionId: this.sessionId, state: SessionConnectType.NEW};\n    this.selectedRadioButton = 'new';\n    if (this.sessionId) {\n      this.disableSessionIdChange = true;\n      this.sessionInfo.state = SessionConnectType.EXISTING;\n      this.selectedRadioButton = 'existing';\n    }\n  }\n\n  public openSession(): void {\n    this.sessionInfo.state = this.selectedRadioButton === 'new' ?  SessionConnectType.NEW : SessionConnectType.EXISTING;\n    if (!this.sessionInfo.username || this.sessionInfo.username.trim().length == 0) {\n      this.messageService.add({severity:'error', summary:'Username is empty', detail:'Username has to be entered'});\n    }\n    else if (this.sessionInfo.state === SessionConnectType.EXISTING && (!this.sessionInfo.sessionId || this.sessionInfo.sessionId.trim().length == 0)) {\n      this.messageService.add({severity:'error', summary:'SessionId is empty', detail:'A valid sessionId has to be entered when joining an existing session'});\n      return;\n    } else {\n      this.onStartSession.emit(this.sessionInfo);\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5241,7 +5416,7 @@
                 "args": [
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": ""
                     },
@@ -5252,11 +5427,11 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 18,
+                "line": 19,
                 "jsdoctags": [
                     {
                         "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
+                        "type": "ScrumCookieService",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -5277,7 +5452,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<label for=\"username\">User Id:</label>\n<input id=\"planning_username\" name=\"username\" type=\"text\" [(ngModel)]=\"sessionInfo.username\"/> <br>\n<div class=\"select-session\">\n    <ul>\n        <li>\n            <p-radioButton name=\"sessieType\" value=\"{{sessionConnectType[0]}}\" [(ngModel)]=\"sessionInfo.state\" inputId=\"sessionNew\"></p-radioButton>\n            <label for=\"sessionNew\">Create new Session</label>\n        </li>\n        <li>\n            <p-radioButton name=\"sessieType\" value=\"{{sessionConnectType[1]}}\" [(ngModel)]=\"sessionInfo.state\" inputId=\"sessionExisting\"></p-radioButton>\n            <label for=\"sessionExisting\">Join existing session with id: </label>\n            <input id=\"planning_session_id\" name=\"sessionId\" type=\"text\" [(ngModel)]=\"sessionInfo.sessionId\" [disabled]=\"sessionInfo.state!==sessionConnectType[1]\"/>\n        </li>\n    </ul>\n    <button id=\"Start\" (click)=\"openSession()\">Start</button>\n</div>\n\n"
+            "templateData": "<label for=\"username\">User Id:</label>\n<input id=\"planning_username\" name=\"username\" type=\"text\" [(ngModel)]=\"sessionInfo.username\"/> <br>\n<div class=\"select-session\">\n    <ul>\n        <li>\n            <p-radioButton name=\"sessieType\" value=\"new\" [(ngModel)]=\"selectedRadioButton\" inputId=\"new\"></p-radioButton>\n            <label for=\"new\">Create new Session</label>\n        </li>\n        <li>\n            <p-radioButton name=\"sessieType\" value=\"existing\" [(ngModel)]=\"selectedRadioButton\" inputId=\"existing\"></p-radioButton>\n            <label for=\"existing\">Join existing session with id: </label>\n            <input id=\"planning_session_id\" name=\"sessionId\" type=\"text\" [(ngModel)]=\"sessionInfo.sessionId\" [disabled]=\"disableSessionIdChange\"/>\n        </li>\n    </ul>\n    <button id=\"Start\" (click)=\"openSession()\">Start</button>\n</div>\n\n"
         },
         {
             "name": "StatusComponent",
@@ -5386,17 +5561,21 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-adee891f98f67f5c071cb6e6e1a13803dd7f1d5f8db98cfba8b1ec7fdef3cd515043e1a9ddd82e09497403bc0b6b56603a1ad67289790a57ebc1d4dba5f4eab1",
+            "id": "module-AppModule-852743a5126e7eb1fb2d9fae30c666bc520e2f9c6754a212dc682d89f60f880ff8fe4632fc0041876dd2f50f4fe724c06d8af3034ee9f09fe3f999edac3f0ac1",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { HashLocationStrategy, LocationStrategy } from '@angular/common';\r\nimport { TabMenuModule } from 'primeng/tabmenu';\r\nimport { ScrollPanelModule } from 'primeng/scrollpanel';\r\nimport { ButtonModule } from 'primeng/button';\r\nimport { ChartModule } from 'primeng/chart';\r\nimport { RadioButtonModule } from 'primeng/radiobutton';\r\nimport { PrimeIcons } from 'primeng/api';\r\nimport { DialogModule } from 'primeng/dialog';\r\nimport { ToastModule } from 'primeng/toast';\r\nimport { MessageService } from 'primeng/api';\r\nimport { CookieService } from 'ngx-cookie-service';\r\nimport { MenuModule } from 'primeng/menu';\r\nimport { FontAwesomeModule } from '@fortawesome/angular-fontawesome';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { HomeComponent } from './components/home/home.component';\r\nimport { AppRoutingModule } from './app-routing-module';\r\nimport { RetroSessionComponent } from './components/retro-session/retro-session.component';\r\nimport { StatusComponent } from './components/status/status.component';\r\nimport { RetroColumnComponent } from './components/retro-session/retro-column/retro-column.component';\r\nimport { RetroMessageComponent } from './components/retro-session/retro-message/retro-message.component';\r\nimport { CardsViewComponent } from './components/planning-session/cards-view/cards-view.component';\r\nimport { ResultViewComponent } from './components/planning-session/result-view/result-view.component';\r\nimport { PlanningSessionComponent } from './components/planning-session/planning-session.component';\r\nimport { MessagesViewComponent } from './components/messages-view/messages-view.component';\r\nimport { SessionInitComponent } from './components/session-init/session-init.component';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    HomeComponent,\r\n    RetroSessionComponent,\r\n    StatusComponent,\r\n    RetroColumnComponent,\r\n    RetroMessageComponent,\r\n    PlanningSessionComponent,\r\n    CardsViewComponent,\r\n    ResultViewComponent,\r\n    MessagesViewComponent,\r\n    SessionInitComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    AppRoutingModule,\r\n    FormsModule,\r\n    HttpClientModule,\r\n    TabMenuModule,\r\n    ScrollPanelModule,\r\n    BrowserAnimationsModule,\r\n    ButtonModule,\r\n    RadioButtonModule,\r\n    ChartModule,\r\n    DialogModule,\r\n    ToastModule,\r\n    MenuModule,\r\n    FontAwesomeModule\r\n  ],\r\n  providers: [PrimeIcons,\r\n    {provide: LocationStrategy, useClass: HashLocationStrategy},\r\n    CookieService,\r\n    MessageService\r\n  ],\r\n  bootstrap: [AppComponent],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class AppModule {\r\n}\r\n",
+            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { HashLocationStrategy, LocationStrategy } from '@angular/common';\r\nimport { TabMenuModule } from 'primeng/tabmenu';\r\nimport { ScrollPanelModule } from 'primeng/scrollpanel';\r\nimport { ButtonModule } from 'primeng/button';\r\nimport { ChartModule } from 'primeng/chart';\r\nimport { RadioButtonModule } from 'primeng/radiobutton';\r\nimport { PrimeIcons } from 'primeng/api';\r\nimport { DialogModule } from 'primeng/dialog';\r\nimport { ToastModule } from 'primeng/toast';\r\nimport { MessageService } from 'primeng/api';\r\nimport { CookieService } from 'ngx-cookie-service';\r\nimport { MenuModule } from 'primeng/menu';\r\nimport { FontAwesomeModule } from '@fortawesome/angular-fontawesome';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { HomeComponent } from './components/home/home.component';\r\nimport { AppRoutingModule } from './app-routing-module';\r\nimport { RetroSessionComponent } from './components/retro-session/retro-session.component';\r\nimport { StatusComponent } from './components/status/status.component';\r\nimport { RetroColumnComponent } from './components/retro-session/retro-column/retro-column.component';\r\nimport { RetroMessageComponent } from './components/retro-session/retro-message/retro-message.component';\r\nimport { CardsViewComponent } from './components/planning-session/cards-view/cards-view.component';\r\nimport { ResultViewComponent } from './components/planning-session/result-view/result-view.component';\r\nimport { PlanningSessionComponent } from './components/planning-session/planning-session.component';\r\nimport { MessagesViewComponent } from './components/messages-view/messages-view.component';\r\nimport { SessionInitComponent } from './components/session-init/session-init.component';\r\nimport { ScrumCookieService } from './service/scrum-cookie.service';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    HomeComponent,\r\n    RetroSessionComponent,\r\n    StatusComponent,\r\n    RetroColumnComponent,\r\n    RetroMessageComponent,\r\n    PlanningSessionComponent,\r\n    CardsViewComponent,\r\n    ResultViewComponent,\r\n    MessagesViewComponent,\r\n    SessionInitComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    AppRoutingModule,\r\n    FormsModule,\r\n    HttpClientModule,\r\n    TabMenuModule,\r\n    ScrollPanelModule,\r\n    BrowserAnimationsModule,\r\n    ButtonModule,\r\n    RadioButtonModule,\r\n    ChartModule,\r\n    DialogModule,\r\n    ToastModule,\r\n    MenuModule,\r\n    FontAwesomeModule\r\n  ],\r\n  providers: [PrimeIcons,\r\n    {provide: LocationStrategy, useClass: HashLocationStrategy},\r\n    CookieService,\r\n    MessageService,\r\n    ScrumCookieService\r\n  ],\r\n  bootstrap: [AppComponent],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class AppModule {\r\n}\r\n",
             "children": [
                 {
                     "type": "providers",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "ScrumCookieService"
+                        }
+                    ]
                 },
                 {
                     "type": "declarations",
@@ -5532,7 +5711,7 @@
                 "defaultValue": "{\r\n  appVersion: require('../../package.json').version + '-dev',\r\n  production: false,\r\n  CHART_COLORS: ['#FF6384', '#36A2EB', '#FFCE56', '#33cccc', '#33cc33', '#ffff00', '#ff9999', '#0000ff', '#006600', '#996600', '#993399', '#666699'],\r\n  CARD_SYMBOLS: ['½', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?', 'coffee']\r\n}"
             },
             {
-                "name": "FirstStory",
+                "name": "ExistingSessionInitialization",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/SessionInit.stories.ts",
@@ -5586,6 +5765,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "NewSessionInitialization",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SessionInit.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -5686,67 +5875,10 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "(args) => ({\r\n    // moduleMetadata:{\r\n    //     providers: [\r\n    //         {\r\n    //             provide: APP_INITIALIZER,\r\n    //             useFactory: initCookieServiceFactory,\r\n    //             multi: true,\r\n    //             deps: [ScrumCookieServiceService]\r\n    //         },\r\n    //         {\r\n    //             provide: APP_INITIALIZER,\r\n    //             useFactory: initMessageServiceFactory,\r\n    //             multi: true,\r\n    //             deps: [MessageService]\r\n    //         }\r\n    //     ]\r\n    // },\r\n    props: args\r\n})"
+                "defaultValue": "(args) => ({\r\n    props: args\r\n})"
             }
         ],
-        "functions": [
-            {
-                "name": "initCookieServiceFactory",
-                "file": "src/stories/SessionInit.stories.ts",
-                "ctype": "miscellaneous",
-                "subtype": "function",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "args": [
-                    {
-                        "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "jsdoctags": [
-                    {
-                        "name": "cookieService",
-                        "type": "ScrumCookieServiceService",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "initMessageServiceFactory",
-                "file": "src/stories/SessionInit.stories.ts",
-                "ctype": "miscellaneous",
-                "subtype": "function",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "args": [
-                    {
-                        "name": "messageService",
-                        "type": "MessageService",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "jsdoctags": [
-                    {
-                        "name": "messageService",
-                        "type": "MessageService",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            }
-        ],
+        "functions": [],
         "typealiases": [],
         "enumerations": [
             {
@@ -5924,7 +6056,17 @@
             ],
             "src/stories/SessionInit.stories.ts": [
                 {
-                    "name": "FirstStory",
+                    "name": "ExistingSessionInitialization",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SessionInit.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NewSessionInitialization",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/SessionInit.stories.ts",
@@ -5941,7 +6083,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "(args) => ({\r\n    // moduleMetadata:{\r\n    //     providers: [\r\n    //         {\r\n    //             provide: APP_INITIALIZER,\r\n    //             useFactory: initCookieServiceFactory,\r\n    //             multi: true,\r\n    //             deps: [ScrumCookieServiceService]\r\n    //         },\r\n    //         {\r\n    //             provide: APP_INITIALIZER,\r\n    //             useFactory: initMessageServiceFactory,\r\n    //             multi: true,\r\n    //             deps: [MessageService]\r\n    //         }\r\n    //     ]\r\n    // },\r\n    props: args\r\n})"
+                    "defaultValue": "(args) => ({\r\n    props: args\r\n})"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -6061,66 +6203,7 @@
                 }
             ]
         },
-        "groupedFunctions": {
-            "src/stories/SessionInit.stories.ts": [
-                {
-                    "name": "initCookieServiceFactory",
-                    "file": "src/stories/SessionInit.stories.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "args": [
-                        {
-                            "name": "cookieService",
-                            "type": "ScrumCookieServiceService",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "cookieService",
-                            "type": "ScrumCookieServiceService",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "initMessageServiceFactory",
-                    "file": "src/stories/SessionInit.stories.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "args": [
-                        {
-                            "name": "messageService",
-                            "type": "MessageService",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "messageService",
-                            "type": "MessageService",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
+        "groupedFunctions": {},
         "groupedEnumerations": {
             "src/app/model/session.ts": [
                 {
@@ -6389,7 +6472,7 @@
                 "linktype": "component",
                 "name": "SessionInitComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/8",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -6501,10 +6584,10 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/service/scrum-cookie-service.service.ts",
+                "filePath": "src/app/service/scrum-cookie.service.ts",
                 "type": "injectable",
                 "linktype": "injectable",
-                "name": "ScrumCookieServiceService",
+                "name": "ScrumCookieService",
                 "coveragePercent": 0,
                 "coverageCount": "0/7",
                 "status": "low"
@@ -6706,20 +6789,10 @@
             },
             {
                 "filePath": "src/stories/SessionInit.stories.ts",
-                "type": "function",
+                "type": "variable",
                 "linktype": "miscellaneous",
-                "linksubtype": "function",
-                "name": "initCookieServiceFactory",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/SessionInit.stories.ts",
-                "type": "function",
-                "linktype": "miscellaneous",
-                "linksubtype": "function",
-                "name": "initMessageServiceFactory",
+                "linksubtype": "variable",
+                "name": "ExistingSessionInitialization",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6729,7 +6802,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "FirstStory",
+                "name": "NewSessionInitialization",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -6769,6 +6842,24 @@
                 "name": "HeaderComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/mocks/MessageServiceMock.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "MessageServiceMock",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/mocks/SrcumCookieServiceMock.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ScrumCookieServiceMock",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {

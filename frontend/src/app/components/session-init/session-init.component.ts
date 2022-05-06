@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SessionInfo, SessionConnectType } from '../../model/session-info';
 import { MessageService } from 'primeng/api';
 
-import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
+import { ScrumCookieService } from '../../service/scrum-cookie.service';
 
 @Component({
   selector: 'app-session-init',
@@ -15,22 +15,26 @@ export class SessionInitComponent implements OnInit {
   @Input()  sessionId: string;
   
   sessionInfo: SessionInfo;
-  sessionConnectType = [SessionConnectType.NEW, SessionConnectType.EXISTING];
+  selectedRadioButton: string;
+  disableSessionIdChange = false;
 
   constructor(
-    private cookieService: ScrumCookieServiceService,
+    private cookieService: ScrumCookieService,
     private messageService: MessageService
     ) { }
 
   ngOnInit(): void {
-    this.sessionInfo = {username: this.cookieService.getUsername(), sessionId: this.sessionId, state: SessionConnectType.NEW}
+    this.sessionInfo = {username: this.cookieService.getUsername(), sessionId: this.sessionId, state: SessionConnectType.NEW};
+    this.selectedRadioButton = 'new';
     if (this.sessionId) {
-      this.sessionInfo.state = SessionConnectType.EXISTING
+      this.disableSessionIdChange = true;
+      this.sessionInfo.state = SessionConnectType.EXISTING;
+      this.selectedRadioButton = 'existing';
     }
   }
 
   public openSession(): void {
-    console.log(`SessionInfo: ${JSON.stringify(this.sessionInfo)}`)
+    this.sessionInfo.state = this.selectedRadioButton === 'new' ?  SessionConnectType.NEW : SessionConnectType.EXISTING;
     if (!this.sessionInfo.username || this.sessionInfo.username.trim().length == 0) {
       this.messageService.add({severity:'error', summary:'Username is empty', detail:'Username has to be entered'});
     }
@@ -41,5 +45,4 @@ export class SessionInitComponent implements OnInit {
       this.onStartSession.emit(this.sessionInfo);
     }
   }
-
 }

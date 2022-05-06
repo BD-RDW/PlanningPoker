@@ -29,6 +29,7 @@ import { ResultViewComponent } from './components/planning-session/result-view/r
 import { PlanningSessionComponent } from './components/planning-session/planning-session.component';
 import { MessagesViewComponent } from './components/messages-view/messages-view.component';
 import { SessionInitComponent } from './components/session-init/session-init.component';
+import { ScrumCookieService } from './service/scrum-cookie.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { SessionInitComponent } from './components/session-init/session-init.com
   providers: [PrimeIcons,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     CookieService,
-    MessageService
+    MessageService,
+    ScrumCookieService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

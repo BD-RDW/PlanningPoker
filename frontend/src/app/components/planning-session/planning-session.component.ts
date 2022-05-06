@@ -13,7 +13,7 @@ import { User, UserVotes, SessionType, Session, Role } from '../../model/session
 import { BehaviorSubject, Subject } from 'rxjs';
 import { TabSelected } from '../../shared/tab-selected';
 
-import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
+import { ScrumCookieService } from '../../service/scrum-cookie.service';
 import { SessionConnectType, SessionInfo } from 'src/app/model/session-info';
 
 @Component({
@@ -51,7 +51,7 @@ export class PlanningSessionComponent implements OnInit {
     private websocketService: WebsocketService,
     private route: ActivatedRoute,
     private clipboard: Clipboard,
-    private cookieService: ScrumCookieServiceService,
+    private cookieService: ScrumCookieService,
     private messageService: MessageService)
   {
     this.baseUrl = document.location.href;

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ScrumCookieServiceService } from './scrum-cookie-service.service';
+import { ScrumCookieService } from './scrum-cookie.service';
 
 describe('ScrumCookieServiceService', () => {
-  let service: ScrumCookieServiceService;
+  let service: ScrumCookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ScrumCookieServiceService);
+    service = TestBed.inject(ScrumCookieService);
   });
 
   it('should be created', () => {

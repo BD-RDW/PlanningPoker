@@ -10,7 +10,7 @@ import { NotesToMerge } from 'src/app/model/notes-to-merge';
 import { RetroSessionService } from 'src/app/service/retro-session.service';
 import { ActivatedRoute } from '@angular/router';
 import { TabSelected } from '../../shared/tab-selected';
-import { ScrumCookieServiceService } from '../../service/scrum-cookie-service.service';
+import { ScrumCookieService } from '../../service/scrum-cookie.service';
 import { RetrospectiveNote } from '../../model/retrospective-data';
 import { MenuItem } from 'primeng/api';
 import { SessionConnectType, SessionInfo } from 'src/app/model/session-info';
@@ -42,7 +42,7 @@ export class RetroSessionComponent implements OnInit {
   constructor(public retroService: RetroSessionService,
               private route: ActivatedRoute,
               private clipboard: Clipboard,
-              private cookieService: ScrumCookieServiceService,
+              private cookieService: ScrumCookieService,
               private messageService: MessageService) {
 
     this.retroService.session.user.name = this.cookieService.getUsername();

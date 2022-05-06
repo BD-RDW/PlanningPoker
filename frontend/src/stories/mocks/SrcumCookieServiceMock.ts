@@ -3,4 +3,17 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
   })
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export class ScrumCookieServiceMock {}
+export class ScrumCookieServiceMock {
+
+  private username = 'testuser';
+
+  setUsername(name: string) {
+    console.log(`ScrumCookieServiceMock.setUsername('${name}')`);
+    this.username = name;
+  }
+
+  getUsername(): string {
+    console.log('ScrumCookieServiceMock.getUsername()');
+    return this.username;
+  }
+}

@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root'
 })
-export class ScrumCookieServiceService {
+export class ScrumCookieService {
   private usernameCookie = 'scrumUser';
 
   private username: string;

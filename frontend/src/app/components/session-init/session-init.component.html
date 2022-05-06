@@ -3,13 +3,13 @@
 <div class="select-session">
     <ul>
         <li>
-            <p-radioButton name="sessieType" value="{{sessionConnectType[0]}}" [(ngModel)]="sessionInfo.state" inputId="sessionNew"></p-radioButton>
-            <label for="sessionNew">Create new Session</label>
+            <p-radioButton name="sessieType" value="new" [(ngModel)]="selectedRadioButton" inputId="new"></p-radioButton>
+            <label for="new">Create new Session</label>
         </li>
         <li>
-            <p-radioButton name="sessieType" value="{{sessionConnectType[1]}}" [(ngModel)]="sessionInfo.state" inputId="sessionExisting"></p-radioButton>
-            <label for="sessionExisting">Join existing session with id: </label>
-            <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="sessionInfo.sessionId" [disabled]="sessionInfo.state!==sessionConnectType[1]"/>
+            <p-radioButton name="sessieType" value="existing" [(ngModel)]="selectedRadioButton" inputId="existing"></p-radioButton>
+            <label for="existing">Join existing session with id: </label>
+            <input id="planning_session_id" name="sessionId" type="text" [(ngModel)]="sessionInfo.sessionId" [disabled]="disableSessionIdChange"/>
         </li>
     </ul>
     <button id="Start" (click)="openSession()">Start</button>
