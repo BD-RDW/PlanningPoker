@@ -1,0 +1,28 @@
+.animated {
+    transition: all 1s;
+  }
+.defaultCard {
+  fill: white;
+  cursor: pointer;
+  stroke: black;
+}
+.selectedCard {
+  fill: lightblue;
+}
+.number {
+  fill: black;
+}
+.card-unselected-fill {
+  fill: white;
+}
+.card-selected-fill {
+  fill: url(#grad1);
+}
+
+.card-unselected-transform {
+  transform: translate(0, 0) scale(1);
+}
+
+.card-selected-transform {
+  transform: translate(-10px, -14px) scale(1.15);
+}

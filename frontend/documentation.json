@@ -521,21 +521,6 @@
             "methods": []
         },
         {
-            "name": "User",
-            "id": "interface-User-9c7e5f1bbbab702cb032307d130876cb68969b0cd4eedef32a0c8cad8081a54e5f8f577ed6ad4539c1b99a1d246cb34031d198c2ea8eba440e64e91b14f01fdc-1",
-            "file": "src/stories/User.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "export interface User {}\n",
-            "properties": [],
-            "indexSignatures": [],
-            "methods": [],
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "User-1"
-        },
-        {
             "name": "UserVotes",
             "id": "interface-UserVotes-021f11d03c49e5018035d584d2a0899cee4eda0e4c5e08d8ea0eaf30947b5b03ce39e056e87f4ae313458de112893c6dd09f36af7870d9763fa7aac82250404a",
             "file": "src/app/model/session.ts",
@@ -619,6 +604,109 @@
         }
     ],
     "injectables": [
+        {
+            "name": "CardService",
+            "id": "injectable-CardService-7d7e2f435c05a7c603a3274a556522ce2ad9f3f7ea4f183569c818cdc762ad24328e4028f7ba8aa165abf7e2c4850b2e870735806d886241b6d48cc957987d32",
+            "file": "src/app/components/planning-session/card/card.service.ts",
+            "properties": [
+                {
+                    "name": "cards",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "selectedCardId",
+                    "defaultValue": "new BehaviorSubject(\"\")",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "register",
+                    "args": [
+                        {
+                            "name": "cardId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<string>",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "cardId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "selected",
+                    "args": [
+                        {
+                            "name": "cardId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "cardId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from \"@angular/core\";\r\nimport { BehaviorSubject, Observable } from \"rxjs\";\r\n\r\n@Injectable({\r\n    providedIn: 'root'\r\n  })\r\n  export class CardService {\r\n      private cards: string[] = [];\r\n      public selectedCardId = new BehaviorSubject(\"\");\r\n\r\n      public register(cardId: string): Observable<string> {\r\n        if (this.cards.filter(c => c === cardId).length !== 0) {\r\n            throw new Error(\"Duplicate cardId. This card can not be registered\");              \r\n        }\r\n        this.cards.push(cardId);\r\n        return this.selectedCardId;\r\n      }\r\n      public selected(cardId: string): void {\r\n          if (this.cards.filter(c => c === cardId).length !== 1) {\r\n              throw new Error(\"Card not registered\");              \r\n          }\r\n          this.selectedCardId.next(cardId);\r\n      }\r\n  }",
+            "type": "injectable"
+        },
         {
             "name": "MessageServiceMock",
             "id": "injectable-MessageServiceMock-a6d803f46028d9b5222d89634be66078cfb8d7b27b489396c9c35e6984cc5706b61fb1bb281742df090a468cea24f05143dd1fe103ee6ef4110ec2e84a421081",
@@ -2476,101 +2564,68 @@
             "templateData": "<p-toast position=\"top-right\"></p-toast>\r\n<div class=\"container\">\r\n  <div class=\"kop\">\r\n    <h1 id='kop'>Scrum tooling</h1>\r\n  </div>\r\n  <div class=\"mainPanel\">\r\n    <!-- <p-tabView>\r\n      <p-tabPanel class=\"my-tabpanel\" header=\"Home\" [selected]=\"true\"><app-home></app-home></p-tabPanel>\r\n      <p-tabPanel header=\"Retrospective\" class=\"retrospective-panel\"><app-retro-session></app-retro-session></p-tabPanel>\r\n      <p-tabPanel header=\"Poker\" class=\"refinement-panel\"><app-planning-session></app-planning-session></p-tabPanel>\r\n    </p-tabView> -->\r\n    <p-tabMenu [model]=\"items\"  [activeItem]=\"activeItem\"></p-tabMenu>\r\n    <router-outlet (activate)=\"onActivate($event)\"></router-outlet>\r\n  </div>\r\n  <div class=\"footer\">\r\n    <app-status></app-status>\r\n  </div>\r\n</div>"
         },
         {
-            "name": "ButtonComponent",
-            "id": "component-ButtonComponent-4ef205c97a334c309aa4001c8ab4a6d9571dcae18d0e85aaf0d367467ab5d3a9f13ab3573726f1fcb409bc9b49894dadfb80b1bbe1b6ba7041455ad9d4922004",
-            "file": "src/stories/button.component.ts",
+            "name": "CardComponent",
+            "id": "component-CardComponent-fab4e6197607d0ba0265b882d5efaa14419f962c03f29358a1298cef6d1c3565629513a61c3ca8d1718e05d27fb7f70dd0e0cd77c92f63437567af3c5eb3a381",
+            "file": "src/app/components/planning-session/card/card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "storybook-button",
+            "selector": "app-card",
             "styleUrls": [
-                "./button.css"
+                "./card.component.css"
             ],
             "styles": [],
-            "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
-            "templateUrl": [],
+            "templateUrl": [
+                "./card.component.html"
+            ],
             "viewProviders": [],
             "inputsClass": [
                 {
-                    "name": "backgroundColor",
+                    "name": "cardId",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "rawdescription": "\n\nWhat background color to use\n",
-                    "description": "<p>What background color to use</p>\n",
-                    "line": 26,
+                    "line": 12,
                     "type": "string",
                     "decorators": []
-                },
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
                 {
-                    "name": "label",
-                    "defaultValue": "'Button'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "pos": 711,
-                            "end": 724,
-                            "flags": 4227072,
-                            "modifierFlagsCache": 0,
-                            "transformFlags": 0,
-                            "kind": 325,
-                            "tagName": {
-                                "pos": 712,
-                                "end": 720,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "required"
-                            },
-                            "comment": ""
-                        }
-                    ],
-                    "rawdescription": "\n\nButton contents\n\n",
-                    "description": "<p>Button contents</p>\n",
-                    "line": 40,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "primary",
+                    "name": "selected",
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "rawdescription": "\n\nIs this the principal call to action on the page?\n",
-                    "description": "<p>Is this the principal call to action on the page?</p>\n",
-                    "line": 20,
-                    "type": "boolean",
-                    "decorators": []
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18,
+                    "deprecated": false,
+                    "deprecationMessage": ""
                 },
                 {
-                    "name": "size",
-                    "defaultValue": "'medium'",
+                    "name": "processCardClicked",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 23,
                     "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nHow large should the button be?\n",
-                    "description": "<p>How large should the button be?</p>\n",
-                    "line": 32,
-                    "type": "\"small\" | \"medium\" | \"large\"",
-                    "decorators": []
+                    "deprecationMessage": ""
                 }
             ],
-            "outputsClass": [
-                {
-                    "name": "onClick",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nOptional click handler\n",
-                    "description": "<p>Optional click handler</p>\n",
-                    "line": 46,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -2578,30 +2633,49 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  template: ` <button\n    type=\"button\"\n    (click)=\"onClick.emit($event)\"\n    [ngClass]=\"classes\"\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\n  >\n    {{ label }}\n  </button>`,\n  styleUrls: ['./button.css'],\n})\nexport default class ButtonComponent {\n  /**\n   * Is this the principal call to action on the page?\n   */\n  @Input()\n  primary = false;\n\n  /**\n   * What background color to use\n   */\n  @Input()\n  backgroundColor?: string;\n\n  /**\n   * How large should the button be?\n   */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /**\n   * Optional click handler\n   */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
+            "sourceCode": "import { Component, Input, OnInit} from '@angular/core';\nimport { CardService } from './card.service';\n\n@Component({\n  selector: 'app-card',\n  templateUrl: './card.component.html',\n  styleUrls: ['./card.component.css']\n})\nexport class CardComponent implements OnInit {\n\n  @Input()\n  cardId: string;\n\n  selected = false;\n\n  constructor(private cardService: CardService) { }\n\n  ngOnInit(): void {\n    this.cardService.register(this.cardId).subscribe(id => {\n      this.selected = id === this.cardId\n    });\n  }\n  processCardClicked(): void {\n    this.cardService.selected(this.cardId);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".storybook-button {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  border: 0;\n  border-radius: 3em;\n  cursor: pointer;\n  display: inline-block;\n  line-height: 1;\n}\n.storybook-button--primary {\n  color: white;\n  background-color: #1ea7fd;\n}\n.storybook-button--secondary {\n  color: #333;\n  background-color: transparent;\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\n}\n.storybook-button--small {\n  font-size: 12px;\n  padding: 10px 16px;\n}\n.storybook-button--medium {\n  font-size: 14px;\n  padding: 11px 20px;\n}\n.storybook-button--large {\n  font-size: 16px;\n  padding: 12px 24px;\n}\n",
-                    "styleUrl": "./button.css"
+                    "data": ".animated {\r\n    transition: all 1s;\r\n  }\r\n.defaultCard {\r\n  fill: white;\r\n  cursor: pointer;\r\n  stroke: black;\r\n}\r\n.selectedCard {\r\n  fill: lightblue;\r\n}\r\n.number {\r\n  fill: black;\r\n}\r\n.card-unselected-fill {\r\n  fill: white;\r\n}\r\n.card-selected-fill {\r\n  fill: url(#grad1);\r\n}\r\n\r\n.card-unselected-transform {\r\n  transform: translate(0, 0) scale(1);\r\n}\r\n\r\n.card-selected-transform {\r\n  transform: translate(-10px, -14px) scale(1.15);\r\n}\r\n",
+                    "styleUrl": "./card.component.css"
                 }
             ],
             "stylesData": "",
-            "accessors": {
-                "classes": {
-                    "name": "classes",
-                    "getSignature": {
-                        "name": "classes",
-                        "type": "[]",
-                        "returnType": "string[]",
-                        "line": 48
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "cardService",
+                        "type": "CardService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
-                }
-            }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "cardService",
+                        "type": "CardService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div>\n    <svg #card xmlns=\"http://www.w3.org/2000/svg\" width=\"140\" height=\"200\" id=\"card1\" class=\"defaultCard\" (click)='processCardClicked()'>\n        <defs>\n            <radialGradient id=\"grad1\">\n                <stop offset=\"0%\" stop-color=\"#99bbff\"/>\n                <stop offset=\"100%\" stop-color=\"#6699ff\"/>\n            </radialGradient>\n        </defs>\n\n        <g id=\"svgGroup\" #playingCard class=\"animated\" [ngClass]=\"selected ? 'card-selected-transform' : 'card-unselected-transform'\">\n            <rect id=\"cardRect\" [ngClass]=\"selected ? 'card-selected-fill' : 'card-unselected-fill'\" x=20 y=20 width=100 height=160 rx=10 style=\"stroke-width: 2\" pointer-events=\"none\"/>\n            <text class=\"number\" x=65 y=110 text-anchor='middle' font-family=\"sans-serif\" font-size=\"36\"  pointer-events=\"none\">{{cardId}}</text>\n            <text class=\"number\" x=25 y=40 text-anchor='start' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">{{cardId}}</text>\n            <text class=\"number\" x=110 y=40 text-anchor='end' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">{{cardId}}</text>\n            <text class=\"number\" x=25 y=170 text-anchor='start' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">{{cardId}}</text>\n            <text class=\"number\" x=110 y=170 text-anchor='end' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">{{cardId}}</text>\n        </g>\n    </svg>\n</div>\n"
         },
         {
             "name": "CardsViewComponent",
-            "id": "component-CardsViewComponent-92232ab9129a1d88fd4b2c0afb698a7fae617954c9822fb75ed9860f8e0d8391df2b23ccebdc818524f85109dfad5dc559843b05f612fd5143dca6235d34170c",
+            "id": "component-CardsViewComponent-5a3b60bf08fa11f803f374e7b3def86338f4b06a54fa85da4b8150c2eccf5411e5287a8ba5734e80f88c4dce5143c97947bdd9b528329b8a51cd831040ec93a2",
             "file": "src/app/components/planning-session/cards-view/cards-view.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2620,6 +2694,7 @@
             "inputsClass": [
                 {
                     "name": "cardNumbers",
+                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 11,
@@ -2645,7 +2720,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 23,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2698,7 +2773,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-cards-view',\r\n  templateUrl: './cards-view.component.html',\r\n  styleUrls: ['./cards-view.component.css']\r\n})\r\nexport class CardsViewComponent implements OnInit {\r\n\r\n  @Output() cardSelectedEvent = new EventEmitter<string>();\r\n  @Input() cardNumbers: string[];\r\n\r\n  constructor() { }\r\n\r\n  ngOnInit(): void {\r\n    this.addCards();\r\n  }\r\n\r\n  public cardClicked(card: string): void {\r\n    this.cardSelectedEvent.emit(card);\r\n  }\r\n\r\n\r\n\r\n  addCards(): void {\r\n    let index = 2;\r\n    let selectedCard = null;\r\n    const card1 = document.getElementById('card1');\r\n    card1.addEventListener('click', (event) => {\r\n      if (selectedCard) {\r\n          selectedCard.getElementById('svgGroup').style.transform = 'translate(0, 0) scale(1)';\r\n          selectedCard.getElementById('cardRect').style.fill = 'white';\r\n      }\r\n      selectedCard = event.target;\r\n      selectedCard.getElementById('svgGroup').style.transform = 'translate(-10px, -14px) scale(1.15)';\r\n      selectedCard.getElementById('cardRect').style.fill = 'url(#grad1)';\r\n      this.cardClicked('0');\r\n  });\r\n\r\n    card1.addEventListener('click', () => {\r\n        console.log('0');\r\n    });\r\n    this.cardNumbers.forEach(cn => {\r\n        const card2 = card1.cloneNode(true);\r\n        card2.addEventListener('click', (event) => {\r\n            if (selectedCard) {\r\n                selectedCard.getElementById('svgGroup').style.transform = 'translate(0, 0) scale(1)';\r\n                selectedCard.getElementById('cardRect').style.fill = 'white';\r\n            }\r\n            selectedCard = event.target;\r\n            selectedCard.getElementById('svgGroup').style.transform = 'translate(-10px, -14px) scale(1.15)';\r\n            selectedCard.getElementById('cardRect').style.fill = 'url(#grad1)';\r\n            this.cardClicked(cn);\r\n        });\r\n        let svgElem = (card2 as Document).getElementById('svgGroup').firstChild;\r\n        while (svgElem) {\r\n            if ('text' === svgElem.nodeName) {\r\n                (svgElem.firstChild as Text).data = cn;\r\n            }\r\n            svgElem = svgElem.nextSibling;\r\n        }\r\n        document.getElementById('cards').appendChild(card2);\r\n        index++;\r\n    });\r\n    }\r\n}\r\n",
+            "sourceCode": "import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-cards-view',\r\n  templateUrl: './cards-view.component.html',\r\n  styleUrls: ['./cards-view.component.css']\r\n})\r\nexport class CardsViewComponent implements OnInit {\r\n\r\n  @Output() cardSelectedEvent = new EventEmitter<string>();\r\n  @Input() cardNumbers: string[] = [];\r\n\r\n  constructor() { }\r\n\r\n  ngOnInit(): void {\r\n    this.addCards();\r\n  }\r\n\r\n  public cardClicked(card: string): void {\r\n    this.cardSelectedEvent.emit(card);\r\n  }\r\n\r\n  addCards(): void {\r\n    let index = 2;\r\n    let selectedCard = null;\r\n    const card1 = document.getElementById('card1');\r\n    card1.addEventListener('click', (event) => {\r\n      if (selectedCard) {\r\n          selectedCard.getElementById('svgGroup').style.transform = 'translate(0, 0) scale(1)';\r\n          selectedCard.getElementById('cardRect').style.fill = 'white';\r\n      }\r\n      selectedCard = event.target;\r\n      selectedCard.getElementById('svgGroup').style.transform = 'translate(-10px, -14px) scale(1.15)';\r\n      selectedCard.getElementById('cardRect').style.fill = 'url(#grad1)';\r\n      this.cardClicked('0');\r\n  });\r\n\r\n    card1.addEventListener('click', () => {\r\n        console.log('0');\r\n    });\r\n    this.cardNumbers.forEach(cn => {\r\n        const card2 = card1.cloneNode(true);\r\n        card2.addEventListener('click', (event) => {\r\n            if (selectedCard) {\r\n                selectedCard.getElementById('svgGroup').style.transform = 'translate(0, 0) scale(1)';\r\n                selectedCard.getElementById('cardRect').style.fill = 'white';\r\n            }\r\n            selectedCard = event.target;\r\n            selectedCard.getElementById('svgGroup').style.transform = 'translate(-10px, -14px) scale(1.15)';\r\n            selectedCard.getElementById('cardRect').style.fill = 'url(#grad1)';\r\n            this.cardClicked(cn);\r\n        });\r\n        let svgElem = (card2 as Document).getElementById('svgGroup').firstChild;\r\n        while (svgElem) {\r\n            if ('text' === svgElem.nodeName) {\r\n                (svgElem.firstChild as Text).data = cn;\r\n            }\r\n            svgElem = svgElem.nextSibling;\r\n        }\r\n        document.getElementById('cards').appendChild(card2);\r\n        index++;\r\n    });\r\n    }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -2719,79 +2794,6 @@
                 "OnInit"
             ],
             "templateData": "<div id=\"cards\">\r\n  <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"140\" height=\"200\" id=\"card1\" class=\"defaultCard\">\r\n      <defs>\r\n          <radialGradient id=\"grad1\">\r\n              <stop offset=\"0%\" stop-color=\"#99bbff\"/>\r\n              <stop offset=\"100%\" stop-color=\"#6699ff\"/>\r\n          </radialGradient>\r\n      </defs>\r\n\r\n      <g id=\"svgGroup\" class=\"animated\">\r\n          <rect id=\"cardRect\" class=\"card\" x=20 y=20 width=100 height=160 rx=10 style=\"stroke-width: 2\" pointer-events=\"none\"/>\r\n          <text class=\"number\" x=65 y=110 text-anchor='middle' font-family=\"sans-serif\" font-size=\"36\"  pointer-events=\"none\">0</text>\r\n          <text class=\"number\" x=25 y=40 text-anchor='start' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">0</text>\r\n          <text class=\"number\" x=110 y=40 text-anchor='end' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">0</text>\r\n          <text class=\"number\" x=25 y=170 text-anchor='start' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">0</text>\r\n          <text class=\"number\" x=110 y=170 text-anchor='end' font-family=\"sans-serif\" font-size=\"18\"  pointer-events=\"none\">0</text>\r\n      </g>\r\n  </svg>\r\n</div>\r\n<div id=\"options\" class=\"options\">\r\n</div>\r\n"
-        },
-        {
-            "name": "HeaderComponent",
-            "id": "component-HeaderComponent-a557eec14f72c438a8033301f4d6ce023e0a1844a3b06ec2b38794a612acc31735ae78a5ee10071b230c8c20d699eb914554e69d07ade54adb371da8efb464cc",
-            "file": "src/stories/header.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-header",
-            "styleUrls": [
-                "./header.css"
-            ],
-            "styles": [],
-            "template": "<header>    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 65,
-                    "type": "User | null",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onCreateAccount",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 74,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogin",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 68,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogout",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 71,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-header',\n  template: `<header>\n    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>`,\n  styleUrls: ['./header.css'],\n})\nexport default class HeaderComponent {\n  @Input()\n  user: User | null = null;\n\n  @Output()\n  onLogin = new EventEmitter<Event>();\n\n  @Output()\n  onLogout = new EventEmitter<Event>();\n\n  @Output()\n  onCreateAccount = new EventEmitter<Event>();\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".wrapper {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  padding: 15px 20px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\nsvg {\n  display: inline-block;\n  vertical-align: top;\n}\n\nh1 {\n  font-weight: 900;\n  font-size: 20px;\n  line-height: 1;\n  margin: 6px 0 6px 10px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nbutton + button {\n  margin-left: 10px;\n}\n\n.welcome {\n  color: #333;\n  font-size: 14px;\n  margin-right: 10px;\n}\n",
-                    "styleUrl": "./header.css"
-                }
-            ],
-            "stylesData": ""
         },
         {
             "name": "HomeComponent",
@@ -2862,7 +2864,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<p>multiple tools are available to be used during scrum meetings.</p>\r\n<ul>\r\n  <li>planning poker</li>\r\n  <li>retrospective</li>\r\n</ul>"
+            "templateData": "<p>multiple tools are available to be used during scrum meetings.</p>\r\n<ul>\r\n  <li>planning poker</li>\r\n  <li>retrospective</li>\r\n</ul>\r\n"
         },
         {
             "name": "MessagesViewComponent",
@@ -2995,86 +2997,6 @@
                 "OnInit"
             ],
             "templateData": "<div style=\"min-width: 200px; height: 100%; display:flex; flex-direction:column\">\r\n  <div style=\"flex-grow: 1;\">\r\n    <span>Messages:</span>\r\n    <hr>\r\n    <div>\r\n      <span *ngFor=\"let message of messages\">\r\n        <span>{{message.message}}<br></span>\r\n      </span>\r\n    </div>\r\n  </div>\r\n  <div style=\"flex-grow: 0;\">\r\n    <input type=\"text\" [(ngModel)]=\"message\">\r\n    <button type=\"submit\" (click)=addMessage() >Send</button>\r\n  </div>\r\n</div>\r\n"
-        },
-        {
-            "name": "PageComponent",
-            "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
-            "file": "src/stories/page.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-page",
-            "styleUrls": [
-                "./page.css"
-            ],
-            "styles": [],
-            "template": "<article>    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "User | null",
-                    "optional": false,
-                    "description": "",
-                    "line": 64
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "doCreateAccount",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 74,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogin",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 70,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogout",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 66,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-page',\n  template: `<article>\n    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>`,\n  styleUrls: ['./page.css'],\n})\nexport default class PageComponent {\n  user: User | null = null;\n\n  doLogout() {\n    this.user = null;\n  }\n\n  doLogin() {\n    this.user = { name: 'Jane Doe' };\n  }\n\n  doCreateAccount() {\n    this.user = { name: 'Jane Doe' };\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "section {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 24px;\n  padding: 48px 20px;\n  margin: 0 auto;\n  max-width: 600px;\n  color: #333;\n}\n\nsection h2 {\n  font-weight: 900;\n  font-size: 32px;\n  line-height: 1;\n  margin: 0 0 4px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nsection p {\n  margin: 1em 0;\n}\n\nsection a {\n  text-decoration: none;\n  color: #1ea7fd;\n}\n\nsection ul {\n  padding-left: 30px;\n  margin: 1em 0;\n}\n\nsection li {\n  margin-bottom: 8px;\n}\n\nsection .tip {\n  display: inline-block;\n  border-radius: 1em;\n  font-size: 11px;\n  line-height: 12px;\n  font-weight: 700;\n  background: #e7fdd8;\n  color: #66bf3c;\n  padding: 4px 12px;\n  margin-right: 10px;\n  vertical-align: top;\n}\n\nsection .tip-wrapper {\n  font-size: 13px;\n  line-height: 20px;\n  margin-top: 40px;\n  margin-bottom: 40px;\n}\n\nsection .tip-wrapper svg {\n  display: inline-block;\n  height: 12px;\n  width: 12px;\n  margin-right: 4px;\n  vertical-align: top;\n  margin-top: 3px;\n}\n\nsection .tip-wrapper svg path {\n  fill: #1ea7fd;\n}\n",
-                    "styleUrl": "./page.css"
-                }
-            ],
-            "stylesData": ""
         },
         {
             "name": "PlanningSessionComponent",
@@ -5561,17 +5483,20 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-852743a5126e7eb1fb2d9fae30c666bc520e2f9c6754a212dc682d89f60f880ff8fe4632fc0041876dd2f50f4fe724c06d8af3034ee9f09fe3f999edac3f0ac1",
+            "id": "module-AppModule-c20597d73f954572ab4eec40de9a02aae7157434d0b1e25963545e109c02b56b12561e32d5947c90bda3706a66bf3a1587f9d13d3316597b065b2664c57288a5",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { HashLocationStrategy, LocationStrategy } from '@angular/common';\r\nimport { TabMenuModule } from 'primeng/tabmenu';\r\nimport { ScrollPanelModule } from 'primeng/scrollpanel';\r\nimport { ButtonModule } from 'primeng/button';\r\nimport { ChartModule } from 'primeng/chart';\r\nimport { RadioButtonModule } from 'primeng/radiobutton';\r\nimport { PrimeIcons } from 'primeng/api';\r\nimport { DialogModule } from 'primeng/dialog';\r\nimport { ToastModule } from 'primeng/toast';\r\nimport { MessageService } from 'primeng/api';\r\nimport { CookieService } from 'ngx-cookie-service';\r\nimport { MenuModule } from 'primeng/menu';\r\nimport { FontAwesomeModule } from '@fortawesome/angular-fontawesome';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { HomeComponent } from './components/home/home.component';\r\nimport { AppRoutingModule } from './app-routing-module';\r\nimport { RetroSessionComponent } from './components/retro-session/retro-session.component';\r\nimport { StatusComponent } from './components/status/status.component';\r\nimport { RetroColumnComponent } from './components/retro-session/retro-column/retro-column.component';\r\nimport { RetroMessageComponent } from './components/retro-session/retro-message/retro-message.component';\r\nimport { CardsViewComponent } from './components/planning-session/cards-view/cards-view.component';\r\nimport { ResultViewComponent } from './components/planning-session/result-view/result-view.component';\r\nimport { PlanningSessionComponent } from './components/planning-session/planning-session.component';\r\nimport { MessagesViewComponent } from './components/messages-view/messages-view.component';\r\nimport { SessionInitComponent } from './components/session-init/session-init.component';\r\nimport { ScrumCookieService } from './service/scrum-cookie.service';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    HomeComponent,\r\n    RetroSessionComponent,\r\n    StatusComponent,\r\n    RetroColumnComponent,\r\n    RetroMessageComponent,\r\n    PlanningSessionComponent,\r\n    CardsViewComponent,\r\n    ResultViewComponent,\r\n    MessagesViewComponent,\r\n    SessionInitComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    AppRoutingModule,\r\n    FormsModule,\r\n    HttpClientModule,\r\n    TabMenuModule,\r\n    ScrollPanelModule,\r\n    BrowserAnimationsModule,\r\n    ButtonModule,\r\n    RadioButtonModule,\r\n    ChartModule,\r\n    DialogModule,\r\n    ToastModule,\r\n    MenuModule,\r\n    FontAwesomeModule\r\n  ],\r\n  providers: [PrimeIcons,\r\n    {provide: LocationStrategy, useClass: HashLocationStrategy},\r\n    CookieService,\r\n    MessageService,\r\n    ScrumCookieService\r\n  ],\r\n  bootstrap: [AppComponent],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class AppModule {\r\n}\r\n",
+            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';\r\nimport { FormsModule } from '@angular/forms';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { HashLocationStrategy, LocationStrategy } from '@angular/common';\r\nimport { TabMenuModule } from 'primeng/tabmenu';\r\nimport { ScrollPanelModule } from 'primeng/scrollpanel';\r\nimport { ButtonModule } from 'primeng/button';\r\nimport { ChartModule } from 'primeng/chart';\r\nimport { RadioButtonModule } from 'primeng/radiobutton';\r\nimport { PrimeIcons } from 'primeng/api';\r\nimport { DialogModule } from 'primeng/dialog';\r\nimport { ToastModule } from 'primeng/toast';\r\nimport { MessageService } from 'primeng/api';\r\nimport { CookieService } from 'ngx-cookie-service';\r\nimport { MenuModule } from 'primeng/menu';\r\nimport { FontAwesomeModule } from '@fortawesome/angular-fontawesome';\r\n\r\nimport { AppComponent } from './app.component';\r\nimport { HomeComponent } from './components/home/home.component';\r\nimport { AppRoutingModule } from './app-routing-module';\r\nimport { RetroSessionComponent } from './components/retro-session/retro-session.component';\r\nimport { StatusComponent } from './components/status/status.component';\r\nimport { RetroColumnComponent } from './components/retro-session/retro-column/retro-column.component';\r\nimport { RetroMessageComponent } from './components/retro-session/retro-message/retro-message.component';\r\nimport { CardsViewComponent } from './components/planning-session/cards-view/cards-view.component';\r\nimport { ResultViewComponent } from './components/planning-session/result-view/result-view.component';\r\nimport { PlanningSessionComponent } from './components/planning-session/planning-session.component';\r\nimport { MessagesViewComponent } from './components/messages-view/messages-view.component';\r\nimport { SessionInitComponent } from './components/session-init/session-init.component';\r\nimport { ScrumCookieService } from './service/scrum-cookie.service';\r\nimport { CardComponent } from './components/planning-session/card/card.component';\r\nimport { CardService } from './components/planning-session/card/card.service';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    HomeComponent,\r\n    RetroSessionComponent,\r\n    StatusComponent,\r\n    RetroColumnComponent,\r\n    RetroMessageComponent,\r\n    PlanningSessionComponent,\r\n    CardsViewComponent,\r\n    ResultViewComponent,\r\n    MessagesViewComponent,\r\n    SessionInitComponent,\r\n    CardComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    AppRoutingModule,\r\n    FormsModule,\r\n    HttpClientModule,\r\n    TabMenuModule,\r\n    ScrollPanelModule,\r\n    BrowserAnimationsModule,\r\n    ButtonModule,\r\n    RadioButtonModule,\r\n    ChartModule,\r\n    DialogModule,\r\n    ToastModule,\r\n    MenuModule,\r\n    FontAwesomeModule\r\n  ],\r\n  providers: [PrimeIcons,\r\n    {provide: LocationStrategy, useClass: HashLocationStrategy},\r\n    CookieService,\r\n    CardService,\r\n    MessageService,\r\n    ScrumCookieService\r\n  ],\r\n  bootstrap: [AppComponent],\r\n  schemas: [CUSTOM_ELEMENTS_SCHEMA]\r\n})\r\nexport class AppModule {\r\n}\r\n",
             "children": [
                 {
                     "type": "providers",
                     "elements": [
+                        {
+                            "name": "CardService"
+                        },
                         {
                             "name": "ScrumCookieService"
                         }
@@ -5582,6 +5507,9 @@
                     "elements": [
                         {
                             "name": "AppComponent"
+                        },
+                        {
+                            "name": "CardComponent"
                         },
                         {
                             "name": "CardsViewComponent"
@@ -5681,6 +5609,26 @@
     "miscellaneous": {
         "variables": [
             {
+                "name": "Card",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "CardsView",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/CardsView.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5721,70 +5669,10 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "Large",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
                 "name": "NewSessionInitialization",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/SessionInit.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -5818,54 +5706,24 @@
                 "type": "any"
             },
             {
-                "name": "Secondary",
+                "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
+                "file": "src/stories/Card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Small",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n    props: args\r\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
+                "file": "src/stories/CardsView.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Header>",
-                "defaultValue": "(args: Header) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Page>",
-                "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n    props: args\r\n})"
             },
             {
                 "name": "Template",
@@ -5991,6 +5849,50 @@
             }
         ],
         "groupedVariables": {
+            "src/stories/Card.stories.ts": [
+                {
+                    "name": "Card",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n    props: args\r\n})"
+                }
+            ],
+            "src/stories/CardsView.stories.ts": [
+                {
+                    "name": "CardsView",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/CardsView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/CardsView.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n    props: args\r\n})"
+                }
+            ],
             "src/test.ts": [
                 {
                     "name": "context",
@@ -6084,122 +5986,6 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "(args) => ({\r\n    props: args\r\n})"
-                }
-            ],
-            "src/stories/Button.stories.ts": [
-                {
-                    "name": "Large",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Secondary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Small",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Button>",
-                    "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-                }
-            ],
-            "src/stories/Header.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Header>",
-                    "defaultValue": "(args: Header) => ({\n  props: args,\n})"
-                }
-            ],
-            "src/stories/Page.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Page>",
-                    "defaultValue": "(args: Page) => ({\n  props: args,\n})"
                 }
             ]
         },
@@ -6355,7 +6141,7 @@
         ]
     },
     "coverage": {
-        "count": 1,
+        "count": 0,
         "status": "low",
         "files": [
             {
@@ -6401,6 +6187,24 @@
                 "name": "Message",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/planning-session/card/card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/planning-session/card/card.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CardService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -6678,47 +6482,17 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Button.stories.ts",
+                "filePath": "src/stories/Card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Large",
+                "name": "Card",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Primary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Secondary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Small",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
+                "filePath": "src/stories/Card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -6728,57 +6502,17 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Header.stories.ts",
+                "filePath": "src/stories/CardsView.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "LoggedIn",
+                "name": "CardsView",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedIn",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
+                "filePath": "src/stories/CardsView.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -6818,33 +6552,6 @@
                 "status": "low"
             },
             {
-                "filePath": "src/stories/User.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "User",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/button.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ButtonComponent",
-                "coveragePercent": 83,
-                "coverageCount": "5/6",
-                "status": "very-good"
-            },
-            {
-                "filePath": "src/stories/header.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "HeaderComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
                 "filePath": "src/stories/mocks/MessageServiceMock.ts",
                 "type": "injectable",
                 "linktype": "injectable",
@@ -6860,15 +6567,6 @@
                 "name": "ScrumCookieServiceMock",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/page.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "PageComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
                 "status": "low"
             },
             {

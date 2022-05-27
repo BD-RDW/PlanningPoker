@@ -30,6 +30,8 @@ import { PlanningSessionComponent } from './components/planning-session/planning
 import { MessagesViewComponent } from './components/messages-view/messages-view.component';
 import { SessionInitComponent } from './components/session-init/session-init.component';
 import { ScrumCookieService } from './service/scrum-cookie.service';
+import { CardComponent } from './components/planning-session/card/card.component';
+import { CardService } from './components/planning-session/card/card.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { ScrumCookieService } from './service/scrum-cookie.service';
     CardsViewComponent,
     ResultViewComponent,
     MessagesViewComponent,
-    SessionInitComponent
+    SessionInitComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,7 @@ import { ScrumCookieService } from './service/scrum-cookie.service';
   providers: [PrimeIcons,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     CookieService,
+    CardService,
     MessageService,
     ScrumCookieService
   ],
