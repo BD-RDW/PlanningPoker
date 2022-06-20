@@ -1,17 +1,13 @@
-.animated {
-  transition: all 1s;
+.planningview {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
 }
-.defaultCard {
-  fill: white;
-  cursor: pointer;
-  stroke: black;
-}
-.selectedCard {
-  fill: lightblue;
-}
-.number {
-  fill: black;
-}
-.card {
-  fill: white;
+#cards {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: stretch;
 }

@@ -8,7 +8,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class CardsViewComponent implements OnInit {
 
   @Output() cardSelectedEvent = new EventEmitter<string>();
-  @Input() cardNumbers: string[] = [];
+  @Input() cardNumbers: string[];
 
   constructor() { }
 

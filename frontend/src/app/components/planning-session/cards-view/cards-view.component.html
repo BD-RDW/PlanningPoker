@@ -1,21 +1,9 @@
-<div id="cards">
-  <svg xmlns="http://www.w3.org/2000/svg" width="140" height="200" id="card1" class="defaultCard">
-      <defs>
-          <radialGradient id="grad1">
-              <stop offset="0%" stop-color="#99bbff"/>
-              <stop offset="100%" stop-color="#6699ff"/>
-          </radialGradient>
-      </defs>
-
-      <g id="svgGroup" class="animated">
-          <rect id="cardRect" class="card" x=20 y=20 width=100 height=160 rx=10 style="stroke-width: 2" pointer-events="none"/>
-          <text class="number" x=65 y=110 text-anchor='middle' font-family="sans-serif" font-size="36"  pointer-events="none">0</text>
-          <text class="number" x=25 y=40 text-anchor='start' font-family="sans-serif" font-size="18"  pointer-events="none">0</text>
-          <text class="number" x=110 y=40 text-anchor='end' font-family="sans-serif" font-size="18"  pointer-events="none">0</text>
-          <text class="number" x=25 y=170 text-anchor='start' font-family="sans-serif" font-size="18"  pointer-events="none">0</text>
-          <text class="number" x=110 y=170 text-anchor='end' font-family="sans-serif" font-size="18"  pointer-events="none">0</text>
-      </g>
-  </svg>
-</div>
-<div id="options" class="options">
+<div class="planningview">
+    <div id="cards" >
+        <span *ngFor="let card of cardNumbers">
+            <app-card [cardId]="card"></app-card>
+        </span>
+    </div>
+    <div id="options" class="options">
+    </div>
 </div>

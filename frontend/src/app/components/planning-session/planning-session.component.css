@@ -9,6 +9,7 @@
   border: 10px white solid;
   min-width: 300px;
   max-width: 300px;
+  flex-grow: 0;
 }
 .three-panel-container {
   display: flex;
@@ -18,7 +19,12 @@
 .user-panel {
   min-width: 200px;
   max-width: 200px;
+  flex-grow: 0;
 }
+.main-panel {
+  flex-grow: 1;
+}
+
 :host {
   background-color: transparent;
 }
